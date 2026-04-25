@@ -30,6 +30,7 @@ import {
   compareTwinFaceItemsForSort,
 } from "./ui/faceTable/faceTable.js";
 import { queryAppPageElements } from "./ui/page/pageElements.js";
+import { createAnnouncementModalActions } from "./ui/page/announcementModal.js";
 import { createPageUiHelpers } from "./ui/page/pageUi.js";
 import { applyPageStaticTranslations } from "./ui/page/pageTranslations.js";
 import {
@@ -468,6 +469,12 @@ function toggleTabMenuPopover(trigger, crystalIndex) {
 const state = createInitialState();
 
 const elements = queryAppPageElements();
+const { initAnnouncementModal, openAnnouncement } =
+  createAnnouncementModalActions({
+    elements,
+    getLocale: getCurrentLocale,
+    onLocaleChange,
+  });
 
 /** 面一覧カードの下端を現在のビューポート下端へ合わせる。 */
 function syncFaceSectionCardHeight() {
@@ -1377,6 +1384,7 @@ const { registerPresetAndMetadataHandlers, registerHeaderSaveHandlers } =
     closePresetPopup,
     closeHeaderSaveMenus,
     toggleHeaderSaveMenu,
+    openAnnouncementModal: () => openAnnouncement(),
     triggerImportJsonWithMode,
     commitMetadataField,
     applyPresetMetadataSectionVisibility,
@@ -1497,5 +1505,6 @@ const { animate, init } = createPageLifecycleActions({
 });
 
 init();
+initAnnouncementModal();
 
 // @ts-nocheck

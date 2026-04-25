@@ -45,10 +45,62 @@
           aria-label="操作"
           data-i18n-aria-label="common.actions"
         >
+          <div class="header-brand-links">
+            <a
+              id="app-announcement-github-link"
+              class="announcement-link announcement-link--icon announcement-link--github"
+              href="https://github.com/Wfrm-Qz/sekiei"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="GitHubのレポジトリ"
+              title="GitHubのレポジトリ"
+              data-i18n-aria-label="announcement.githubLink"
+              data-i18n-title="announcement.githubLink"
+            >
+              <img
+                class="announcement-link__icon-image"
+                src="./assets/brand-logos/github-invertocat-black.svg"
+                alt=""
+                aria-hidden="true"
+              />
+              <span class="visually-hidden" data-i18n="announcement.githubLink"
+                >GitHubのレポジトリ</span
+              >
+            </a>
+            <a
+              id="app-announcement-author-x-link"
+              class="announcement-link announcement-link--icon announcement-link--x"
+              href="https://x.com/Wfrm_Qz"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="作者X"
+              title="作者X"
+              data-i18n-aria-label="announcement.authorXLink"
+              data-i18n-title="announcement.authorXLink"
+            >
+              <img
+                class="announcement-link__icon-image"
+                src="./assets/brand-logos/x-logo-black.png"
+                alt=""
+                aria-hidden="true"
+              />
+              <span class="visually-hidden" data-i18n="announcement.authorXLink"
+                >作者X</span
+              >
+            </a>
+          </div>
           <label class="header-select">
             <span id="app-locale-label" data-i18n="common.language">言語</span>
             <select id="app-locale-select"></select>
           </label>
+          <button
+            id="app-announcement-open-button"
+            class="dads-button dads-button--secondary"
+            type="button"
+            data-i18n="announcement.openButton"
+          >
+            お知らせ
+          </button>
           <div class="header-menu-wrap">
             <button
               id="app-save-button"
@@ -1686,6 +1738,139 @@
       class="crystal-tab-menu-popover"
       hidden
     ></div>
+    <div
+      id="app-announcement-modal"
+      class="announcement-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="app-announcement-title"
+      aria-describedby="app-announcement-body"
+      hidden
+    >
+      <div
+        id="app-announcement-backdrop"
+        class="announcement-modal__backdrop"
+      ></div>
+      <section class="announcement-modal__card">
+        <div class="announcement-modal__header">
+          <div class="announcement-modal__header-copy">
+            <h2 id="app-announcement-title" class="announcement-modal__title">
+              <span data-i18n="announcement.title">お知らせ</span>
+            </h2>
+          </div>
+          <button
+            id="app-announcement-close-button"
+            class="announcement-modal__close dads-icon-button"
+            type="button"
+            aria-label="お知らせを閉じる"
+            data-i18n-aria-label="announcement.closeAria"
+          >
+            ×
+          </button>
+        </div>
+        <div id="app-announcement-body" class="announcement-modal__content">
+          <p class="announcement-modal__support-note">
+            <span data-i18n="announcement.feedbackLead">
+              バグ報告や要望、プリセットデータの提供は
+            </span>
+            <a
+              id="app-announcement-feedback-github-link"
+              class="announcement-inline-link"
+              href="https://github.com/Wfrm-Qz/sekiei"
+              target="_blank"
+              rel="noreferrer"
+              data-i18n="announcement.githubLink"
+              aria-label="GitHubのレポジトリ"
+              title="GitHubのレポジトリ"
+              data-i18n-aria-label="announcement.githubLink"
+              data-i18n-title="announcement.githubLink"
+            >
+              GitHubのレポジトリ
+            </a>
+            <span data-i18n="announcement.feedbackConnector">か</span>
+            <a
+              id="app-announcement-feedback-author-x-link"
+              class="announcement-inline-link"
+              href="https://x.com/Wfrm_Qz"
+              target="_blank"
+              rel="noreferrer"
+              data-i18n="announcement.authorXLink"
+              aria-label="作者X"
+              title="作者X"
+              data-i18n-aria-label="announcement.authorXLink"
+              data-i18n-title="announcement.authorXLink"
+            >
+              作者X
+            </a>
+            <span data-i18n="announcement.feedbackSuffix">まで</span>
+          </p>
+          <div class="announcement-modal__meta-row">
+            <span
+              class="announcement-modal__section-label"
+              data-i18n="announcement.updatedAtLabel"
+            >
+              お知らせの更新日
+            </span>
+            <time
+              id="app-announcement-updated-at-value"
+              class="announcement-modal__updated-at"
+            >
+              2026年4月26日
+            </time>
+          </div>
+          <section class="announcement-section">
+            <p
+              class="announcement-modal__section-label"
+              data-i18n="announcement.historyTitle"
+            >
+              更新履歴
+            </p>
+            <div id="app-announcement-history" class="announcement-history">
+              <article class="announcement-history-entry">
+                <div class="announcement-history-entry__meta">
+                  <time class="announcement-history-entry__date"
+                    >2026年4月26日</time
+                  >
+                  <span class="announcement-history-entry__version"
+                    >v0.1.2</span
+                  >
+                </div>
+                <ul class="announcement-list">
+                  <li>起動時にお知らせモーダルを表示するようにしました。</li>
+                  <li>ヘッダーからお知らせをいつでも開けるようにしました。</li>
+                </ul>
+              </article>
+            </div>
+          </section>
+          <section class="announcement-section">
+            <p
+              class="announcement-modal__section-label"
+              data-i18n="announcement.knownIssuesTitle"
+            >
+              既知の問題
+            </p>
+            <ul
+              id="app-announcement-known-issues"
+              class="announcement-list announcement-list--issues"
+            >
+              <li class="announcement-list__empty">
+                現在確認されている既知の問題はありません。
+              </li>
+            </ul>
+          </section>
+        </div>
+        <div class="announcement-modal__actions">
+          <button
+            id="app-announcement-dismiss-button"
+            class="dads-button dads-button--primary"
+            type="button"
+            data-i18n="announcement.dismiss"
+          >
+            確認した
+          </button>
+        </div>
+      </section>
+    </div>
 
     <script type="module" src="./src/main.ts"></script>
   </body>

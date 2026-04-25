@@ -8,6 +8,38 @@ export function queryAppPageElements() {
   return {
     localeLabel: document.querySelector("#app-locale-label"),
     localeSelect: document.querySelector("#app-locale-select"),
+    announcementModal: document.querySelector("#app-announcement-modal"),
+    announcementBackdrop: document.querySelector("#app-announcement-backdrop"),
+    announcementUpdatedAtValue: document.querySelector(
+      "#app-announcement-updated-at-value",
+    ),
+    announcementHistoryList: document.querySelector(
+      "#app-announcement-history",
+    ),
+    announcementKnownIssuesList: document.querySelector(
+      "#app-announcement-known-issues",
+    ),
+    announcementFeedbackGithubLink: document.querySelector(
+      "#app-announcement-feedback-github-link",
+    ),
+    announcementFeedbackAuthorXLink: document.querySelector(
+      "#app-announcement-feedback-author-x-link",
+    ),
+    announcementGithubLink: document.querySelector(
+      "#app-announcement-github-link",
+    ),
+    announcementAuthorXLink: document.querySelector(
+      "#app-announcement-author-x-link",
+    ),
+    announcementDismissButton: document.querySelector(
+      "#app-announcement-dismiss-button",
+    ),
+    announcementCloseButton: document.querySelector(
+      "#app-announcement-close-button",
+    ),
+    announcementOpenButton: document.querySelector(
+      "#app-announcement-open-button",
+    ),
     presetCombobox: document.querySelector("#app-preset-combobox"),
     presetSelect: document.querySelector("#app-preset-select"),
     presetClearButton: document.querySelector("#app-preset-clear-button"),

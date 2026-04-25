@@ -75,6 +75,10 @@ npm run preview
   - 基本操作
 - [Preview Controls](./docs/preview-controls.md)
   - プレビュー周辺の使い方
+- [Changelog](./docs/changelog.md)
+  - アプリ内お知らせと共有している更新履歴
+- [Known Issues](./docs/known-issues.md)
+  - アプリ内お知らせと共有している既知の問題
 - [Modeling Features](./docs/modeling-features.md)
   - 何が作れるか
 - [JSON Format](./docs/json-format.md)
@@ -99,6 +103,8 @@ npm run preview
   - 共通スタイル
 - [app-ui.css](./app-ui.css)
   - ページ固有の追加スタイル
+- [src/content](./src/content)
+  - docs 由来の announcement content loader
 - [src/data](./src/data)
   - preset とその loader
 - [src/domain](./src/domain)

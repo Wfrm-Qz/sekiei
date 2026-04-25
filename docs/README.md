@@ -6,6 +6,10 @@
 
 - [Modeling Features](./modeling-features.md)
   - 何が作れるか、どの表示・出力機能があるか
+- [Changelog](./changelog.md)
+  - アプリ内お知らせと共有している更新履歴
+- [Known Issues](./known-issues.md)
+  - アプリ内お知らせと共有している既知の問題
 - [Architecture](./architecture.md)
   - 現在のソース構成と責務分担
 - [JSON Format](./json-format.md)

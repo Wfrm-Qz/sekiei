@@ -15,6 +15,7 @@ describe("ui/uiHandlers", () => {
       </div>
       <button id="metadata-toggle"></button>
       <input id="metadata-name" />
+      <button id="announcement-open"></button>
       <button id="save"></button>
       <div id="save-menu"><button class="header-action-menu-item" data-export-format="json" data-save-mode="save">save</button></div>
       <button id="save-as"></button>
@@ -46,6 +47,9 @@ describe("ui/uiHandlers", () => {
         metadataInputs: {
           name: document.getElementById("metadata-name") as HTMLInputElement,
         },
+        announcementOpenButton: document.getElementById(
+          "announcement-open",
+        ) as HTMLButtonElement,
         saveButton: document.getElementById("save") as HTMLButtonElement,
         saveAsButton: document.getElementById("save-as") as HTMLButtonElement,
         saveMenu: document.getElementById("save-menu") as HTMLElement,
@@ -59,6 +63,7 @@ describe("ui/uiHandlers", () => {
       closePresetPopup: vi.fn(),
       closeHeaderSaveMenus: vi.fn(),
       toggleHeaderSaveMenu: vi.fn(),
+      openAnnouncementModal: vi.fn(),
       commitMetadataField: vi.fn(),
       applyPresetMetadataSectionVisibility: vi.fn(),
       exportTwinArtifact: vi.fn(async () => undefined),
@@ -97,6 +102,10 @@ describe("ui/uiHandlers", () => {
     const context = createContext();
     const handlers = createTwinUiHandlers(context);
     handlers.registerHeaderSaveHandlers();
+
+    context.elements.announcementOpenButton.click();
+    expect(context.closeHeaderSaveMenus).toHaveBeenCalledTimes(1);
+    expect(context.openAnnouncementModal).toHaveBeenCalledTimes(1);
 
     context.elements.saveButton.click();
     expect(context.toggleHeaderSaveMenu).toHaveBeenCalledWith(

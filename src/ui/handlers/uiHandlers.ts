@@ -25,6 +25,7 @@ interface TwinUiHandlerElementsLike {
   presetCombobox: HTMLElement;
   presetMetadataToggleButton: HTMLButtonElement;
   metadataInputs: Record<string, HTMLInputElement | HTMLTextAreaElement>;
+  announcementOpenButton?: HTMLButtonElement | null;
   saveButton?: HTMLButtonElement | null;
   saveAsButton?: HTMLButtonElement | null;
   saveMenu?: HTMLElement | null;
@@ -48,6 +49,7 @@ export interface TwinUiHandlersContext {
     button?: HTMLButtonElement | null,
     menu?: HTMLElement | null,
   ) => void;
+  openAnnouncementModal: () => void;
   triggerImportJsonWithMode: (
     mode: "both" | "preview-only" | "crystal-only",
   ) => void;
@@ -156,6 +158,11 @@ export function createTwinUiHandlers(context: TwinUiHandlersContext) {
 
   /** ヘッダー保存メニューの開閉と click action を登録する。 */
   function registerHeaderSaveHandlers() {
+    context.elements.announcementOpenButton?.addEventListener("click", () => {
+      context.closeHeaderSaveMenus();
+      context.openAnnouncementModal();
+    });
+
     context.elements.saveButton?.addEventListener("click", () => {
       context.toggleHeaderSaveMenu(
         context.elements.saveButton,

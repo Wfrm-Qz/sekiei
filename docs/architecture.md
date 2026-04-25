@@ -78,6 +78,13 @@ UI の描画と DOM 配線です。
 - `handlers/`
   - import や preview 設定などのイベント配線
 
+### `src/content`
+
+公開ドキュメント由来の軽量 content loader です。
+
+- `announcements.ts`
+  - `docs/changelog.md` と `docs/known-issues.md` を読み込み、in-app のお知らせ表示用データへ整形
+
 ### `src/state`
 
 小さな mutation と state access helper を置きます。
@@ -108,3 +115,4 @@ UI の描画と DOM 配線です。
 - UI は HTML/CSS/TypeScript の結合が強いので、小さく段階的に触る
 - `src/i18n.ts` の日本語を変えたら英語も同時に更新する
 - `index.html` の `data-i18n*` fallback は `src/i18n.ts` と一致させる
+- お知らせの更新履歴と既知の問題は `docs/changelog.md` と `docs/known-issues.md` を正本にし、UI 側へ重複ベタ書きしない

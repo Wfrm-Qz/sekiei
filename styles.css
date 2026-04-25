@@ -62,6 +62,10 @@ textarea {
   color: var(--text);
 }
 
+.page-root.announcement-modal-open {
+  overflow: hidden;
+}
+
 /* skip link はキーボード操作時だけ見えるようにしている。 */
 .skip-link {
   position: absolute;
@@ -242,8 +246,7 @@ textarea:focus-visible {
 .page-header__logo {
   display: inline-flex;
   align-items: center;
-  font-family: "Sora", "Segoe UI", "BIZ UDPGothic", "Hiragino Sans",
-    sans-serif;
+  font-family: "Sora", "Segoe UI", "BIZ UDPGothic", "Hiragino Sans", sans-serif;
   font-size: clamp(2.15rem, 3.6vw, 3.55rem);
   font-weight: 600;
   line-height: 0.95;
@@ -273,6 +276,40 @@ textarea:focus-visible {
   flex-wrap: wrap;
   justify-content: flex-end;
   align-items: center;
+}
+
+.header-brand-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-brand-links .announcement-link--icon {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.header-brand-links .announcement-link--icon:hover {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+.header-brand-links .announcement-link__icon-image {
+  width: 36px;
+  height: 36px;
+}
+
+.header-brand-links .announcement-link--x .announcement-link__icon-image {
+  width: 32px;
+  height: 32px;
 }
 
 .layout {
