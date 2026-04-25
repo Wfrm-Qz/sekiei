@@ -1,0 +1,293 @@
+{
+  "schema": "sekiei-twin-preview-document-v1",
+  "parameters": {
+    "version": 2,
+    "schema": "sekiei-document",
+    "presetId": "sphalerite-00003",
+    "name": {
+      "en": "sphalerite",
+      "jp": "閃亜鉛鉱"
+    },
+    "metadata": {
+      "shortDescription": "Buckwheat mine, Franklin",
+      "description": "Crystal of sphalerite showing the positive and negative tetrahedrons\nand the trigonal tristetrahedron 0(522).",
+      "reference": "Palache 1935",
+      "fullReference": "Charles Palache, The minerals of Franklin and Sterling Hill, Sussex County, New Jersey (USGS Professional Paper 180, 1935)"
+    },
+    "crystalSystem": "cubic",
+    "axes": {
+      "a": 1,
+      "b": 1,
+      "c": 1
+    },
+    "angles": {
+      "alpha": 90,
+      "beta": 90,
+      "gamma": 90
+    },
+    "sizeMm": 50,
+    "crystals": [
+      {
+        "id": "base",
+        "enabled": true,
+        "faces": [
+          {
+            "id": "9553671b-86de-48d5-ae86-bf353a220691",
+            "h": 1,
+            "k": 1,
+            "l": 1,
+            "coefficient": 1.55,
+            "enabled": true
+          },
+          {
+            "id": "bc1cd0f1-df00-4735-9e70-375f1fc81b9f",
+            "h": -1,
+            "k": -1,
+            "l": 1,
+            "coefficient": 1.55,
+            "enabled": true
+          },
+          {
+            "id": "b9cf6468-f381-4ca6-bbe5-5e15b39a3336",
+            "h": -1,
+            "k": 1,
+            "l": -1,
+            "coefficient": 1.55,
+            "enabled": true
+          },
+          {
+            "id": "a5aaee03-19eb-43b0-afa1-f4f8d900b275",
+            "h": 1,
+            "k": -1,
+            "l": -1,
+            "coefficient": 1.55,
+            "enabled": true
+          },
+          {
+            "id": "5d9d0c92-6f98-450d-b41a-65d7f3a92b2d",
+            "h": -1,
+            "k": -1,
+            "l": -1,
+            "coefficient": 0.7,
+            "enabled": true
+          },
+          {
+            "id": "8fb2c7cc-9c21-4e62-ae47-e020ba7c98a9",
+            "h": -1,
+            "k": 1,
+            "l": 1,
+            "coefficient": 0.7,
+            "enabled": true
+          },
+          {
+            "id": "76361aef-4fe0-4433-9fb8-ca60e34d4450",
+            "h": 1,
+            "k": -1,
+            "l": 1,
+            "coefficient": 0.7,
+            "enabled": true
+          },
+          {
+            "id": "f1f9c7fe-c82c-4912-8442-2467f9aa3fb8",
+            "h": 1,
+            "k": 1,
+            "l": -1,
+            "coefficient": 0.7,
+            "enabled": true
+          },
+          {
+            "id": "c1039058-a440-4892-ba3f-624f8416bb72",
+            "h": 5,
+            "k": 2,
+            "l": 2,
+            "coefficient": 0.33,
+            "enabled": true
+          },
+          {
+            "id": "acec7c6e-ee7c-4c1a-b30b-65b60fb64f6c",
+            "h": -5,
+            "k": -2,
+            "l": 2,
+            "coefficient": 0.33,
+            "enabled": true
+          },
+          {
+            "id": "966c0416-9ed6-4bc4-b1bb-6f33bee00934",
+            "h": -5,
+            "k": 2,
+            "l": -2,
+            "coefficient": 0.33,
+            "enabled": true
+          },
+          {
+            "id": "38243b06-5f2a-4cd9-ba37-fd65d419a031",
+            "h": 5,
+            "k": -2,
+            "l": -2,
+            "coefficient": 0.33,
+            "enabled": true
+          },
+          {
+            "id": "563ccf69-ee79-4416-aeb3-1440682f4a15",
+            "h": -2,
+            "k": -2,
+            "l": 5,
+            "coefficient": 0.33,
+            "enabled": true
+          },
+          {
+            "id": "9afce0ef-44ed-43cb-bda1-fcb72cbe7c21",
+            "h": -2,
+            "k": 2,
+            "l": -5,
+            "coefficient": 0.33,
+            "enabled": true
+          },
+          {
+            "id": "ae36dee6-a1bf-4de9-a7eb-d1292df7fa7b",
+            "h": 2,
+            "k": -2,
+            "l": -5,
+            "coefficient": 0.33,
+            "enabled": true
+          },
+          {
+            "id": "edf5ce99-3e69-41f2-860f-8ee49c473880",
+            "h": 2,
+            "k": 2,
+            "l": 5,
+            "coefficient": 0.33,
+            "enabled": true
+          },
+          {
+            "id": "d4a53703-1fc5-4538-a355-6fa5da774a19",
+            "h": -2,
+            "k": -5,
+            "l": 2,
+            "coefficient": 0.33,
+            "enabled": true
+          },
+          {
+            "id": "28dda139-2a2d-49c7-8087-33dae938b00f",
+            "h": -2,
+            "k": 5,
+            "l": -2,
+            "coefficient": 0.33,
+            "enabled": true
+          },
+          {
+            "id": "b7be0904-2a3f-49e4-a691-6e6d300e6cad",
+            "h": 2,
+            "k": -5,
+            "l": -2,
+            "coefficient": 0.33,
+            "enabled": true
+          },
+          {
+            "id": "64e00ca7-1876-474e-a9c5-8e10538e9ef1",
+            "h": 2,
+            "k": 5,
+            "l": 2,
+            "coefficient": 0.33,
+            "enabled": true
+          }
+        ]
+      }
+    ]
+  },
+  "preview": {
+    "faceDisplayMode": "grouped",
+    "previewStyleSettings": {
+      "faceLabel": {
+        "color": "#1f2a37",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 14,
+        "offset": 0.05
+      },
+      "axisLabel": {
+        "colors": {
+          "a": "#cc3d3d",
+          "b": "#2f8f46",
+          "a3": "#c08a2d",
+          "c": "#005bac"
+        },
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 48
+      },
+      "twinRuleLabel": {
+        "color": "#8b5fd1",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 24
+      },
+      "presetMetadataName": {
+        "color": "#1f2a37",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 48
+      },
+      "presetMetadataDescription": {
+        "color": "#516171",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 48
+      },
+      "axisLines": {
+        "colors": {
+          "a": "#cc3d3d",
+          "b": "#2f8f46",
+          "a3": "#c08a2d",
+          "c": "#005bac"
+        },
+        "innerWidth": 2,
+        "outerWidth": 2
+      },
+      "ridgeLines": {
+        "color": "#181818",
+        "width": 2,
+        "opacity": 1
+      },
+      "intersectionLines": {
+        "color": "#181818",
+        "width": 1,
+        "opacity": 1
+      },
+      "customLineProfile": {
+        "useLayeredLines": false,
+        "useDepthMask": false,
+        "useScreenSpaceLineOverlay": false,
+        "showFrontLines": true,
+        "showHiddenSurfaceLines": false,
+        "showOccludedInteriorLines": false,
+        "hiddenSurfaceLineColorMode": "same-as-front",
+        "hiddenSurfaceLineCustomColor": "#7a7a7a",
+        "hiddenSurfaceLineOpacityScale": 0.5,
+        "hiddenSurfaceLineWidthScale": 2,
+        "occludedInteriorLineColorMode": "same-as-front",
+        "occludedInteriorLineCustomColor": "#9a9a9a",
+        "occludedInteriorLineOpacityScale": 0.5,
+        "occludedInteriorLineWidthScale": 2,
+        "resolutionMode": "canvas-device-pixel",
+        "depthMaskOffsetFactor": 1,
+        "depthMaskOffsetUnits": 2
+      },
+      "customFaceProfile": {
+        "surfaceStyle": "grouped",
+        "componentBuildMode": "grouped-face-group",
+        "baseColorMode": "white",
+        "usesFaceGroupPalette": true,
+        "materialKind": "physical",
+        "usesLighting": true,
+        "usesScreenSpaceFaceOverlay": false,
+        "opacityWhenHasFinal": 1,
+        "opacityWhenNoFinal": 1,
+        "depthWrite": true,
+        "usePolygonOffset": true,
+        "polygonOffsetFactor": 1,
+        "polygonOffsetUnits": 1,
+        "useVertexColorsOnMergedGeometry": true,
+        "preferFinalMergedGeometry": false,
+        "allowSharedSolidFaceColorMap": false,
+        "allowSharedSolidFaceOverlay": false,
+        "groupedFaceComponentOpacity": null
+      }
+    }
+  }
+}

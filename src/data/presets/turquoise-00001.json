@@ -1,0 +1,303 @@
+{
+  "schema": "sekiei-twin-preview-document-v1",
+  "parameters": {
+    "version": 2,
+    "schema": "sekiei-document",
+    "presetId": "turquoise-00001",
+    "name": {
+      "en": "Turquoise",
+      "jp": "トルコ石"
+    },
+    "metadata": {
+      "shortDescription": "Lynch station, Campbell County, Va",
+      "description": "b,a,m,M,k",
+      "reference": "Schaller 1912",
+      "fullReference": "Schaller, W.T., 1912, Mineralogical notes, series 2: U.S. Geological Survey Bulletin 509, 115 p\nCrystallography :Geological Society of America, Abstracts Annual Meetings 23  (1991) A158 (via RRUFF)"
+    },
+    "crystalSystem": "triclinic",
+    "axes": {
+      "a": 0.97045,
+      "b": 1,
+      "c": 1.2972
+    },
+    "angles": {
+      "alpha": 68.652,
+      "beta": 69.639,
+      "gamma": 65.034
+    },
+    "sizeMm": 50,
+    "crystals": [
+      {
+        "id": "base",
+        "enabled": true,
+        "faces": [
+          {
+            "id": "b1b84860-f4a8-4388-9b66-2ee17ac86c0c",
+            "h": 1,
+            "k": 0,
+            "l": 0,
+            "coefficient": 1.3,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          },
+          {
+            "id": "e0177d04-5c8c-4697-9493-74d7336e61f6",
+            "h": -1,
+            "k": 0,
+            "l": 0,
+            "coefficient": 1.3,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          },
+          {
+            "id": "32b1fb75-66b5-40e8-829b-a2f8505ef0e8",
+            "h": 0,
+            "k": 1,
+            "l": 0,
+            "coefficient": 0.75,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          },
+          {
+            "id": "94eeafe7-0ce3-4272-b030-ddf5a22eaf59",
+            "h": 0,
+            "k": -1,
+            "l": 0,
+            "coefficient": 0.75,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          },
+          {
+            "id": "816b3698-8555-40c7-b632-536635530446",
+            "h": 1,
+            "k": 1,
+            "l": 0,
+            "coefficient": 0.5,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          },
+          {
+            "id": "5ad4e3c5-3d56-4731-b9aa-d1fb466c192f",
+            "h": -1,
+            "k": -1,
+            "l": 0,
+            "coefficient": 0.5,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          },
+          {
+            "id": "013162ad-c9b3-4a8d-af97-a5b7600eef3a",
+            "h": 1,
+            "k": -1,
+            "l": 0,
+            "coefficient": 1,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          },
+          {
+            "id": "c95a3846-0ae8-400a-bc0b-17aa37b672d1",
+            "h": -1,
+            "k": 1,
+            "l": 0,
+            "coefficient": 1,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          },
+          {
+            "id": "e22a676b-cdb2-481d-b560-5e7f97cd419d",
+            "h": 0,
+            "k": -1,
+            "l": 1,
+            "coefficient": 1,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          },
+          {
+            "id": "f01d7312-d87e-4051-8022-ddd3c4f3bf29",
+            "h": 0,
+            "k": 1,
+            "l": -1,
+            "coefficient": 1,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "preview": {
+    "faceDisplayMode": "grouped",
+    "previewStyleSettings": {
+      "faceLabel": {
+        "color": "#1f2a37",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 14,
+        "offset": 0.05
+      },
+      "axisLabel": {
+        "colors": {
+          "a": "#cc3d3d",
+          "b": "#2f8f46",
+          "a3": "#c08a2d",
+          "c": "#005bac"
+        },
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 48
+      },
+      "twinRuleLabel": {
+        "color": "#8b5fd1",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 24
+      },
+      "presetMetadataName": {
+        "color": "#1f2a37",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 48
+      },
+      "presetMetadataDescription": {
+        "color": "#516171",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 24
+      },
+      "axisLines": {
+        "colors": {
+          "a": "#cc3d3d",
+          "b": "#2f8f46",
+          "a3": "#c08a2d",
+          "c": "#005bac"
+        },
+        "innerWidth": 2,
+        "outerWidth": 2
+      },
+      "ridgeLines": {
+        "color": "#181818",
+        "width": 2,
+        "opacity": 1
+      },
+      "intersectionLines": {
+        "color": "#181818",
+        "width": 1,
+        "opacity": 1
+      },
+      "customLineProfile": {
+        "useLayeredLines": false,
+        "useDepthMask": false,
+        "useScreenSpaceLineOverlay": false,
+        "showFrontLines": true,
+        "showHiddenSurfaceLines": false,
+        "showOccludedInteriorLines": false,
+        "hiddenSurfaceLineColorMode": "same-as-front",
+        "hiddenSurfaceLineCustomColor": "#7a7a7a",
+        "hiddenSurfaceLineOpacityScale": 0.5,
+        "hiddenSurfaceLineWidthScale": 2,
+        "occludedInteriorLineColorMode": "same-as-front",
+        "occludedInteriorLineCustomColor": "#9a9a9a",
+        "occludedInteriorLineOpacityScale": 0.5,
+        "occludedInteriorLineWidthScale": 2,
+        "resolutionMode": "canvas-device-pixel",
+        "depthMaskOffsetFactor": 1,
+        "depthMaskOffsetUnits": 2
+      },
+      "customFaceProfile": {
+        "surfaceStyle": "grouped",
+        "componentBuildMode": "grouped-face-group",
+        "baseColorMode": "white",
+        "usesFaceGroupPalette": true,
+        "materialKind": "physical",
+        "usesLighting": true,
+        "usesScreenSpaceFaceOverlay": false,
+        "opacityWhenHasFinal": 1,
+        "opacityWhenNoFinal": 1,
+        "depthWrite": true,
+        "usePolygonOffset": true,
+        "polygonOffsetFactor": 1,
+        "polygonOffsetUnits": 1,
+        "useVertexColorsOnMergedGeometry": true,
+        "preferFinalMergedGeometry": false,
+        "allowSharedSolidFaceColorMap": false,
+        "allowSharedSolidFaceOverlay": false,
+        "groupedFaceComponentOpacity": null
+      }
+    }
+  }
+}

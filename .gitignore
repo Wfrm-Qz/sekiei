@@ -1,0 +1,13 @@
+server.log
+server-error.log
+dev.log
+dev-error.log
+dist/
+tasks/
+temp/
+coverage/
+playwright-report/
+test-results/
+node_modules/
+.agents/
+

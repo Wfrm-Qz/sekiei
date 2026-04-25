@@ -1,0 +1,1591 @@
+{
+  "schema": "sekiei-twin-preview-document-v1",
+  "parameters": {
+    "version": 2,
+    "schema": "sekiei-document",
+    "presetId": "custom",
+    "name": {
+      "jp": "",
+      "en": ""
+    },
+    "metadata": {
+      "shortDescription": "",
+      "description": "",
+      "reference": "",
+      "fullReference": ""
+    },
+    "crystalSystem": "trigonal",
+    "axes": {
+      "a": 1.0,
+      "b": 1.0,
+      "c": 1.1
+    },
+    "angles": {
+      "alpha": 90.0,
+      "beta": 90.0,
+      "gamma": 120.0
+    },
+    "sizeMm": 20.0,
+    "crystals": [
+      {
+        "id": "base",
+        "enabled": true,
+        "faces": [
+          {
+            "id": "face-1",
+            "h": 2,
+            "k": -1,
+            "l": 1,
+            "coefficient": 0.43,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-2",
+            "h": -1,
+            "k": 2,
+            "l": 1,
+            "coefficient": 0.43,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-3",
+            "h": -1,
+            "k": -1,
+            "l": 1,
+            "coefficient": 0.43,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 2
+          },
+          {
+            "id": "face-4",
+            "h": 2,
+            "k": -1,
+            "l": -1,
+            "coefficient": 0.43,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-5",
+            "h": -1,
+            "k": 2,
+            "l": -1,
+            "coefficient": 0.43,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-6",
+            "h": -1,
+            "k": -1,
+            "l": -1,
+            "coefficient": 0.43,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 2
+          },
+          {
+            "id": "face-7",
+            "h": 1,
+            "k": 0,
+            "l": 1,
+            "coefficient": 0.685,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-8",
+            "h": -1,
+            "k": 1,
+            "l": 1,
+            "coefficient": 0.685,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 0
+          },
+          {
+            "id": "face-9",
+            "h": 0,
+            "k": -1,
+            "l": 1,
+            "coefficient": 0.685,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 1
+          },
+          {
+            "id": "face-10",
+            "h": 1,
+            "k": 0,
+            "l": -1,
+            "coefficient": 0.62,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-11",
+            "h": -1,
+            "k": 1,
+            "l": -1,
+            "coefficient": 0.62,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 0
+          },
+          {
+            "id": "face-12",
+            "h": 0,
+            "k": -1,
+            "l": -1,
+            "coefficient": 0.62,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 1
+          },
+          {
+            "id": "face-13",
+            "h": 1,
+            "k": 0,
+            "l": 0,
+            "coefficient": 1.0,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-14",
+            "h": -1,
+            "k": 1,
+            "l": 0,
+            "coefficient": 1.0,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 0
+          },
+          {
+            "id": "face-15",
+            "h": 0,
+            "k": -1,
+            "l": 0,
+            "coefficient": 1.0,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 1
+          },
+          {
+            "id": "face-16",
+            "h": 0,
+            "k": 1,
+            "l": 0,
+            "coefficient": 1.0,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-17",
+            "h": -1,
+            "k": 0,
+            "l": 0,
+            "coefficient": 1.0,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 1
+          },
+          {
+            "id": "face-18",
+            "h": 1,
+            "k": -1,
+            "l": 0,
+            "coefficient": 1.0,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 0
+          },
+          {
+            "id": "face-19",
+            "h": 0,
+            "k": 1,
+            "l": 1,
+            "coefficient": 0.62,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-20",
+            "h": -1,
+            "k": 0,
+            "l": 1,
+            "coefficient": 0.62,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 1
+          },
+          {
+            "id": "face-21",
+            "h": 1,
+            "k": -1,
+            "l": 1,
+            "coefficient": 0.62,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 0
+          },
+          {
+            "id": "face-22",
+            "h": 0,
+            "k": 1,
+            "l": -1,
+            "coefficient": 0.685,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-23",
+            "h": -1,
+            "k": 0,
+            "l": -1,
+            "coefficient": 0.685,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 1
+          },
+          {
+            "id": "face-24",
+            "h": 1,
+            "k": -1,
+            "l": -1,
+            "coefficient": 0.685,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 0
+          },
+          {
+            "id": "face-25",
+            "h": 1,
+            "k": 1,
+            "l": -1,
+            "coefficient": 0.0,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -2
+          },
+          {
+            "id": "face-26",
+            "h": -2,
+            "k": 1,
+            "l": -1,
+            "coefficient": 0.0,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 1
+          },
+          {
+            "id": "face-27",
+            "h": 1,
+            "k": -2,
+            "l": -1,
+            "coefficient": 0.0,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 1
+          },
+          {
+            "id": "face-28",
+            "h": 3,
+            "k": 0,
+            "l": 1,
+            "coefficient": 0.3,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -3
+          },
+          {
+            "id": "face-29",
+            "h": -3,
+            "k": 3,
+            "l": 1,
+            "coefficient": 0.3,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 0
+          },
+          {
+            "id": "face-30",
+            "h": 0,
+            "k": -3,
+            "l": 1,
+            "coefficient": 0.3,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 3
+          },
+          {
+            "id": "face-31",
+            "h": 3,
+            "k": -3,
+            "l": -1,
+            "coefficient": 0.3,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 0
+          },
+          {
+            "id": "face-32",
+            "h": 0,
+            "k": 3,
+            "l": -1,
+            "coefficient": 0.3,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -3
+          },
+          {
+            "id": "face-33",
+            "h": -3,
+            "k": 0,
+            "l": -1,
+            "coefficient": 0.3,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 3
+          },
+          {
+            "id": "face-34",
+            "h": 6,
+            "k": -1,
+            "l": 1,
+            "coefficient": 0.165,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -5
+          },
+          {
+            "id": "face-35",
+            "h": -5,
+            "k": 6,
+            "l": 1,
+            "coefficient": 0.165,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-36",
+            "h": -1,
+            "k": -5,
+            "l": 1,
+            "coefficient": 0.165,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 6
+          },
+          {
+            "id": "face-37",
+            "h": 6,
+            "k": -5,
+            "l": -1,
+            "coefficient": 0.165,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-38",
+            "h": -1,
+            "k": 6,
+            "l": -1,
+            "coefficient": 0.165,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -5
+          },
+          {
+            "id": "face-39",
+            "h": -5,
+            "k": -1,
+            "l": -1,
+            "coefficient": 0.165,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 6
+          },
+          {
+            "id": "face-40",
+            "h": 1,
+            "k": 1,
+            "l": 2,
+            "coefficient": 1.0,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -2
+          }
+        ]
+      },
+      {
+        "id": "derived-1",
+        "enabled": true,
+        "faces": [
+          {
+            "id": "face-1",
+            "h": 2,
+            "k": -1,
+            "l": 1,
+            "coefficient": 0.43,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-2",
+            "h": -1,
+            "k": 2,
+            "l": 1,
+            "coefficient": 0.43,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-3",
+            "h": -1,
+            "k": -1,
+            "l": 1,
+            "coefficient": 0.43,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 2
+          },
+          {
+            "id": "face-4",
+            "h": 2,
+            "k": -1,
+            "l": -1,
+            "coefficient": 0.43,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-5",
+            "h": -1,
+            "k": 2,
+            "l": -1,
+            "coefficient": 0.43,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-6",
+            "h": -1,
+            "k": -1,
+            "l": -1,
+            "coefficient": 0.43,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 2
+          },
+          {
+            "id": "face-7",
+            "h": 1,
+            "k": 0,
+            "l": 1,
+            "coefficient": 0.685,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-8",
+            "h": -1,
+            "k": 1,
+            "l": 1,
+            "coefficient": 0.685,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 0
+          },
+          {
+            "id": "face-9",
+            "h": 0,
+            "k": -1,
+            "l": 1,
+            "coefficient": 0.685,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 1
+          },
+          {
+            "id": "face-10",
+            "h": 1,
+            "k": 0,
+            "l": -1,
+            "coefficient": 0.62,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-11",
+            "h": -1,
+            "k": 1,
+            "l": -1,
+            "coefficient": 0.62,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 0
+          },
+          {
+            "id": "face-12",
+            "h": 0,
+            "k": -1,
+            "l": -1,
+            "coefficient": 0.62,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 1
+          },
+          {
+            "id": "face-13",
+            "h": 1,
+            "k": 0,
+            "l": 0,
+            "coefficient": 1.0,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-14",
+            "h": -1,
+            "k": 1,
+            "l": 0,
+            "coefficient": 1.0,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 0
+          },
+          {
+            "id": "face-15",
+            "h": 0,
+            "k": -1,
+            "l": 0,
+            "coefficient": 1.0,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 1
+          },
+          {
+            "id": "face-16",
+            "h": 0,
+            "k": 1,
+            "l": 0,
+            "coefficient": 1.0,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-17",
+            "h": -1,
+            "k": 0,
+            "l": 0,
+            "coefficient": 1.0,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 1
+          },
+          {
+            "id": "face-18",
+            "h": 1,
+            "k": -1,
+            "l": 0,
+            "coefficient": 1.0,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 0
+          },
+          {
+            "id": "face-19",
+            "h": 0,
+            "k": 1,
+            "l": 1,
+            "coefficient": 0.62,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-20",
+            "h": -1,
+            "k": 0,
+            "l": 1,
+            "coefficient": 0.62,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 1
+          },
+          {
+            "id": "face-21",
+            "h": 1,
+            "k": -1,
+            "l": 1,
+            "coefficient": 0.62,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 0
+          },
+          {
+            "id": "face-22",
+            "h": 0,
+            "k": 1,
+            "l": -1,
+            "coefficient": 0.685,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-23",
+            "h": -1,
+            "k": 0,
+            "l": -1,
+            "coefficient": 0.685,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 1
+          },
+          {
+            "id": "face-24",
+            "h": 1,
+            "k": -1,
+            "l": -1,
+            "coefficient": 0.685,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 0
+          },
+          {
+            "id": "face-25",
+            "h": 1,
+            "k": 1,
+            "l": -1,
+            "coefficient": 0.0,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -2
+          },
+          {
+            "id": "face-26",
+            "h": -2,
+            "k": 1,
+            "l": -1,
+            "coefficient": 0.0,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 1
+          },
+          {
+            "id": "face-27",
+            "h": 1,
+            "k": -2,
+            "l": -1,
+            "coefficient": 0.0,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 1
+          },
+          {
+            "id": "face-28",
+            "h": 3,
+            "k": 0,
+            "l": 1,
+            "coefficient": 0.3,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -3
+          },
+          {
+            "id": "face-29",
+            "h": -3,
+            "k": 3,
+            "l": 1,
+            "coefficient": 0.3,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 0
+          },
+          {
+            "id": "face-30",
+            "h": 0,
+            "k": -3,
+            "l": 1,
+            "coefficient": 0.3,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 3
+          },
+          {
+            "id": "face-31",
+            "h": 3,
+            "k": -3,
+            "l": -1,
+            "coefficient": 0.3,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 0
+          },
+          {
+            "id": "face-32",
+            "h": 0,
+            "k": 3,
+            "l": -1,
+            "coefficient": 0.3,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -3
+          },
+          {
+            "id": "face-33",
+            "h": -3,
+            "k": 0,
+            "l": -1,
+            "coefficient": 0.3,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 3
+          },
+          {
+            "id": "face-34",
+            "h": 6,
+            "k": -1,
+            "l": 1,
+            "coefficient": 0.165,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -5
+          },
+          {
+            "id": "face-35",
+            "h": -5,
+            "k": 6,
+            "l": 1,
+            "coefficient": 0.165,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-36",
+            "h": -1,
+            "k": -5,
+            "l": 1,
+            "coefficient": 0.165,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 6
+          },
+          {
+            "id": "face-37",
+            "h": 6,
+            "k": -5,
+            "l": -1,
+            "coefficient": 0.165,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-38",
+            "h": -1,
+            "k": 6,
+            "l": -1,
+            "coefficient": 0.165,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -5
+          },
+          {
+            "id": "face-39",
+            "h": -5,
+            "k": -1,
+            "l": -1,
+            "coefficient": 0.165,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": 6
+          },
+          {
+            "id": "face-40",
+            "h": 1,
+            "k": 1,
+            "l": 2,
+            "coefficient": 1.0,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1.0,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -2
+          }
+        ],
+        "from": "base",
+        "placement": {
+          "type": "penetration",
+          "rule": {
+            "kind": "axis",
+            "axis": {
+              "h": 1,
+              "k": 1,
+              "l": 1,
+              "i": -2
+            },
+            "rotationAngleDeg": 60.0
+          }
+        },
+        "contact": {
+          "baseFaceRef": 39,
+          "derivedFaceRef": 39,
+          "referenceAxisLabel": null
+        }
+      }
+    ]
+  },
+  "preview": {
+    "faceDisplayMode": "grouped",
+    "previewStyleSettings": {
+      "faceLabel": {
+        "color": "#1f2a37",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 14,
+        "offset": 0.05
+      },
+      "axisLabel": {
+        "colors": {
+          "a": "#cc3d3d",
+          "b": "#2f8f46",
+          "a3": "#c08a2d",
+          "c": "#005bac"
+        },
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 48
+      },
+      "twinRuleLabel": {
+        "color": "#8b5fd1",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 24
+      },
+      "presetMetadataName": {
+        "color": "#1f2a37",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 48
+      },
+      "presetMetadataDescription": {
+        "color": "#516171",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 24
+      },
+      "axisLines": {
+        "colors": {
+          "a": "#cc3d3d",
+          "b": "#2f8f46",
+          "a3": "#c08a2d",
+          "c": "#005bac"
+        },
+        "innerWidth": 2,
+        "outerWidth": 2
+      },
+      "ridgeLines": {
+        "color": "#181818",
+        "width": 2,
+        "opacity": 1
+      },
+      "intersectionLines": {
+        "color": "#181818",
+        "width": 1,
+        "opacity": 1
+      },
+      "customLineProfile": {
+        "surfaceStyle": "grouped",
+        "useLayeredLines": false,
+        "showHiddenSurfaceLines": false,
+        "showOccludedInteriorLines": true,
+        "showFrontLines": true,
+        "hiddenSurfaceLineColorMode": "surface",
+        "hiddenSurfaceLineCustomColor": "#181818",
+        "hiddenSurfaceLineWidth": 2,
+        "hiddenSurfaceLineOpacityScale": 0.5,
+        "occludedInteriorLineColorMode": "surface",
+        "occludedInteriorLineCustomColor": "#181818",
+        "occludedInteriorLineWidth": 2,
+        "occludedInteriorLineOpacityScale": 0.5,
+        "useDepthMask": false,
+        "useScreenSpaceLineOverlay": false
+      },
+      "customFaceProfile": {
+        "surfaceStyle": "grouped",
+        "componentBuildMode": "grouped-face-group",
+        "baseColorMode": "face-group",
+        "materialKind": "phong",
+        "usesFaceGroupPalette": true,
+        "usesLighting": true,
+        "useVertexColorsOnMergedGeometry": true,
+        "allowSharedSolidFaceColorMap": false,
+        "preferFinalMergedGeometry": false,
+        "groupedFaceComponentOpacity": null,
+        "usesScreenSpaceFaceOverlay": false,
+        "opacityWhenHasFinal": 1,
+        "opacityWhenNoFinal": 1
+      }
+    }
+  }
+}

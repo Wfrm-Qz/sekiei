@@ -1,0 +1,10 @@
+temp/
+tasks/
+assets/fonts/
+samples/
+node_modules/
+node_modules
+dist
+coverage
+server.log
+server-error.log

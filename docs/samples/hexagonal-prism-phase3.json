@@ -1,0 +1,270 @@
+{
+  "schema": "sekiei-twin-preview-document-v1",
+  "parameters": {
+    "version": 2,
+    "schema": "sekiei-document",
+    "presetId": "hexagonal-prism-00001",
+    "name": {
+      "jp": "",
+      "en": ""
+    },
+    "metadata": {
+      "shortDescription": "",
+      "description": "",
+      "reference": "",
+      "fullReference": ""
+    },
+    "crystalSystem": "hexagonal",
+    "axes": {
+      "a": 1.0,
+      "b": 1.0,
+      "c": 1.3
+    },
+    "angles": {
+      "alpha": 90.0,
+      "beta": 90.0,
+      "gamma": 120.0
+    },
+    "sizeMm": 14.0,
+    "crystals": [
+      {
+        "id": "base",
+        "enabled": true,
+        "faces": [
+          {
+            "id": "face-1",
+            "h": 1,
+            "k": 0,
+            "l": 0,
+            "coefficient": 1.0,
+            "enabled": true,
+            "text": {
+              "content": "6",
+              "fontId": "helvetiker",
+              "fontSize": 1.3,
+              "depth": 0.2,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-2",
+            "h": 0,
+            "k": 1,
+            "l": 0,
+            "coefficient": 1.0,
+            "enabled": true,
+            "text": {
+              "content": "HEX",
+              "fontId": "optimer",
+              "fontSize": 1.5,
+              "depth": 0.8,
+              "offsetU": 0.0,
+              "offsetV": 0.0,
+              "rotationDeg": 0.0
+            },
+            "i": -1
+          },
+          {
+            "id": "face-3",
+            "h": -1,
+            "k": 1,
+            "l": 0,
+            "coefficient": 1.0,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": 0
+          },
+          {
+            "id": "face-4",
+            "h": -1,
+            "k": 0,
+            "l": 0,
+            "coefficient": 1.0,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": 1
+          },
+          {
+            "id": "face-5",
+            "h": 0,
+            "k": -1,
+            "l": 0,
+            "coefficient": 1.0,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": 1
+          },
+          {
+            "id": "face-6",
+            "h": 1,
+            "k": -1,
+            "l": 0,
+            "coefficient": 1.0,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": 0
+          },
+          {
+            "id": "face-7",
+            "h": 0,
+            "k": 0,
+            "l": 1,
+            "coefficient": 1.0,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": 0
+          },
+          {
+            "id": "face-8",
+            "h": 0,
+            "k": 0,
+            "l": -1,
+            "coefficient": 0.12,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 1.6,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": 0
+          }
+        ]
+      }
+    ]
+  },
+  "preview": {
+    "faceDisplayMode": "grouped",
+    "previewStyleSettings": {
+      "faceLabel": {
+        "color": "#1f2a37",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 14,
+        "offset": 0.05
+      },
+      "axisLabel": {
+        "colors": {
+          "a": "#cc3d3d",
+          "b": "#2f8f46",
+          "a3": "#c08a2d",
+          "c": "#005bac"
+        },
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 48
+      },
+      "twinRuleLabel": {
+        "color": "#8b5fd1",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 24
+      },
+      "presetMetadataName": {
+        "color": "#1f2a37",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 48
+      },
+      "presetMetadataDescription": {
+        "color": "#516171",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 24
+      },
+      "axisLines": {
+        "colors": {
+          "a": "#cc3d3d",
+          "b": "#2f8f46",
+          "a3": "#c08a2d",
+          "c": "#005bac"
+        },
+        "innerWidth": 2,
+        "outerWidth": 2
+      },
+      "ridgeLines": {
+        "color": "#181818",
+        "width": 2,
+        "opacity": 1
+      },
+      "intersectionLines": {
+        "color": "#181818",
+        "width": 1,
+        "opacity": 1
+      },
+      "customLineProfile": {
+        "surfaceStyle": "grouped",
+        "useLayeredLines": false,
+        "showHiddenSurfaceLines": false,
+        "showOccludedInteriorLines": true,
+        "showFrontLines": true,
+        "hiddenSurfaceLineColorMode": "surface",
+        "hiddenSurfaceLineCustomColor": "#181818",
+        "hiddenSurfaceLineWidth": 2,
+        "hiddenSurfaceLineOpacityScale": 0.5,
+        "occludedInteriorLineColorMode": "surface",
+        "occludedInteriorLineCustomColor": "#181818",
+        "occludedInteriorLineWidth": 2,
+        "occludedInteriorLineOpacityScale": 0.5,
+        "useDepthMask": false,
+        "useScreenSpaceLineOverlay": false
+      },
+      "customFaceProfile": {
+        "surfaceStyle": "grouped",
+        "componentBuildMode": "grouped-face-group",
+        "baseColorMode": "face-group",
+        "materialKind": "phong",
+        "usesFaceGroupPalette": true,
+        "usesLighting": true,
+        "useVertexColorsOnMergedGeometry": true,
+        "allowSharedSolidFaceColorMap": false,
+        "preferFinalMergedGeometry": false,
+        "groupedFaceComponentOpacity": null,
+        "usesScreenSpaceFaceOverlay": false,
+        "opacityWhenHasFinal": 1,
+        "opacityWhenNoFinal": 1
+      }
+    }
+  }
+}

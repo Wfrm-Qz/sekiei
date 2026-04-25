@@ -1,0 +1,493 @@
+{
+  "schema": "sekiei-twin-preview-document-v1",
+  "parameters": {
+    "version": 2,
+    "schema": "sekiei-document",
+    "presetId": "hematite-00001",
+    "name": {
+      "en": "Hematite",
+      "jp": "赤鉄鉱"
+    },
+    "metadata": {
+      "shortDescription": "Franklin",
+      "description": "Pseudocubic crystal of hematite showing the rhombohedron.",
+      "reference": "Palache 1935",
+      "fullReference": "Charles Palache, The minerals of Franklin and Sterling Hill, Sussex County, New Jersey (USGS Professional Paper 180, 1935)"
+    },
+    "crystalSystem": "trigonal",
+    "axes": {
+      "a": 1,
+      "b": 1,
+      "c": 2.7017
+    },
+    "angles": {
+      "alpha": 90,
+      "beta": 90,
+      "gamma": 120
+    },
+    "sizeMm": 50,
+    "crystals": [
+      {
+        "id": "base",
+        "enabled": true,
+        "faces": [
+          {
+            "id": "21f71a96-d600-4da8-9364-ae71ad37c93a",
+            "h": 1,
+            "k": 0,
+            "l": 1,
+            "coefficient": 1,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": -1
+          },
+          {
+            "id": "3c9a9839-1fc3-4176-8a8d-90928c9941ac",
+            "h": -1,
+            "k": 1,
+            "l": 1,
+            "coefficient": 1,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": 0
+          },
+          {
+            "id": "acae8c11-eecb-41bf-98a9-6b1613edf10b",
+            "h": 0,
+            "k": -1,
+            "l": 1,
+            "coefficient": 1,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": 1
+          },
+          {
+            "id": "4fdeae76-0573-48b8-a231-7027253cc42c",
+            "h": 1,
+            "k": -1,
+            "l": -1,
+            "coefficient": 1,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": 0
+          },
+          {
+            "id": "8c7fcc72-121e-4933-a474-b0fe25e9922a",
+            "h": 0,
+            "k": 1,
+            "l": -1,
+            "coefficient": 1,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": -1
+          },
+          {
+            "id": "5490d730-6425-4e7b-9eb7-86105fb5855c",
+            "h": -1,
+            "k": 0,
+            "l": -1,
+            "coefficient": 1,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": 1
+          },
+          {
+            "id": "c4d381c6-c357-4a3e-8e14-f9b7a32fb1d6",
+            "h": 0,
+            "k": 0,
+            "l": 1,
+            "coefficient": 1.4,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": 0
+          },
+          {
+            "id": "737c7409-9495-4ca5-b16e-9cb50fd110b0",
+            "h": 0,
+            "k": 0,
+            "l": -1,
+            "coefficient": 1.4,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": 0
+          },
+          {
+            "id": "9a0b824c-83b9-4745-bc2c-11e33a2e2655",
+            "h": 2,
+            "k": 2,
+            "l": 1,
+            "coefficient": 0.245,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": -4
+          },
+          {
+            "id": "4abf72ae-204b-4e43-8981-875f2e33e479",
+            "h": -4,
+            "k": 2,
+            "l": 1,
+            "coefficient": 0.245,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": 2
+          },
+          {
+            "id": "b229b028-226b-40dc-9ccc-e491f65a5017",
+            "h": 2,
+            "k": -4,
+            "l": 1,
+            "coefficient": 0.245,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": 2
+          },
+          {
+            "id": "4487a100-623d-4b3f-9535-c02e38c61974",
+            "h": 2,
+            "k": -4,
+            "l": -1,
+            "coefficient": 0.245,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": 2
+          },
+          {
+            "id": "3cfef0cc-ad45-4689-9e93-7592fad2928f",
+            "h": 2,
+            "k": 2,
+            "l": -1,
+            "coefficient": 0.245,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": -4
+          },
+          {
+            "id": "da87eca3-944b-4f08-8f16-c59341f20d97",
+            "h": -4,
+            "k": 2,
+            "l": -1,
+            "coefficient": 0.245,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": 2
+          },
+          {
+            "id": "b7e61d1b-e005-4d91-9991-5d7709c9f4db",
+            "h": -2,
+            "k": -2,
+            "l": 1,
+            "coefficient": 0.245,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": 4
+          },
+          {
+            "id": "a3dde6eb-af09-4add-9d05-330b0452a59d",
+            "h": 4,
+            "k": -2,
+            "l": 1,
+            "coefficient": 0.245,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": -2
+          },
+          {
+            "id": "21de5216-c0a6-49ed-9042-4152034da6d2",
+            "h": -2,
+            "k": 4,
+            "l": 1,
+            "coefficient": 0.245,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": -2
+          },
+          {
+            "id": "dacd2ca2-3531-412a-8cdc-14b496fd230f",
+            "h": -2,
+            "k": 4,
+            "l": -1,
+            "coefficient": 0.245,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": -2
+          },
+          {
+            "id": "f706b8ce-340a-4590-a8ba-9fe74a044cbe",
+            "h": -2,
+            "k": -2,
+            "l": -1,
+            "coefficient": 0.245,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": 4
+          },
+          {
+            "id": "1d7ffa46-dff4-4fe4-ba90-7cc0f056d2a2",
+            "h": 4,
+            "k": -2,
+            "l": -1,
+            "coefficient": 0.245,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            },
+            "i": -2
+          }
+        ]
+      }
+    ]
+  },
+  "preview": {
+    "faceDisplayMode": "grouped",
+    "previewStyleSettings": {
+      "faceLabel": {
+        "color": "#1f2a37",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 14,
+        "offset": 0.05
+      },
+      "axisLabel": {
+        "colors": {
+          "a": "#cc3d3d",
+          "b": "#2f8f46",
+          "a3": "#c08a2d",
+          "c": "#005bac"
+        },
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 48
+      },
+      "twinRuleLabel": {
+        "color": "#8b5fd1",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 24
+      },
+      "presetMetadataName": {
+        "color": "#1f2a37",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 48
+      },
+      "presetMetadataDescription": {
+        "color": "#516171",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 48
+      },
+      "axisLines": {
+        "colors": {
+          "a": "#cc3d3d",
+          "b": "#2f8f46",
+          "a3": "#c08a2d",
+          "c": "#005bac"
+        },
+        "innerWidth": 2,
+        "outerWidth": 2
+      },
+      "ridgeLines": {
+        "color": "#181818",
+        "width": 2,
+        "opacity": 1
+      },
+      "intersectionLines": {
+        "color": "#181818",
+        "width": 1,
+        "opacity": 1
+      },
+      "customLineProfile": {
+        "useLayeredLines": false,
+        "useDepthMask": false,
+        "useScreenSpaceLineOverlay": false,
+        "showFrontLines": true,
+        "showHiddenSurfaceLines": false,
+        "showOccludedInteriorLines": false,
+        "hiddenSurfaceLineColorMode": "same-as-front",
+        "hiddenSurfaceLineCustomColor": "#7a7a7a",
+        "hiddenSurfaceLineOpacityScale": 0.5,
+        "hiddenSurfaceLineWidthScale": 2,
+        "occludedInteriorLineColorMode": "same-as-front",
+        "occludedInteriorLineCustomColor": "#9a9a9a",
+        "occludedInteriorLineOpacityScale": 0.5,
+        "occludedInteriorLineWidthScale": 2,
+        "resolutionMode": "canvas-device-pixel",
+        "depthMaskOffsetFactor": 1,
+        "depthMaskOffsetUnits": 2
+      },
+      "customFaceProfile": {
+        "surfaceStyle": "grouped",
+        "componentBuildMode": "grouped-face-group",
+        "baseColorMode": "white",
+        "usesFaceGroupPalette": true,
+        "materialKind": "physical",
+        "usesLighting": true,
+        "usesScreenSpaceFaceOverlay": false,
+        "opacityWhenHasFinal": 1,
+        "opacityWhenNoFinal": 1,
+        "depthWrite": true,
+        "usePolygonOffset": true,
+        "polygonOffsetFactor": 1,
+        "polygonOffsetUnits": 1,
+        "useVertexColorsOnMergedGeometry": true,
+        "preferFinalMergedGeometry": false,
+        "allowSharedSolidFaceColorMap": false,
+        "allowSharedSolidFaceOverlay": false,
+        "groupedFaceComponentOpacity": null
+      }
+    }
+  }
+}

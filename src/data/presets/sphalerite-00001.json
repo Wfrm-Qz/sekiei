@@ -1,0 +1,485 @@
+{
+  "schema": "sekiei-twin-preview-document-v1",
+  "parameters": {
+    "version": 2,
+    "schema": "sekiei-document",
+    "presetId": "sphalerite-00001",
+    "name": {
+      "en": "sphalerite",
+      "jp": "閃亜鉛鉱"
+    },
+    "metadata": {
+      "shortDescription": "Franklin",
+      "description": "Crystal of sphalerite showing rf(HO), o(lll), oi(lll), and \u003c?(33l), with\no dominant.",
+      "reference": "Palache 1935",
+      "fullReference": "Charles Palache, The minerals of Franklin and Sterling Hill, Sussex County, New Jersey (USGS Professional Paper 180, 1935)"
+    },
+    "crystalSystem": "cubic",
+    "axes": {
+      "a": 1,
+      "b": 1,
+      "c": 1
+    },
+    "angles": {
+      "alpha": 90,
+      "beta": 90,
+      "gamma": 90
+    },
+    "sizeMm": 50,
+    "crystals": [
+      {
+        "id": "base",
+        "enabled": true,
+        "faces": [
+          {
+            "id": "54f6f778-a618-4a99-8cce-2c4226b4f308",
+            "h": 1,
+            "k": 1,
+            "l": 0,
+            "coefficient": 1.02,
+            "enabled": true
+          },
+          {
+            "id": "bd6c1ea7-ee6f-4630-859d-7fa4faa12e1c",
+            "h": -1,
+            "k": -1,
+            "l": 0,
+            "coefficient": 1.02,
+            "enabled": true
+          },
+          {
+            "id": "6c38cbd5-fc56-4e63-9945-f112ad6a1f99",
+            "h": -1,
+            "k": 1,
+            "l": 0,
+            "coefficient": 1.02,
+            "enabled": true
+          },
+          {
+            "id": "697f8d8f-401e-464b-a20b-917a8d7005f0",
+            "h": 1,
+            "k": -1,
+            "l": 0,
+            "coefficient": 1.02,
+            "enabled": true
+          },
+          {
+            "id": "b02c3988-b2e1-424d-a930-31101e9cfb92",
+            "h": -1,
+            "k": 0,
+            "l": -1,
+            "coefficient": 1.02,
+            "enabled": true
+          },
+          {
+            "id": "c5842ff3-5bbf-4a54-9b05-fda5d3458da9",
+            "h": -1,
+            "k": 0,
+            "l": 1,
+            "coefficient": 1.02,
+            "enabled": true
+          },
+          {
+            "id": "f3bd49c3-4672-47b4-80e5-0f9378c60eb7",
+            "h": 1,
+            "k": 0,
+            "l": 1,
+            "coefficient": 1.02,
+            "enabled": true
+          },
+          {
+            "id": "746be287-993a-46c4-a5eb-40fab0a1d169",
+            "h": 1,
+            "k": 0,
+            "l": -1,
+            "coefficient": 1.02,
+            "enabled": true
+          },
+          {
+            "id": "532daf23-9af1-4aa6-98d2-9c13c0080bbf",
+            "h": 0,
+            "k": -1,
+            "l": 1,
+            "coefficient": 1.02,
+            "enabled": true
+          },
+          {
+            "id": "aefecf32-95fd-4f2d-b1c5-464ec39e4e84",
+            "h": 0,
+            "k": 1,
+            "l": -1,
+            "coefficient": 1.02,
+            "enabled": true
+          },
+          {
+            "id": "a8c33e07-0ddc-456f-b9ff-3d7be76c1efe",
+            "h": 0,
+            "k": -1,
+            "l": -1,
+            "coefficient": 1.02,
+            "enabled": true
+          },
+          {
+            "id": "49b86f8c-bf41-4132-a02f-7a578a291214",
+            "h": 0,
+            "k": 1,
+            "l": 1,
+            "coefficient": 1.02,
+            "enabled": true
+          },
+          {
+            "id": "9553671b-86de-48d5-ae86-bf353a220691",
+            "h": 1,
+            "k": 1,
+            "l": 1,
+            "coefficient": 1.2,
+            "enabled": true
+          },
+          {
+            "id": "bc1cd0f1-df00-4735-9e70-375f1fc81b9f",
+            "h": -1,
+            "k": -1,
+            "l": 1,
+            "coefficient": 1.2,
+            "enabled": true
+          },
+          {
+            "id": "b9cf6468-f381-4ca6-bbe5-5e15b39a3336",
+            "h": -1,
+            "k": 1,
+            "l": -1,
+            "coefficient": 1.2,
+            "enabled": true
+          },
+          {
+            "id": "a5aaee03-19eb-43b0-afa1-f4f8d900b275",
+            "h": 1,
+            "k": -1,
+            "l": -1,
+            "coefficient": 1.2,
+            "enabled": true
+          },
+          {
+            "id": "5d9d0c92-6f98-450d-b41a-65d7f3a92b2d",
+            "h": -1,
+            "k": -1,
+            "l": -1,
+            "coefficient": 0.75,
+            "enabled": true
+          },
+          {
+            "id": "8fb2c7cc-9c21-4e62-ae47-e020ba7c98a9",
+            "h": -1,
+            "k": 1,
+            "l": 1,
+            "coefficient": 0.75,
+            "enabled": true
+          },
+          {
+            "id": "76361aef-4fe0-4433-9fb8-ca60e34d4450",
+            "h": 1,
+            "k": -1,
+            "l": 1,
+            "coefficient": 0.75,
+            "enabled": true
+          },
+          {
+            "id": "f1f9c7fe-c82c-4912-8442-2467f9aa3fb8",
+            "h": 1,
+            "k": 1,
+            "l": -1,
+            "coefficient": 0.75,
+            "enabled": true
+          },
+          {
+            "id": "22121f00-3661-4450-b602-87497f08bcf3",
+            "h": 3,
+            "k": 3,
+            "l": 1,
+            "coefficient": 0.31,
+            "enabled": true
+          },
+          {
+            "id": "7ccf8438-b361-4781-b3c1-7d412bfc8a2a",
+            "h": -3,
+            "k": -3,
+            "l": 1,
+            "coefficient": 0.31,
+            "enabled": true
+          },
+          {
+            "id": "41864e15-c401-43f4-8aea-6774073d5219",
+            "h": -3,
+            "k": 3,
+            "l": -1,
+            "coefficient": 0.31,
+            "enabled": true
+          },
+          {
+            "id": "cc1d5810-781e-4caa-9cd5-8d7202d0d9e4",
+            "h": 3,
+            "k": -3,
+            "l": -1,
+            "coefficient": 0.31,
+            "enabled": true
+          },
+          {
+            "id": "2587f8dd-8fbe-4953-8db5-d33168114f16",
+            "h": -3,
+            "k": -1,
+            "l": -3,
+            "coefficient": 0.31,
+            "enabled": true
+          },
+          {
+            "id": "93588f8a-2213-492a-9306-382cf6f9a55d",
+            "h": -3,
+            "k": 1,
+            "l": 3,
+            "coefficient": 0.31,
+            "enabled": true
+          },
+          {
+            "id": "0af39cf6-49b5-42f7-be99-ae1573b9abb2",
+            "h": 3,
+            "k": -1,
+            "l": 3,
+            "coefficient": 0.31,
+            "enabled": true
+          },
+          {
+            "id": "fca6cf0c-cd12-4ceb-a274-af7f0d0f8ae4",
+            "h": 3,
+            "k": 1,
+            "l": -3,
+            "coefficient": 0.31,
+            "enabled": true
+          },
+          {
+            "id": "6d446483-4fcc-4782-aea6-ad40a5ab17df",
+            "h": -3,
+            "k": -3,
+            "l": -1,
+            "coefficient": 0.31,
+            "enabled": true
+          },
+          {
+            "id": "c725afdd-2e6c-41eb-86d9-796c342f682e",
+            "h": -3,
+            "k": 3,
+            "l": 1,
+            "coefficient": 0.31,
+            "enabled": true
+          },
+          {
+            "id": "e5f433ea-1a8c-45b9-b85c-1b25f37442fc",
+            "h": 3,
+            "k": -3,
+            "l": 1,
+            "coefficient": 0.31,
+            "enabled": true
+          },
+          {
+            "id": "9e92a4f7-1228-458f-ad69-794186463a99",
+            "h": 3,
+            "k": 3,
+            "l": -1,
+            "coefficient": 0.31,
+            "enabled": true
+          },
+          {
+            "id": "ba140d13-0e45-4554-94b1-4262406416b1",
+            "h": -3,
+            "k": -1,
+            "l": 3,
+            "coefficient": 0.31,
+            "enabled": true
+          },
+          {
+            "id": "df7af136-e54c-4109-9f71-88e1999fe411",
+            "h": -3,
+            "k": 1,
+            "l": -3,
+            "coefficient": 0.31,
+            "enabled": true
+          },
+          {
+            "id": "b63237af-dc8a-40bf-aaca-88d82f59229a",
+            "h": 3,
+            "k": -1,
+            "l": -3,
+            "coefficient": 0.31,
+            "enabled": true
+          },
+          {
+            "id": "c072ee78-3c1e-4ba9-8287-5cf4fb4679b4",
+            "h": 3,
+            "k": 1,
+            "l": 3,
+            "coefficient": 0.31,
+            "enabled": true
+          },
+          {
+            "id": "dd43bd37-fd4e-4989-8ea8-547130e11ff0",
+            "h": -1,
+            "k": -3,
+            "l": 3,
+            "coefficient": 0.31,
+            "enabled": true
+          },
+          {
+            "id": "22eef874-bd65-4e76-a6cb-fc088965772d",
+            "h": -1,
+            "k": 3,
+            "l": -3,
+            "coefficient": 0.31,
+            "enabled": true
+          },
+          {
+            "id": "e2eb57f8-ce07-4228-986e-59dfb3ffc652",
+            "h": 1,
+            "k": -3,
+            "l": -3,
+            "coefficient": 0.31,
+            "enabled": true
+          },
+          {
+            "id": "bb24e467-ea87-4b13-99f5-d05a852beacf",
+            "h": 1,
+            "k": 3,
+            "l": 3,
+            "coefficient": 0.31,
+            "enabled": true
+          },
+          {
+            "id": "116d7d77-d631-4848-b0ae-985d906ba719",
+            "h": -1,
+            "k": -3,
+            "l": -3,
+            "coefficient": 0.31,
+            "enabled": true
+          },
+          {
+            "id": "5b42d27a-1371-4cb1-a269-72bda5f4a12b",
+            "h": -1,
+            "k": 3,
+            "l": 3,
+            "coefficient": 0.31,
+            "enabled": true
+          },
+          {
+            "id": "a005e4bd-4ab3-44d8-ad12-5beb7935de4b",
+            "h": 1,
+            "k": -3,
+            "l": 3,
+            "coefficient": 0.31,
+            "enabled": true
+          },
+          {
+            "id": "c4dd9855-af16-4988-a986-c05b494fe18e",
+            "h": 1,
+            "k": 3,
+            "l": -3,
+            "coefficient": 0.31,
+            "enabled": true
+          }
+        ]
+      }
+    ]
+  },
+  "preview": {
+    "faceDisplayMode": "grouped",
+    "previewStyleSettings": {
+      "faceLabel": {
+        "color": "#1f2a37",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 14,
+        "offset": 0.05
+      },
+      "axisLabel": {
+        "colors": {
+          "a": "#cc3d3d",
+          "b": "#2f8f46",
+          "a3": "#c08a2d",
+          "c": "#005bac"
+        },
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 48
+      },
+      "twinRuleLabel": {
+        "color": "#8b5fd1",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 24
+      },
+      "presetMetadataName": {
+        "color": "#1f2a37",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 48
+      },
+      "presetMetadataDescription": {
+        "color": "#516171",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 48
+      },
+      "axisLines": {
+        "colors": {
+          "a": "#cc3d3d",
+          "b": "#2f8f46",
+          "a3": "#c08a2d",
+          "c": "#005bac"
+        },
+        "innerWidth": 2,
+        "outerWidth": 2
+      },
+      "ridgeLines": {
+        "color": "#181818",
+        "width": 2,
+        "opacity": 1
+      },
+      "intersectionLines": {
+        "color": "#181818",
+        "width": 1,
+        "opacity": 1
+      },
+      "customLineProfile": {
+        "useLayeredLines": false,
+        "useDepthMask": false,
+        "useScreenSpaceLineOverlay": false,
+        "showFrontLines": true,
+        "showHiddenSurfaceLines": false,
+        "showOccludedInteriorLines": false,
+        "hiddenSurfaceLineColorMode": "same-as-front",
+        "hiddenSurfaceLineCustomColor": "#7a7a7a",
+        "hiddenSurfaceLineOpacityScale": 0.5,
+        "hiddenSurfaceLineWidthScale": 2,
+        "occludedInteriorLineColorMode": "same-as-front",
+        "occludedInteriorLineCustomColor": "#9a9a9a",
+        "occludedInteriorLineOpacityScale": 0.5,
+        "occludedInteriorLineWidthScale": 2,
+        "resolutionMode": "canvas-device-pixel",
+        "depthMaskOffsetFactor": 1,
+        "depthMaskOffsetUnits": 2
+      },
+      "customFaceProfile": {
+        "surfaceStyle": "grouped",
+        "componentBuildMode": "grouped-face-group",
+        "baseColorMode": "white",
+        "usesFaceGroupPalette": true,
+        "materialKind": "physical",
+        "usesLighting": true,
+        "usesScreenSpaceFaceOverlay": false,
+        "opacityWhenHasFinal": 1,
+        "opacityWhenNoFinal": 1,
+        "depthWrite": true,
+        "usePolygonOffset": true,
+        "polygonOffsetFactor": 1,
+        "polygonOffsetUnits": 1,
+        "useVertexColorsOnMergedGeometry": true,
+        "preferFinalMergedGeometry": false,
+        "allowSharedSolidFaceColorMap": false,
+        "allowSharedSolidFaceOverlay": false,
+        "groupedFaceComponentOpacity": null
+      }
+    }
+  }
+}

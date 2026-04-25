@@ -1,0 +1,273 @@
+﻿import { describe, expect, it, vi } from "vitest";
+import { createTwinFaceTableHandlers } from "../../../../src/ui/faceTable/faceTableHandlers.ts";
+import { FACE_TEXT_DEFAULTS } from "../../../../src/constants.ts";
+
+/**
+ * ui/faceTableHandlers の面一覧 head/body 配線を確認する unit test。
+ */
+describe("ui/faceTableHandlers", () => {
+  function createContext() {
+    document.body.innerHTML = `
+      <table>
+        <thead><tr id="head"></tr></thead>
+        <tbody id="body"></tbody>
+      </table>
+    `;
+
+    const state = {
+      parameters: {
+        crystalSystem: "cubic",
+        twin: { crystals: [{ contact: {} }] },
+      },
+      collapsedFaceGroups: {},
+      faceTextEditorsExpanded: {},
+      faceSort: null,
+    };
+    const faces = [
+      {
+        id: "face-1",
+        h: 1,
+        k: 0,
+        l: 0,
+        coefficient: 1,
+        enabled: true,
+        accentColor: null,
+        text: {
+          content: "",
+          fontId: FACE_TEXT_DEFAULTS.fontId,
+          fontSize: FACE_TEXT_DEFAULTS.fontSize,
+          depth: FACE_TEXT_DEFAULTS.depth,
+          offsetU: FACE_TEXT_DEFAULTS.offsetU,
+          offsetV: FACE_TEXT_DEFAULTS.offsetV,
+          rotationDeg: FACE_TEXT_DEFAULTS.rotationDeg,
+        },
+      },
+      {
+        id: "face-2",
+        h: -1,
+        k: 0,
+        l: 0,
+        coefficient: 1,
+        enabled: true,
+        accentColor: null,
+        text: {
+          content: "OTHER",
+          fontId: FACE_TEXT_DEFAULTS.fontId,
+          fontSize: FACE_TEXT_DEFAULTS.fontSize,
+          depth: FACE_TEXT_DEFAULTS.depth,
+          offsetU: FACE_TEXT_DEFAULTS.offsetU,
+          offsetV: FACE_TEXT_DEFAULTS.offsetV,
+          rotationDeg: FACE_TEXT_DEFAULTS.rotationDeg,
+        },
+      },
+    ];
+
+    return {
+      context: {
+        state,
+        elements: {
+          facesTableHeadRow: document.getElementById("head") as HTMLElement,
+          facesTableBody: document.getElementById("body") as HTMLElement,
+        },
+        emptyDraftFaceFields: ["h", "k", "l", "coefficient"],
+        commitParameters: vi.fn((mutator) => mutator(state.parameters)),
+        commitNumericInput: vi.fn((rawValue, onCommit) =>
+          onCommit(Number(rawValue)),
+        ),
+        getEditableCrystalIndex: vi.fn(() => 0),
+        getEditableFaces: vi.fn(() => faces),
+        getTwinCrystalFaces: vi.fn(() => faces),
+        setTwinCrystalFaces: vi.fn(),
+        createEmptyDraftFace: vi.fn(() => ({
+          id: "draft-1",
+          h: 0,
+          k: 0,
+          l: 0,
+          coefficient: 0,
+          enabled: false,
+          draftEmptyFields: ["h", "k", "l", "coefficient"],
+        })),
+        normalizeFaceForSystem: vi.fn((face) => face),
+        getEquivalentFaceGroupKey: vi.fn(() => "group-1"),
+        getDraftEmptyFields: vi.fn((face) => face?.draftEmptyFields ?? []),
+        getNextCoefficientValue: vi.fn((value, direction) => value + direction),
+        getFaceGroupStateKey: vi.fn((key) => `0::${key}`),
+        renderFaceTableHeader: vi.fn(),
+        renderFaceRows: vi.fn(),
+        confirm: vi.fn(() => true),
+        t: vi.fn(() => "confirm"),
+      },
+      faces,
+    };
+  }
+
+  it("registerFaceTableHeaderHandlers は add / clear / sort を配線する", () => {
+    const { context } = createContext();
+    const handlers = createTwinFaceTableHandlers(context);
+    handlers.registerFaceTableHeaderHandlers();
+
+    context.elements.facesTableHeadRow.innerHTML = `
+      <button id="app-add-face-button"></button>
+      <button id="app-clear-faces-button"></button>
+      <button data-sort-field="coefficient" data-sort-direction="asc"></button>
+    `;
+
+    (
+      context.elements.facesTableHeadRow.querySelector(
+        "#app-add-face-button",
+      ) as HTMLButtonElement
+    ).click();
+    expect(context.createEmptyDraftFace).toHaveBeenCalled();
+    expect(context.setTwinCrystalFaces).toHaveBeenCalled();
+
+    (
+      context.elements.facesTableHeadRow.querySelector(
+        "#app-clear-faces-button",
+      ) as HTMLButtonElement
+    ).click();
+    expect(context.confirm).toHaveBeenCalled();
+
+    (
+      context.elements.facesTableHeadRow.querySelector(
+        '[data-sort-field="coefficient"]',
+      ) as HTMLButtonElement
+    ).click();
+    expect(context.state.faceSort).toEqual({
+      field: "coefficient",
+      direction: "asc",
+    });
+    expect(context.renderFaceTableHeader).toHaveBeenCalled();
+    expect(context.renderFaceRows).toHaveBeenCalled();
+  });
+
+  it("registerFaceTableInputHandlers / ClickHandlers は enabled, text, spin, group toggle, text toggle を反映する", () => {
+    const { context } = createContext();
+    const handlers = createTwinFaceTableHandlers(context);
+    handlers.registerFaceTableInputHandlers();
+    handlers.registerFaceTableClickHandlers();
+
+    context.elements.facesTableBody.innerHTML = `
+      <tr data-face-index="0" data-face-id="face-1" data-group-key="group-1" data-group-collapsed="false">
+        <td><input data-face-field="enabled" type="checkbox" /></td>
+        <td><input data-face-field="accentColor" type="color" value="#3366cc" /></td>
+        <td>
+          <input data-face-field="coefficient" value="1" />
+          <button class="coefficient-spin-button" data-spin-direction="up"></button>
+        </td>
+        <td><button class="face-group-toggle" data-group-key="group-1"></button></td>
+      </tr>
+      <tr data-face-index="0" data-face-id="face-1" data-group-key="group-1" data-group-collapsed="false">
+        <td>
+          <input data-face-text-field="content" value="R" />
+          <input data-face-text-field="fontSize" value="" />
+        </td>
+      </tr>
+      <tr data-face-index="0" data-face-id="face-1" data-group-key="group-1" data-group-collapsed="false">
+        <td><button class="toggle-face-text-button" data-face-text-toggle="true"></button></td>
+      </tr>
+    `;
+
+    const enabledInput = context.elements.facesTableBody.querySelector(
+      '[data-face-field="enabled"]',
+    ) as HTMLInputElement;
+    enabledInput.checked = false;
+    enabledInput.dispatchEvent(new Event("change", { bubbles: true }));
+    expect(context.commitParameters).toHaveBeenCalled();
+
+    const accentColorInput = context.elements.facesTableBody.querySelector(
+      '[data-face-field="accentColor"]',
+    ) as HTMLInputElement;
+    accentColorInput.value = "#3366cc";
+    accentColorInput.dispatchEvent(new Event("change", { bubbles: true }));
+    expect(context.setTwinCrystalFaces).toHaveBeenCalledWith(
+      context.state.parameters,
+      0,
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: "face-1",
+          accentColor: "#3366cc",
+        }),
+      ]),
+    );
+
+    const textContentInput = context.elements.facesTableBody.querySelector(
+      '[data-face-text-field="content"]',
+    ) as HTMLInputElement;
+    textContentInput.value = "NEW";
+    textContentInput.dispatchEvent(new Event("input", { bubbles: true }));
+    expect(context.commitParameters).toHaveBeenCalled();
+    expect(context.setTwinCrystalFaces).toHaveBeenCalledWith(
+      context.state.parameters,
+      0,
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: "face-1",
+          text: expect.objectContaining({ content: "NEW" }),
+        }),
+        expect.objectContaining({
+          id: "face-2",
+          text: expect.objectContaining({ content: "OTHER" }),
+        }),
+      ]),
+    );
+
+    const textSizeInput = context.elements.facesTableBody.querySelector(
+      '[data-face-text-field="fontSize"]',
+    ) as HTMLInputElement;
+    textSizeInput.dispatchEvent(new Event("change", { bubbles: true }));
+    expect(context.commitParameters).toHaveBeenCalled();
+
+    const spinButton = context.elements.facesTableBody.querySelector(
+      ".coefficient-spin-button",
+    ) as HTMLButtonElement;
+    const mouseDownEvent = new MouseEvent("mousedown", {
+      bubbles: true,
+      cancelable: true,
+    });
+    spinButton.dispatchEvent(mouseDownEvent);
+    expect(mouseDownEvent.defaultPrevented).toBe(true);
+    spinButton.click();
+    expect(context.getNextCoefficientValue).toHaveBeenCalledWith(1, 1);
+
+    const toggleButton = context.elements.facesTableBody.querySelector(
+      ".face-group-toggle",
+    ) as HTMLButtonElement;
+    toggleButton.click();
+    expect(context.state.collapsedFaceGroups["0::group-1"]).toBe(true);
+    expect(context.renderFaceRows).toHaveBeenCalled();
+
+    const textToggleButton = context.elements.facesTableBody.querySelector(
+      ".toggle-face-text-button",
+    ) as HTMLButtonElement;
+    textToggleButton.click();
+    expect(context.state.faceTextEditorsExpanded["face-1"]).toBe(true);
+    expect(context.renderFaceRows).toHaveBeenCalledTimes(2);
+  });
+
+  it("折り畳み代表行の accentColor 変更は等価面グループ全体へ適用する", () => {
+    const { context } = createContext();
+    const handlers = createTwinFaceTableHandlers(context);
+    handlers.registerFaceTableInputHandlers();
+
+    context.elements.facesTableBody.innerHTML = `
+      <tr data-face-index="0" data-face-id="face-1" data-group-key="group-1" data-group-collapsed="true">
+        <td><input data-face-field="accentColor" type="color" value="#ff6600" /></td>
+      </tr>
+    `;
+
+    const accentColorInput = context.elements.facesTableBody.querySelector(
+      '[data-face-field="accentColor"]',
+    ) as HTMLInputElement;
+    accentColorInput.value = "#ff6600";
+    accentColorInput.dispatchEvent(new Event("change", { bubbles: true }));
+
+    expect(context.setTwinCrystalFaces).toHaveBeenCalledWith(
+      context.state.parameters,
+      0,
+      expect.arrayContaining([
+        expect.objectContaining({ id: "face-1", accentColor: "#ff6600" }),
+        expect.objectContaining({ id: "face-2", accentColor: "#ff6600" }),
+      ]),
+    );
+  });
+});

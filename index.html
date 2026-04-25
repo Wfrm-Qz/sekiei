@@ -1,0 +1,1692 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <!-- 正式版の結晶エディタ画面。main.ts が多くの DOM id / data 属性に依存して初期化する。 -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; font-src 'self' data:; connect-src 'self' ws: wss:; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
+    />
+    <title data-i18n="app.pageTitle">Sekiei</title>
+    <link rel="stylesheet" href="./styles.css?v=20260425-logo" />
+    <link rel="stylesheet" href="./app-ui.css?v=20260419-app-ui-rename" />
+  </head>
+  <body class="page-root">
+    <!-- キーボード利用時にプレビュー領域を飛ばして main へ入るための導線。 -->
+    <a
+      class="skip-link"
+      href="#app-main-content"
+      data-i18n="common.skipToContent"
+      >メインコンテンツへ移動</a
+    >
+    <div class="app-shell app-editor-shell">
+      <!-- 保存メニューの id / role / data-* は main.ts の menu handler と対応している。 -->
+      <!-- ヘッダー文言: SEKIEI / 保存 / 名前を付けて保存 / JSONを読み込む -->
+      <header class="page-header" role="banner">
+        <div class="page-header__content">
+          <h1>
+            <span class="page-header__logo" data-i18n="app.headerTitle"
+              >SEKIEI</span
+            >
+            <span class="page-header__expansion" data-i18n="app.headerExpansion"
+              >Shape Editor for Kessho Illustration, Export, and
+              Inscription</span
+            >
+          </h1>
+          <p class="subtitle" data-i18n="app.subtitle">
+            オフラインで結晶の3Dモデルを作成し、STL / SVG / PNG /
+            JPEG形式で出力できます
+          </p>
+        </div>
+        <div
+          class="header-actions"
+          role="toolbar"
+          aria-label="操作"
+          data-i18n-aria-label="common.actions"
+        >
+          <label class="header-select">
+            <span id="app-locale-label" data-i18n="common.language">言語</span>
+            <select id="app-locale-select"></select>
+          </label>
+          <div class="header-menu-wrap">
+            <button
+              id="app-save-button"
+              class="dads-button dads-button--primary"
+              type="button"
+              aria-haspopup="menu"
+              aria-expanded="false"
+            >
+              <span data-i18n="app.save">保存</span>
+            </button>
+            <div
+              id="app-save-menu"
+              class="header-action-menu"
+              role="menu"
+              hidden
+            >
+              <button
+                class="header-action-menu-item"
+                type="button"
+                role="menuitem"
+                data-save-mode="save"
+                data-export-format="json"
+              >
+                JSON
+              </button>
+              <button
+                class="header-action-menu-item"
+                type="button"
+                role="menuitem"
+                data-save-mode="save"
+                data-export-format="stl"
+              >
+                STL
+              </button>
+              <button
+                class="header-action-menu-item"
+                type="button"
+                role="menuitem"
+                data-save-mode="save"
+                data-export-format="svg"
+              >
+                SVG
+              </button>
+              <button
+                class="header-action-menu-item"
+                type="button"
+                role="menuitem"
+                data-save-mode="save"
+                data-export-format="png"
+              >
+                PNG
+              </button>
+              <button
+                class="header-action-menu-item"
+                type="button"
+                role="menuitem"
+                data-save-mode="save"
+                data-export-format="jpeg"
+              >
+                JPEG
+              </button>
+            </div>
+          </div>
+          <div class="header-menu-wrap">
+            <button
+              id="app-save-as-button"
+              class="dads-button dads-button--secondary"
+              type="button"
+              aria-haspopup="menu"
+              aria-expanded="false"
+            >
+              <span data-i18n="app.saveAs">名前を付けて保存</span>
+            </button>
+            <div
+              id="app-save-as-menu"
+              class="header-action-menu"
+              role="menu"
+              hidden
+            >
+              <button
+                class="header-action-menu-item"
+                type="button"
+                role="menuitem"
+                data-save-mode="save-as"
+                data-export-format="json"
+              >
+                JSON
+              </button>
+              <button
+                class="header-action-menu-item"
+                type="button"
+                role="menuitem"
+                data-save-mode="save-as"
+                data-export-format="stl"
+              >
+                STL
+              </button>
+              <button
+                class="header-action-menu-item"
+                type="button"
+                role="menuitem"
+                data-save-mode="save-as"
+                data-export-format="svg"
+              >
+                SVG
+              </button>
+              <button
+                class="header-action-menu-item"
+                type="button"
+                role="menuitem"
+                data-save-mode="save-as"
+                data-export-format="png"
+              >
+                PNG
+              </button>
+              <button
+                class="header-action-menu-item"
+                type="button"
+                role="menuitem"
+                data-save-mode="save-as"
+                data-export-format="jpeg"
+              >
+                JPEG
+              </button>
+            </div>
+          </div>
+          <div class="header-menu-wrap">
+            <button
+              id="app-import-json-button"
+              class="dads-button dads-button--secondary"
+              type="button"
+              aria-haspopup="menu"
+              aria-expanded="false"
+            >
+              <span data-i18n="import.json">JSONを読み込む</span>
+            </button>
+            <div
+              id="app-import-json-menu"
+              class="header-action-menu"
+              role="menu"
+              hidden
+            >
+              <button
+                class="header-action-menu-item"
+                type="button"
+                role="menuitem"
+                data-import-mode="both"
+              >
+                <span data-i18n="import.jsonMode.all">全て</span>
+              </button>
+              <button
+                class="header-action-menu-item"
+                type="button"
+                role="menuitem"
+                data-import-mode="crystal-only"
+              >
+                <span data-i18n="import.jsonMode.crystalData">結晶データ</span>
+              </button>
+              <button
+                class="header-action-menu-item"
+                type="button"
+                role="menuitem"
+                data-import-mode="preview-only"
+              >
+                <span data-i18n="import.jsonMode.previewSettings"
+                  >プレビュー設定</span
+                >
+              </button>
+            </div>
+          </div>
+          <input
+            id="app-import-json-input"
+            type="file"
+            accept="application/json,.json"
+            hidden
+          />
+        </div>
+      </header>
+
+      <main id="app-main-content" class="layout app-layout" tabindex="-1">
+        <section
+          class="panel control-panel"
+          aria-label="結晶パラメーター"
+          data-i18n-aria-label="editor.parametersTitle"
+        >
+          <!-- プリセットとメタ情報: プリセット選択 / プリセット情報 / 名前 / 簡易説明 / 名前（英語） / 説明 / 参考文献 / 参考文献詳細 -->
+          <div class="preset-strip">
+            <div id="app-preset-combobox" class="search-input-wrap">
+              <input
+                id="app-preset-select"
+                type="text"
+                autocomplete="off"
+                placeholder="プリセット選択"
+                data-i18n-placeholder="preset.placeholder"
+                role="combobox"
+                aria-autocomplete="list"
+                aria-expanded="false"
+                aria-controls="app-preset-options-popup"
+              />
+              <button
+                id="app-preset-clear-button"
+                class="search-input-clear dads-icon-button"
+                type="button"
+                aria-label="プリセット入力をクリア"
+                data-i18n-aria-label="preset.clearInput"
+                hidden
+              >
+                ×
+              </button>
+              <button
+                id="app-preset-toggle-button"
+                class="search-input-toggle dads-icon-button"
+                type="button"
+                aria-label="プリセット候補を表示"
+                data-i18n-aria-label="preset.showOptions"
+                aria-expanded="false"
+                aria-controls="app-preset-options-popup"
+              ></button>
+              <div
+                id="app-preset-options-popup"
+                class="search-input-popup"
+                role="listbox"
+                hidden
+              ></div>
+            </div>
+          </div>
+
+          <div
+            class="section-card preset-metadata-card section-card--accent"
+            aria-labelledby="app-preset-info-heading"
+          >
+            <div class="section-heading">
+              <h2
+                id="app-preset-info-heading"
+                data-i18n="editor.presetInfoTitle"
+              >
+                プリセット情報
+              </h2>
+              <button
+                id="app-preset-metadata-toggle"
+                class="inline-button inline-toggle-button dads-button dads-button--tertiary"
+                type="button"
+                aria-expanded="false"
+              >
+                <span data-i18n="preset.metadataToggle.more">詳細表示</span>
+              </button>
+            </div>
+            <div class="field-grid preset-metadata-grid">
+              <label class="field">
+                <span data-i18n="preset.metadata.name">名前</span>
+                <input id="app-metadata-name-input" type="text" />
+              </label>
+              <label class="field">
+                <span data-i18n="preset.metadata.shortDescription"
+                  >簡易説明</span
+                >
+                <input id="app-metadata-short-description-input" type="text" />
+              </label>
+            </div>
+            <div
+              id="app-preset-metadata-advanced"
+              class="field-grid preset-metadata-grid"
+              hidden
+            >
+              <label class="field">
+                <span data-i18n="preset.metadata.nameEnglish"
+                  >名前（英語）</span
+                >
+                <input id="app-metadata-alt-name-input" type="text" />
+              </label>
+              <label class="field field-full-span">
+                <span data-i18n="preset.metadata.description">説明</span>
+                <textarea
+                  id="app-metadata-description-input"
+                  rows="3"
+                ></textarea>
+              </label>
+              <label class="field">
+                <span data-i18n="preset.metadata.reference">参考文献</span>
+                <input id="app-metadata-reference-input" type="text" />
+              </label>
+              <label class="field field-full-span">
+                <span data-i18n="preset.metadata.fullReference"
+                  >参考文献詳細</span
+                >
+                <textarea
+                  id="app-metadata-full-reference-input"
+                  rows="3"
+                ></textarea>
+              </label>
+            </div>
+          </div>
+
+          <!-- 結晶パラメーター: 結晶系 / モデルサイズ / 軸比 / 軸間角 -->
+          <div class="section-card" aria-labelledby="app-parameters-heading">
+            <div class="section-heading">
+              <h2
+                id="app-parameters-heading"
+                data-i18n="editor.parametersTitle"
+              >
+                結晶パラメーター
+              </h2>
+            </div>
+            <div
+              class="field-grid parameter-inline-grid parameter-inline-grid--primary"
+            >
+              <label class="field">
+                <span data-i18n="editor.crystalSystem">結晶系</span>
+                <select id="app-crystal-system-select"></select>
+              </label>
+              <label class="field">
+                <span data-i18n="editor.modelSize">モデルサイズ (mm)</span>
+                <input
+                  id="app-size-mm-input"
+                  type="number"
+                  min="0.01"
+                  step="0.1"
+                />
+              </label>
+            </div>
+
+            <h3 class="editor-subheading" data-i18n="editor.axisLengths">
+              軸比
+            </h3>
+            <div class="field-grid three-columns parameter-inline-grid">
+              <label class="field">
+                <span>a</span>
+                <input
+                  id="twin-axis-a-input"
+                  type="number"
+                  min="0.01"
+                  step="0.1"
+                />
+              </label>
+              <label class="field">
+                <span>b</span>
+                <input
+                  id="twin-axis-b-input"
+                  type="number"
+                  min="0.01"
+                  step="0.1"
+                />
+              </label>
+              <label class="field">
+                <span>c</span>
+                <input
+                  id="twin-axis-c-input"
+                  type="number"
+                  min="0.01"
+                  step="0.1"
+                />
+              </label>
+            </div>
+
+            <h3 class="editor-subheading" data-i18n="editor.axisAngles">
+              軸間角 (deg)
+            </h3>
+            <div class="field-grid three-columns parameter-inline-grid">
+              <label class="field">
+                <span>α</span>
+                <input
+                  id="twin-angle-alpha-input"
+                  type="number"
+                  min="0.1"
+                  max="179.9"
+                  step="0.1"
+                />
+              </label>
+              <label class="field">
+                <span>β</span>
+                <input
+                  id="twin-angle-beta-input"
+                  type="number"
+                  min="0.1"
+                  max="179.9"
+                  step="0.1"
+                />
+              </label>
+              <label class="field">
+                <span>γ</span>
+                <input
+                  id="twin-angle-gamma-input"
+                  type="number"
+                  min="0.1"
+                  max="179.9"
+                  step="0.1"
+                />
+              </label>
+            </div>
+
+            <h3 class="editor-subheading" data-i18n="editor.stlSplitTitle">
+              STL分割（β版）
+            </h3>
+            <div class="field-grid twin-two-columns">
+              <label class="toggle-chip">
+                <input id="app-stl-split-enabled-input" type="checkbox" />
+                <span data-i18n="editor.stlSplitEnabled">分割を有効にする</span>
+              </label>
+            </div>
+            <div
+              id="app-stl-split-plane-fields"
+              class="field-grid four-columns twin-compact-rule-fields"
+            >
+              <label class="field">
+                <span>h</span>
+                <input
+                  id="app-stl-split-plane-h-input"
+                  type="number"
+                  step="1"
+                />
+              </label>
+              <label class="field">
+                <span>k</span>
+                <input
+                  id="app-stl-split-plane-k-input"
+                  type="number"
+                  step="1"
+                />
+              </label>
+              <label id="app-stl-split-plane-i-field" class="field">
+                <span>i</span>
+                <input
+                  id="app-stl-split-plane-i-input"
+                  type="number"
+                  step="1"
+                  readonly
+                />
+              </label>
+              <label class="field">
+                <span>l</span>
+                <input
+                  id="app-stl-split-plane-l-input"
+                  type="number"
+                  step="1"
+                />
+              </label>
+            </div>
+          </div>
+
+          <!-- 双晶パラメーター: 生成元結晶 / 双晶タイプ / 双晶面指数 / 回転角 / 基準方向 -->
+          <div
+            id="twin-settings-card"
+            class="section-card"
+            aria-labelledby="twin-settings-heading"
+          >
+            <div class="section-heading">
+              <h2 id="twin-settings-heading" data-i18n="twin.settingsTitle">
+                双晶パラメーター
+              </h2>
+              <p data-i18n="twin.settingsDescription">
+                選択中の派生結晶について、生成元結晶、双晶タイプ、双晶則、接触面指定を設定します。
+              </p>
+            </div>
+            <p id="twin-settings-note" class="editor-mode-note"></p>
+            <div id="twin-settings-fields" class="field-grid twin-two-columns">
+              <label class="field">
+                <span data-i18n="twin.fromCrystal">生成元結晶</span>
+                <select id="twin-from-crystal-select"></select>
+              </label>
+              <label class="field">
+                <span data-i18n="twin.twinType">双晶タイプ</span>
+                <select id="twin-type-select">
+                  <option value="contact" data-i18n="twin.type.contact">
+                    接触双晶
+                  </option>
+                  <option value="penetration" data-i18n="twin.type.penetration">
+                    貫入双晶
+                  </option>
+                </select>
+              </label>
+            </div>
+
+            <div class="twin-axis-rule-layout">
+              <div class="twin-axis-rule-block">
+                <h3
+                  id="twin-rule-heading"
+                  class="editor-subheading"
+                  data-i18n="twin.ruleIndex.plane"
+                >
+                  双晶面指数
+                </h3>
+                <div
+                  id="twin-rule-fields"
+                  class="field-grid four-columns twin-compact-rule-fields"
+                >
+                  <label class="field">
+                    <span>h</span>
+                    <input id="twin-rule-h-input" type="number" step="1" />
+                  </label>
+                  <label class="field">
+                    <span>k</span>
+                    <input id="twin-rule-k-input" type="number" step="1" />
+                  </label>
+                  <label id="twin-rule-i-field" class="field">
+                    <span>i</span>
+                    <input
+                      id="twin-rule-i-input"
+                      type="number"
+                      step="1"
+                      readonly
+                    />
+                  </label>
+                  <label class="field">
+                    <span>l</span>
+                    <input id="twin-rule-l-input" type="number" step="1" />
+                  </label>
+                </div>
+              </div>
+
+              <div id="twin-axis-angle-field" class="twin-axis-angle-block">
+                <label class="field">
+                  <span data-i18n="twin.rotationAngle">回転角 (deg)</span>
+                  <input
+                    id="twin-rotation-angle-input"
+                    type="number"
+                    step="0.1"
+                  />
+                </label>
+              </div>
+            </div>
+
+            <div id="twin-contact-fields" class="field-grid twin-two-columns">
+              <label class="field">
+                <span id="twin-base-face-ref-label">生成元結晶の接触面</span>
+                <select id="twin-base-face-ref-select"></select>
+              </label>
+              <label class="field">
+                <span id="twin-derived-face-ref-label">この結晶の接触面</span>
+                <select id="twin-derived-face-ref-select"></select>
+              </label>
+              <label class="field">
+                <span data-i18n="twin.referenceAxis">基準方向</span>
+                <select id="twin-contact-reference-axis-select"></select>
+              </label>
+            </div>
+          </div>
+
+          <!-- 検証結果 -->
+          <div class="section-card" aria-labelledby="app-validation-heading">
+            <div class="section-heading">
+              <h2
+                id="app-validation-heading"
+                data-i18n="editor.validationTitle"
+              >
+                検証結果
+              </h2>
+            </div>
+            <div
+              id="app-messages-panel"
+              class="messages-panel"
+              role="status"
+              aria-live="polite"
+              aria-atomic="true"
+            ></div>
+          </div>
+        </section>
+
+        <section
+          class="panel preview-panel"
+          aria-label="面一覧"
+          data-i18n-aria-label="editor.faceListTitle"
+        >
+          <div class="preview-workbench">
+            <div class="preview-stage">
+              <canvas id="app-xray-face-canvas" aria-hidden="true"></canvas>
+              <canvas id="app-preview-canvas"></canvas>
+              <div id="app-face-label-layer" class="face-label-layer"></div>
+              <div
+                id="app-preset-metadata-overlay"
+                class="preview-overlay preview-overlay-top-left"
+                hidden
+              >
+                <p
+                  id="app-preset-metadata-name"
+                  class="preview-metadata-name"
+                ></p>
+                <p
+                  id="app-preset-metadata-short-description"
+                  class="preview-metadata-short-description"
+                ></p>
+              </div>
+              <div class="preview-overlay preview-overlay-bottom-left">
+                <p class="preview-hint" data-i18n="preview.controlsHint">
+                  操作:
+                  左ドラッグで回転、右ドラッグで平行移動、ホイールで拡大縮小。
+                </p>
+              </div>
+              <div class="preview-overlay-bottom-right-controls">
+                <div class="preview-controls-group">
+                  <div
+                    id="app-axis-view-buttons"
+                    class="preview-axis-view-buttons"
+                    aria-label="軸方向から見るボタン"
+                    data-i18n-aria-label="preview.axisViewButtons"
+                  ></div>
+                  <label class="toggle-chip">
+                    <input id="twin-toggle-inertia-input" type="checkbox" />
+                    <span data-i18n="preview.useInertia">回転の慣性</span>
+                  </label>
+                  <button
+                    id="app-reset-preview-button"
+                    class="dads-button dads-button--secondary"
+                    type="button"
+                  >
+                    <span data-i18n="preview.reset">視点リセット</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <aside class="section-card preview-controls-card">
+              <div class="preview-controls-group">
+                <label class="inline-field compact-select preview-mode-select">
+                  <select id="app-face-display-mode-select">
+                    <option
+                      value="grouped"
+                      data-i18n="preview.faceDisplay.grouped"
+                    >
+                      等価面
+                    </option>
+                    <option value="solid" data-i18n="preview.faceDisplay.solid">
+                      単色
+                    </option>
+                    <option value="white" data-i18n="preview.faceDisplay.white">
+                      グレー
+                    </option>
+                    <option
+                      value="transparent"
+                      data-i18n="preview.faceDisplay.transparent"
+                    >
+                      無色透明
+                    </option>
+                    <option
+                      value="xray-solid"
+                      data-i18n="preview.faceDisplay.xraySolid"
+                    >
+                      半透明（単色）
+                    </option>
+                    <option
+                      value="xray-grouped"
+                      data-i18n="preview.faceDisplay.xrayGrouped"
+                    >
+                      半透明（等価面）
+                    </option>
+                    <option
+                      value="custom"
+                      data-i18n="preview.faceDisplay.custom"
+                    >
+                      カスタム(β版)
+                    </option>
+                  </select>
+                </label>
+              </div>
+              <div class="preview-controls-group preview-visibility-group">
+                <label class="toggle-chip">
+                  <input id="twin-toggle-face-labels-input" type="checkbox" />
+                  <span data-i18n="preview.toggle.faceIndices">面指数</span>
+                </label>
+                <label class="toggle-chip">
+                  <input
+                    id="twin-toggle-ridge-lines-input"
+                    type="checkbox"
+                    checked
+                  />
+                  <span data-i18n="preview.toggle.ridgeLines">稜線</span>
+                </label>
+                <label class="toggle-chip">
+                  <input
+                    id="twin-toggle-intersection-ridge-lines-input"
+                    type="checkbox"
+                  />
+                  <span data-i18n="preview.toggle.intersectionLines">交線</span>
+                </label>
+                <label class="toggle-chip">
+                  <input
+                    id="twin-toggle-axis-lines-inner-input"
+                    type="checkbox"
+                  />
+                  <span data-i18n="preview.toggle.axisInner">軸（内）</span>
+                </label>
+                <label class="toggle-chip">
+                  <input
+                    id="twin-toggle-axis-lines-outer-input"
+                    type="checkbox"
+                    checked
+                  />
+                  <span data-i18n="preview.toggle.axisOuter">軸（外）</span>
+                </label>
+                <label class="toggle-chip">
+                  <input
+                    id="twin-toggle-axis-labels-input"
+                    type="checkbox"
+                    checked
+                  />
+                  <span data-i18n="preview.toggle.axisLabels">軸ラベル</span>
+                </label>
+                <label class="toggle-chip">
+                  <input
+                    id="twin-toggle-twin-rule-input"
+                    type="checkbox"
+                    checked
+                  />
+                  <span data-i18n="preview.toggle.twinRule"
+                    >双晶軸 / 双晶面</span
+                  >
+                </label>
+                <label class="toggle-chip">
+                  <input
+                    id="twin-toggle-preset-metadata-input"
+                    type="checkbox"
+                  />
+                  <span data-i18n="preview.toggle.metadata">ラベル</span>
+                </label>
+                <label class="toggle-chip">
+                  <input id="twin-toggle-split-plane-input" type="checkbox" />
+                  <span data-i18n="preview.toggle.splitPlane">分割面</span>
+                </label>
+              </div>
+              <div
+                id="app-crystal-visibility-toggles"
+                class="preview-controls-group crystal-visibility-toggles"
+              ></div>
+            </aside>
+          </div>
+          <!-- プレビュー周辺: 視点リセット / 面指数 / 稜線 / 交線 / 軸（内） / 軸（外） / 軸ラベル / 双晶軸 / 双晶面 / ラベル -->
+          <div
+            class="section-card face-section-card"
+            aria-labelledby="app-face-list-heading"
+          >
+            <h2
+              id="app-face-list-heading"
+              class="visually-hidden"
+              data-i18n="editor.faceListTitle"
+            >
+              面一覧
+            </h2>
+            <div class="face-table-panel">
+              <div class="crystal-tab-list-wrap">
+                <div
+                  class="crystal-tab-list"
+                  role="tablist"
+                  aria-label="面一覧の編集対象"
+                  data-i18n-aria-label="editor.faceTarget"
+                ></div>
+              </div>
+              <div class="face-table-wrap">
+                <table class="face-table">
+                  <caption class="visually-hidden">
+                    双晶の結晶面一覧
+                  </caption>
+                  <thead>
+                    <tr id="app-faces-table-head-row"></tr>
+                  </thead>
+                  <tbody id="app-faces-table-body"></tbody>
+                </table>
+              </div>
+            </div>
+            <!-- プレビュー詳細設定 / 高度な設定(β版) -->
+            <details
+              id="app-preview-style-details"
+              class="preview-style-details"
+            >
+              <summary data-i18n="preview.settingsSummary">
+                プレビュー詳細設定
+              </summary>
+              <div
+                id="app-preview-style-panel"
+                class="preview-style-panel"
+                role="group"
+                aria-label="プレビュー詳細設定"
+                data-i18n-aria-label="preview.settingsSummary"
+              >
+                <div class="preview-style-actions">
+                  <button
+                    class="dads-button dads-button--tertiary"
+                    type="button"
+                    data-preview-style-reset-scope="basic"
+                    data-i18n="preview.settings.resetBasicToDefault"
+                  >
+                    プレビュー詳細設定をデフォルトに戻す
+                  </button>
+                </div>
+                <div class="preview-style-group">
+                  <h3 data-i18n="preview.settings.labelsTitle">ラベル</h3>
+                  <div class="preview-style-grid">
+                    <label class="field">
+                      <span data-i18n="preview.settings.faceLabel"
+                        >面指数の色</span
+                      >
+                      <input
+                        type="color"
+                        data-preview-style-key="faceLabel.color"
+                      />
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.faceLabelFont"
+                        >面指数フォント</span
+                      >
+                      <select data-preview-style-key="faceLabel.fontFamily">
+                        <option value='"Segoe UI", "BIZ UDPGothic", sans-serif'>
+                          Segoe UI
+                        </option>
+                        <option
+                          value='"BIZ UDPGothic", "Hiragino Sans", sans-serif'
+                        >
+                          BIZ UDPGothic
+                        </option>
+                        <option value='"Times New Roman", serif'>
+                          Times New Roman
+                        </option>
+                        <option value='"Georgia", serif'>Georgia</option>
+                        <option value='"Consolas", monospace'>Consolas</option>
+                      </select>
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.fontSize"
+                        >フォントサイズ</span
+                      >
+                      <input
+                        type="number"
+                        min="8"
+                        max="96"
+                        step="1"
+                        data-preview-style-key="faceLabel.fontSizePx"
+                        data-preview-style-value-type="number"
+                      />
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.faceLabelOffset"
+                        >面からのオフセット量</span
+                      >
+                      <input
+                        type="number"
+                        min="0"
+                        max="4"
+                        step="0.05"
+                        data-preview-style-key="faceLabel.offset"
+                        data-preview-style-value-type="number"
+                      />
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.axisLabelColorA"
+                        >a軸ラベルの色</span
+                      >
+                      <input
+                        type="color"
+                        data-preview-style-key="axisLabel.colors.a"
+                      />
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.axisLabelColorB"
+                        >b軸ラベルの色</span
+                      >
+                      <input
+                        type="color"
+                        data-preview-style-key="axisLabel.colors.b"
+                      />
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.axisLabelColorA3"
+                        >a3軸ラベルの色</span
+                      >
+                      <input
+                        type="color"
+                        data-preview-style-key="axisLabel.colors.a3"
+                      />
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.axisLabelColorC"
+                        >c軸ラベルの色</span
+                      >
+                      <input
+                        type="color"
+                        data-preview-style-key="axisLabel.colors.c"
+                      />
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.axisLabelFont"
+                        >軸ラベルフォント</span
+                      >
+                      <select data-preview-style-key="axisLabel.fontFamily">
+                        <option value='"Segoe UI", "BIZ UDPGothic", sans-serif'>
+                          Segoe UI
+                        </option>
+                        <option
+                          value='"BIZ UDPGothic", "Hiragino Sans", sans-serif'
+                        >
+                          BIZ UDPGothic
+                        </option>
+                        <option value='"Times New Roman", serif'>
+                          Times New Roman
+                        </option>
+                        <option value='"Georgia", serif'>Georgia</option>
+                        <option value='"Consolas", monospace'>Consolas</option>
+                      </select>
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.axisLabelSize"
+                        >軸ラベルサイズ</span
+                      >
+                      <input
+                        type="number"
+                        min="8"
+                        max="128"
+                        step="1"
+                        data-preview-style-key="axisLabel.fontSizePx"
+                        data-preview-style-value-type="number"
+                      />
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.twinRuleLabel"
+                        >双晶ラベルの色</span
+                      >
+                      <input
+                        type="color"
+                        data-preview-style-key="twinRuleLabel.color"
+                      />
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.twinRuleLabelFont"
+                        >双晶ラベルフォント</span
+                      >
+                      <select data-preview-style-key="twinRuleLabel.fontFamily">
+                        <option value='"Segoe UI", "BIZ UDPGothic", sans-serif'>
+                          Segoe UI
+                        </option>
+                        <option
+                          value='"BIZ UDPGothic", "Hiragino Sans", sans-serif'
+                        >
+                          BIZ UDPGothic
+                        </option>
+                        <option value='"Times New Roman", serif'>
+                          Times New Roman
+                        </option>
+                        <option value='"Georgia", serif'>Georgia</option>
+                        <option value='"Consolas", monospace'>Consolas</option>
+                      </select>
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.twinRuleLabelSize"
+                        >双晶ラベルサイズ</span
+                      >
+                      <input
+                        type="number"
+                        min="8"
+                        max="96"
+                        step="1"
+                        data-preview-style-key="twinRuleLabel.fontSizePx"
+                        data-preview-style-value-type="number"
+                      />
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.metadataTitle"
+                        >プリセット名の色</span
+                      >
+                      <input
+                        type="color"
+                        data-preview-style-key="presetMetadataName.color"
+                      />
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.metadataTitleFont"
+                        >プリセット名フォント</span
+                      >
+                      <select
+                        data-preview-style-key="presetMetadataName.fontFamily"
+                      >
+                        <option value='"Segoe UI", "BIZ UDPGothic", sans-serif'>
+                          Segoe UI
+                        </option>
+                        <option
+                          value='"BIZ UDPGothic", "Hiragino Sans", sans-serif'
+                        >
+                          BIZ UDPGothic
+                        </option>
+                        <option value='"Times New Roman", serif'>
+                          Times New Roman
+                        </option>
+                        <option value='"Georgia", serif'>Georgia</option>
+                        <option value='"Consolas", monospace'>Consolas</option>
+                      </select>
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.metadataTitleSize"
+                        >プリセット名サイズ</span
+                      >
+                      <input
+                        type="number"
+                        min="8"
+                        max="128"
+                        step="1"
+                        data-preview-style-key="presetMetadataName.fontSizePx"
+                        data-preview-style-value-type="number"
+                      />
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.metadataDescription"
+                        >簡易説明の色</span
+                      >
+                      <input
+                        type="color"
+                        data-preview-style-key="presetMetadataDescription.color"
+                      />
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.metadataDescriptionFont"
+                        >簡易説明フォント</span
+                      >
+                      <select
+                        data-preview-style-key="presetMetadataDescription.fontFamily"
+                      >
+                        <option value='"Segoe UI", "BIZ UDPGothic", sans-serif'>
+                          Segoe UI
+                        </option>
+                        <option
+                          value='"BIZ UDPGothic", "Hiragino Sans", sans-serif'
+                        >
+                          BIZ UDPGothic
+                        </option>
+                        <option value='"Times New Roman", serif'>
+                          Times New Roman
+                        </option>
+                        <option value='"Georgia", serif'>Georgia</option>
+                        <option value='"Consolas", monospace'>Consolas</option>
+                      </select>
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.metadataDescriptionSize"
+                        >簡易説明サイズ</span
+                      >
+                      <input
+                        type="number"
+                        min="8"
+                        max="128"
+                        step="1"
+                        data-preview-style-key="presetMetadataDescription.fontSizePx"
+                        data-preview-style-value-type="number"
+                      />
+                    </label>
+                  </div>
+                </div>
+                <div class="preview-style-group">
+                  <h3 data-i18n="preview.settings.linesTitle">線と軸</h3>
+                  <div class="preview-style-grid">
+                    <label class="field">
+                      <span data-i18n="preview.settings.axisColorA"
+                        >a軸の色</span
+                      >
+                      <input
+                        type="color"
+                        data-preview-style-key="axisLines.colors.a"
+                      />
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.axisColorB"
+                        >b軸の色</span
+                      >
+                      <input
+                        type="color"
+                        data-preview-style-key="axisLines.colors.b"
+                      />
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.axisColorA3"
+                        >a3軸の色</span
+                      >
+                      <input
+                        type="color"
+                        data-preview-style-key="axisLines.colors.a3"
+                      />
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.axisColorC"
+                        >c軸の色</span
+                      >
+                      <input
+                        type="color"
+                        data-preview-style-key="axisLines.colors.c"
+                      />
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.axisWidthInner"
+                        >軸線（内）の太さ</span
+                      >
+                      <input
+                        type="number"
+                        min="1"
+                        max="24"
+                        step="1"
+                        data-preview-style-key="axisLines.innerWidth"
+                        data-preview-style-value-type="number"
+                      />
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.axisWidthOuter"
+                        >軸線（外）の太さ</span
+                      >
+                      <input
+                        type="number"
+                        min="1"
+                        max="24"
+                        step="1"
+                        data-preview-style-key="axisLines.outerWidth"
+                        data-preview-style-value-type="number"
+                      />
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.ridgeColor"
+                        >稜線の色</span
+                      >
+                      <input
+                        type="color"
+                        data-preview-style-key="ridgeLines.color"
+                      />
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.ridgeWidth"
+                        >稜線の太さ</span
+                      >
+                      <input
+                        type="number"
+                        min="1"
+                        max="24"
+                        step="1"
+                        data-preview-style-key="ridgeLines.width"
+                        data-preview-style-value-type="number"
+                      />
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.ridgeOpacity"
+                        >稜線の透明度</span
+                      >
+                      <input
+                        type="number"
+                        min="0"
+                        max="1"
+                        step="0.01"
+                        data-preview-style-key="ridgeLines.opacity"
+                        data-preview-style-value-type="number"
+                      />
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.intersectionColor"
+                        >交線の色</span
+                      >
+                      <input
+                        type="color"
+                        data-preview-style-key="intersectionLines.color"
+                      />
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.intersectionWidth"
+                        >交線の太さ</span
+                      >
+                      <input
+                        type="number"
+                        min="1"
+                        max="24"
+                        step="1"
+                        data-preview-style-key="intersectionLines.width"
+                        data-preview-style-value-type="number"
+                      />
+                    </label>
+                    <label class="field">
+                      <span data-i18n="preview.settings.intersectionOpacity"
+                        >交線の透明度</span
+                      >
+                      <input
+                        type="number"
+                        min="0"
+                        max="1"
+                        step="0.01"
+                        data-preview-style-key="intersectionLines.opacity"
+                        data-preview-style-value-type="number"
+                      />
+                    </label>
+                  </div>
+                </div>
+                <details class="preview-style-group">
+                  <summary data-i18n="preview.advancedSettingsTitle">
+                    高度な設定(β版)
+                  </summary>
+                  <p
+                    class="preview-style-note"
+                    data-i18n="preview.settings.customProfileDescription"
+                  >
+                    ここで編集した内容はカスタム選択時に有効になります。
+                  </p>
+                  <div class="preview-style-actions">
+                    <button
+                      class="dads-button dads-button--tertiary"
+                      type="button"
+                      data-preview-style-reset-scope="advanced"
+                      data-i18n="preview.settings.resetAdvancedToDefault"
+                    >
+                      高度な設定をデフォルトに戻す
+                    </button>
+                  </div>
+                  <div class="preview-style-subgroup">
+                    <h4 data-i18n="preview.settings.customFaceTitle">
+                      面profile
+                    </h4>
+                    <div class="preview-style-grid">
+                      <label class="field">
+                        <span
+                          data-i18n="preview.settings.custom.componentBuildMode"
+                          >componentBuildMode</span
+                        >
+                        <select
+                          data-preview-style-key="customFaceProfile.componentBuildMode"
+                        >
+                          <option value="grouped-face-group">
+                            grouped-face-group
+                          </option>
+                          <option value="xray-solid-face-group">
+                            xray-solid-face-group
+                          </option>
+                          <option value="display-geometry-mesh">
+                            display-geometry-mesh
+                          </option>
+                        </select>
+                      </label>
+                      <label class="field">
+                        <span data-i18n="preview.settings.custom.baseColorMode"
+                          >baseColorMode</span
+                        >
+                        <select
+                          data-preview-style-key="customFaceProfile.baseColorMode"
+                        >
+                          <option value="white">white</option>
+                          <option value="solid-default">solid-default</option>
+                          <option value="crystal-accent">crystal-accent</option>
+                        </select>
+                      </label>
+                      <label class="field">
+                        <span data-i18n="preview.settings.custom.materialKind"
+                          >materialKind</span
+                        >
+                        <select
+                          data-preview-style-key="customFaceProfile.materialKind"
+                        >
+                          <option value="physical">physical</option>
+                          <option value="basic">basic</option>
+                        </select>
+                      </label>
+                      <label class="field checkbox-field">
+                        <span
+                          data-i18n="preview.settings.custom.usesFaceGroupPalette"
+                          >usesFaceGroupPalette</span
+                        >
+                        <input
+                          type="checkbox"
+                          data-preview-style-key="customFaceProfile.usesFaceGroupPalette"
+                        />
+                      </label>
+                      <label class="field checkbox-field">
+                        <span data-i18n="preview.settings.custom.usesLighting"
+                          >usesLighting</span
+                        >
+                        <input
+                          type="checkbox"
+                          data-preview-style-key="customFaceProfile.usesLighting"
+                        />
+                      </label>
+                      <label class="field checkbox-field">
+                        <span
+                          data-i18n="preview.settings.custom.usesScreenSpaceFaceOverlay"
+                          >usesScreenSpaceFaceOverlay</span
+                        >
+                        <input
+                          type="checkbox"
+                          data-preview-style-key="customFaceProfile.usesScreenSpaceFaceOverlay"
+                        />
+                      </label>
+                      <label class="field">
+                        <span
+                          data-i18n="preview.settings.custom.opacityWhenHasFinal"
+                          >opacityWhenHasFinal</span
+                        >
+                        <input
+                          type="number"
+                          min="0"
+                          max="1"
+                          step="0.01"
+                          data-preview-style-key="customFaceProfile.opacityWhenHasFinal"
+                          data-preview-style-value-type="number"
+                        />
+                      </label>
+                      <label class="field">
+                        <span
+                          data-i18n="preview.settings.custom.opacityWhenNoFinal"
+                          >opacityWhenNoFinal</span
+                        >
+                        <input
+                          type="number"
+                          min="0"
+                          max="1"
+                          step="0.01"
+                          data-preview-style-key="customFaceProfile.opacityWhenNoFinal"
+                          data-preview-style-value-type="number"
+                        />
+                      </label>
+                      <label class="field checkbox-field">
+                        <span data-i18n="preview.settings.custom.depthWrite"
+                          >depthWrite</span
+                        >
+                        <input
+                          type="checkbox"
+                          data-preview-style-key="customFaceProfile.depthWrite"
+                        />
+                      </label>
+                      <label class="field checkbox-field">
+                        <span
+                          data-i18n="preview.settings.custom.usePolygonOffset"
+                          >usePolygonOffset</span
+                        >
+                        <input
+                          type="checkbox"
+                          data-preview-style-key="customFaceProfile.usePolygonOffset"
+                        />
+                      </label>
+                      <label class="field">
+                        <span
+                          data-i18n="preview.settings.custom.polygonOffsetFactor"
+                          >polygonOffsetFactor</span
+                        >
+                        <input
+                          type="number"
+                          step="0.1"
+                          data-preview-style-key="customFaceProfile.polygonOffsetFactor"
+                          data-preview-style-value-type="number"
+                        />
+                      </label>
+                      <label class="field">
+                        <span
+                          data-i18n="preview.settings.custom.polygonOffsetUnits"
+                          >polygonOffsetUnits</span
+                        >
+                        <input
+                          type="number"
+                          step="0.1"
+                          data-preview-style-key="customFaceProfile.polygonOffsetUnits"
+                          data-preview-style-value-type="number"
+                        />
+                      </label>
+                      <label class="field checkbox-field">
+                        <span
+                          data-i18n="preview.settings.custom.useVertexColorsOnMergedGeometry"
+                          >useVertexColorsOnMergedGeometry</span
+                        >
+                        <input
+                          type="checkbox"
+                          data-preview-style-key="customFaceProfile.useVertexColorsOnMergedGeometry"
+                        />
+                      </label>
+                      <label class="field checkbox-field">
+                        <span
+                          data-i18n="preview.settings.custom.preferFinalMergedGeometry"
+                          >preferFinalMergedGeometry</span
+                        >
+                        <input
+                          type="checkbox"
+                          data-preview-style-key="customFaceProfile.preferFinalMergedGeometry"
+                        />
+                      </label>
+                      <label class="field checkbox-field">
+                        <span
+                          data-i18n="preview.settings.custom.allowSharedSolidFaceColorMap"
+                          >allowSharedSolidFaceColorMap</span
+                        >
+                        <input
+                          type="checkbox"
+                          data-preview-style-key="customFaceProfile.allowSharedSolidFaceColorMap"
+                        />
+                      </label>
+                      <label class="field checkbox-field">
+                        <span
+                          data-i18n="preview.settings.custom.allowSharedSolidFaceOverlay"
+                          >allowSharedSolidFaceOverlay</span
+                        >
+                        <input
+                          type="checkbox"
+                          data-preview-style-key="customFaceProfile.allowSharedSolidFaceOverlay"
+                        />
+                      </label>
+                      <label class="field">
+                        <span
+                          data-i18n="preview.settings.custom.groupedFaceComponentOpacity"
+                          >groupedFaceComponentOpacity</span
+                        >
+                        <input
+                          type="number"
+                          min="0"
+                          max="1"
+                          step="0.01"
+                          data-preview-style-key="customFaceProfile.groupedFaceComponentOpacity"
+                          data-preview-style-value-type="number"
+                        />
+                      </label>
+                    </div>
+                  </div>
+                  <div class="preview-style-subgroup">
+                    <h4 data-i18n="preview.settings.customLineTitle">
+                      線profile
+                    </h4>
+                    <div class="preview-style-grid">
+                      <label class="field checkbox-field">
+                        <span
+                          data-i18n="preview.settings.custom.useLayeredLines"
+                          >useLayeredLines</span
+                        >
+                        <input
+                          type="checkbox"
+                          data-preview-style-key="customLineProfile.useLayeredLines"
+                        />
+                      </label>
+                      <label class="field checkbox-field">
+                        <span data-i18n="preview.settings.custom.useDepthMask"
+                          >useDepthMask</span
+                        >
+                        <input
+                          type="checkbox"
+                          data-preview-style-key="customLineProfile.useDepthMask"
+                        />
+                      </label>
+                      <label class="field checkbox-field">
+                        <span
+                          data-i18n="preview.settings.custom.useScreenSpaceLineOverlay"
+                          >useScreenSpaceLineOverlay</span
+                        >
+                        <input
+                          type="checkbox"
+                          data-preview-style-key="customLineProfile.useScreenSpaceLineOverlay"
+                        />
+                      </label>
+                      <label class="field checkbox-field">
+                        <span data-i18n="preview.settings.custom.showFrontLines"
+                          >showFrontLines</span
+                        >
+                        <input
+                          type="checkbox"
+                          data-preview-style-key="customLineProfile.showFrontLines"
+                        />
+                      </label>
+                      <label class="field checkbox-field">
+                        <span
+                          data-i18n="preview.settings.custom.showHiddenSurfaceLines"
+                          >showHiddenSurfaceLines</span
+                        >
+                        <input
+                          type="checkbox"
+                          data-preview-style-key="customLineProfile.showHiddenSurfaceLines"
+                        />
+                      </label>
+                      <label class="field checkbox-field">
+                        <span
+                          data-i18n="preview.settings.custom.showOccludedInteriorLines"
+                          >showOccludedInteriorLines</span
+                        >
+                        <input
+                          type="checkbox"
+                          data-preview-style-key="customLineProfile.showOccludedInteriorLines"
+                        />
+                      </label>
+                      <label class="field">
+                        <span
+                          data-i18n="preview.settings.custom.hiddenSurfaceLineColorMode"
+                          >hiddenSurfaceLineColorMode</span
+                        >
+                        <select
+                          data-preview-style-key="customLineProfile.hiddenSurfaceLineColorMode"
+                        >
+                          <option value="same-as-front">same-as-front</option>
+                          <option value="tinted">tinted</option>
+                          <option value="custom">custom</option>
+                        </select>
+                      </label>
+                      <label class="field">
+                        <span
+                          data-i18n="preview.settings.custom.hiddenSurfaceLineCustomColor"
+                          >hiddenSurfaceLineCustomColor</span
+                        >
+                        <input
+                          type="color"
+                          data-preview-style-key="customLineProfile.hiddenSurfaceLineCustomColor"
+                        />
+                      </label>
+                      <label class="field">
+                        <span
+                          data-i18n="preview.settings.custom.hiddenSurfaceLineOpacityScale"
+                          >hiddenSurfaceLineOpacityScale</span
+                        >
+                        <input
+                          type="number"
+                          min="0"
+                          max="1"
+                          step="0.01"
+                          data-preview-style-key="customLineProfile.hiddenSurfaceLineOpacityScale"
+                          data-preview-style-value-type="number"
+                        />
+                      </label>
+                      <label class="field">
+                        <span
+                          data-i18n="preview.settings.custom.hiddenSurfaceLineWidthScale"
+                          >hiddenSurfaceLineWidthScale</span
+                        >
+                        <input
+                          type="number"
+                          min="0"
+                          max="4"
+                          step="0.01"
+                          data-preview-style-key="customLineProfile.hiddenSurfaceLineWidthScale"
+                          data-preview-style-value-type="number"
+                        />
+                      </label>
+                      <label class="field">
+                        <span
+                          data-i18n="preview.settings.custom.occludedInteriorLineColorMode"
+                          >occludedInteriorLineColorMode</span
+                        >
+                        <select
+                          data-preview-style-key="customLineProfile.occludedInteriorLineColorMode"
+                        >
+                          <option value="same-as-front">same-as-front</option>
+                          <option value="tinted">tinted</option>
+                          <option value="custom">custom</option>
+                        </select>
+                      </label>
+                      <label class="field">
+                        <span
+                          data-i18n="preview.settings.custom.occludedInteriorLineCustomColor"
+                          >occludedInteriorLineCustomColor</span
+                        >
+                        <input
+                          type="color"
+                          data-preview-style-key="customLineProfile.occludedInteriorLineCustomColor"
+                        />
+                      </label>
+                      <label class="field">
+                        <span
+                          data-i18n="preview.settings.custom.occludedInteriorLineOpacityScale"
+                          >occludedInteriorLineOpacityScale</span
+                        >
+                        <input
+                          type="number"
+                          min="0"
+                          max="1"
+                          step="0.01"
+                          data-preview-style-key="customLineProfile.occludedInteriorLineOpacityScale"
+                          data-preview-style-value-type="number"
+                        />
+                      </label>
+                      <label class="field">
+                        <span
+                          data-i18n="preview.settings.custom.occludedInteriorLineWidthScale"
+                          >occludedInteriorLineWidthScale</span
+                        >
+                        <input
+                          type="number"
+                          min="0"
+                          max="4"
+                          step="0.01"
+                          data-preview-style-key="customLineProfile.occludedInteriorLineWidthScale"
+                          data-preview-style-value-type="number"
+                        />
+                      </label>
+                      <label class="field">
+                        <span data-i18n="preview.settings.custom.resolutionMode"
+                          >resolutionMode</span
+                        >
+                        <select
+                          data-preview-style-key="customLineProfile.resolutionMode"
+                        >
+                          <option value="canvas-device-pixel">
+                            canvas-device-pixel
+                          </option>
+                          <option value="stage-css-pixel">
+                            stage-css-pixel
+                          </option>
+                        </select>
+                      </label>
+                      <label class="field">
+                        <span
+                          data-i18n="preview.settings.custom.depthMaskOffsetFactor"
+                          >depthMaskOffsetFactor</span
+                        >
+                        <input
+                          type="number"
+                          step="0.1"
+                          data-preview-style-key="customLineProfile.depthMaskOffsetFactor"
+                          data-preview-style-value-type="number"
+                        />
+                      </label>
+                      <label class="field">
+                        <span
+                          data-i18n="preview.settings.custom.depthMaskOffsetUnits"
+                          >depthMaskOffsetUnits</span
+                        >
+                        <input
+                          type="number"
+                          step="0.1"
+                          data-preview-style-key="customLineProfile.depthMaskOffsetUnits"
+                          data-preview-style-value-type="number"
+                        />
+                      </label>
+                    </div>
+                  </div>
+                </details>
+                <div class="preview-style-group" hidden>
+                  <h3 data-i18n="preview.settings.debugTitle">デバッグ</h3>
+                  <p
+                    class="preview-style-note"
+                    data-i18n="preview.settings.debugDescription"
+                  >
+                    現在設定と preview/xray debug 情報を JSON
+                    にまとめて保存します。
+                  </p>
+                  <button
+                    id="app-download-preview-debug-button"
+                    class="dads-button dads-button--secondary"
+                    type="button"
+                    data-i18n="preview.settings.downloadDebugSnapshot"
+                  >
+                    デバッグ情報を保存
+                  </button>
+                </div>
+              </div>
+            </details>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div
+      id="app-tab-menu-popover"
+      class="crystal-tab-menu-popover"
+      hidden
+    ></div>
+
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>
