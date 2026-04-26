@@ -84,6 +84,8 @@ npm run preview
   - ソース構成
 - [Testing](./docs/testing.md)
   - テスト方針と実行コマンド
+- [Deployment](./docs/deployment.md)
+  - Cloudflare Pages 向けの build 設定
 
 ## 更新履歴
 

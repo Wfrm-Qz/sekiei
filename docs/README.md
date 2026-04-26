@@ -20,6 +20,8 @@
   - 保存・読込 JSON と preset JSON の考え方
 - [Testing](./testing.md)
   - テストの層、よく使うコマンド、現状のカバー範囲
+- [Deployment](./deployment.md)
+  - Cloudflare Pages 向けの build 設定
 - [Repository Policy](./repository-policy.md)
   - branch 運用、local hook、GitHub 側で設定したい保護ルール
 - [User Manual](./user-manual.md)
