@@ -74,6 +74,8 @@ npm run preview
   - アプリ内お知らせと共有している更新履歴
 - [Known Issues](./docs/known-issues.md)
   - アプリ内お知らせと共有している既知の問題
+- [Preset References](./reference.md)
+  - built-in preset データの出典一覧
 - [Modeling Features](./docs/modeling-features.md)
   - 何が作れるか
 - [JSON Format](./docs/json-format.md)
