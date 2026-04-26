@@ -5,12 +5,19 @@ import { describe, expect, it } from "vitest";
 
 const ROOT_DIR = resolve(import.meta.dirname, "../../..");
 const NODE_MODULES_DIR = resolve(ROOT_DIR, "node_modules");
+const PACKAGE_JSON_PATH = resolve(ROOT_DIR, "package.json");
 
 function readJson(path: string) {
   return JSON.parse(readFileSync(path, "utf8"));
 }
 
 describe("third-party license inventory", () => {
+  it("declares the project license as MIT and keeps a root LICENSE file", () => {
+    const packageJson = readJson(PACKAGE_JSON_PATH);
+    expect(packageJson.license).toBe("MIT");
+    expect(existsSync(resolve(ROOT_DIR, "LICENSE"))).toBe(true);
+  });
+
   it("tracks expected licenses for direct runtime dependencies", () => {
     const expected = {
       three: "MIT",

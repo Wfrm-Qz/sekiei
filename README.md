@@ -159,6 +159,8 @@ npm run test:e2e
 
 ## ライセンス
 
+このプロジェクト自体は [MIT License](./LICENSE) で提供します。
+
 第三者依存と bundled font のライセンス整理は [LICENSES.md](./LICENSES.md) にあります。
 
 ## 補足

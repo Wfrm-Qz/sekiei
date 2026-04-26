@@ -12,6 +12,8 @@
   - アプリ内お知らせと共有している既知の問題
 - [Preset References](../reference.md)
   - built-in preset データの出典一覧
+- [Project License](../LICENSE)
+  - このプロジェクト自体のライセンス（MIT）
 - [Architecture](./architecture.md)
   - 現在のソース構成と責務分担
 - [JSON Format](./json-format.md)

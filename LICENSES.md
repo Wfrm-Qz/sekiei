@@ -112,5 +112,5 @@ The following font JSON files are bundled for face text generation.
 
 - This repository does not intentionally include GPL- or LGPL-licensed runtime
   dependencies.
-- If this repository is published under its own project license, that project
-  license should be provided separately in a root-level `LICENSE` file.
+- This repository's own project license is MIT. See the root-level `LICENSE`
+  file.
