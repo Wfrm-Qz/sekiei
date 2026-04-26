@@ -19,6 +19,7 @@ interface TwinUiHandlerStateLike {
 }
 
 interface TwinUiHandlerElementsLike {
+  localeSelect?: HTMLSelectElement | null;
   presetSelect: HTMLInputElement;
   presetClearButton: HTMLButtonElement;
   presetToggleButton: HTMLButtonElement;
@@ -26,12 +27,16 @@ interface TwinUiHandlerElementsLike {
   presetMetadataToggleButton: HTMLButtonElement;
   metadataInputs: Record<string, HTMLInputElement | HTMLTextAreaElement>;
   announcementOpenButton?: HTMLButtonElement | null;
+  mobileHeaderMenuButton?: HTMLButtonElement | null;
+  mobileHeaderMenu?: HTMLElement | null;
   saveButton?: HTMLButtonElement | null;
   saveAsButton?: HTMLButtonElement | null;
   saveMenu?: HTMLElement | null;
   saveAsMenu?: HTMLElement | null;
   importJsonButton?: HTMLButtonElement | null;
   importJsonMenu?: HTMLElement | null;
+  mobileOutputExportButtons?: HTMLButtonElement[];
+  mobileOutputImportButtons?: HTMLButtonElement[];
   importJsonInput?: HTMLInputElement | null;
 }
 
@@ -50,9 +55,13 @@ export interface TwinUiHandlersContext {
     menu?: HTMLElement | null,
   ) => void;
   openAnnouncementModal: () => void;
+  setMobileLayoutTab?: (
+    tab: "basic" | "face" | "twin" | "display" | "output",
+  ) => void;
   triggerImportJsonWithMode: (
     mode: "both" | "preview-only" | "crystal-only",
   ) => void;
+  setLocale?: (locale: "ja" | "en") => void;
   commitMetadataField: (fieldName: string, value: string) => void;
   applyPresetMetadataSectionVisibility: () => void;
   exportTwinArtifact: (
@@ -61,8 +70,69 @@ export interface TwinUiHandlersContext {
   ) => Promise<void>;
 }
 
+function isExportFormat(
+  value: string | undefined,
+): value is "json" | "stl" | "svg" | "png" | "jpeg" {
+  return ["json", "stl", "svg", "png", "jpeg"].includes(value ?? "");
+}
+
+function isSaveMode(value: string | undefined): value is "save" | "save-as" {
+  return value === "save" || value === "save-as";
+}
+
+function isImportMode(
+  value: string | undefined,
+): value is "both" | "preview-only" | "crystal-only" {
+  return (
+    value === "both" || value === "preview-only" || value === "crystal-only"
+  );
+}
+
+function isMobileLayoutTabTarget(
+  value: string | undefined,
+): value is "basic" | "face" | "twin" | "display" | "output" {
+  return ["basic", "face", "twin", "display", "output"].includes(value ?? "");
+}
+
+function isSupportedLocale(value: string | undefined): value is "ja" | "en" {
+  return value === "ja" || value === "en";
+}
+
 /** preset / metadata / save menu の登録関数群を返す。 */
 export function createTwinUiHandlers(context: TwinUiHandlersContext) {
+  async function runUiAction(action: HTMLElement) {
+    context.closeHeaderSaveMenus();
+
+    if (action.dataset.openAnnouncement === "true") {
+      context.openAnnouncementModal();
+      return;
+    }
+
+    const mobileLayoutTabTarget = action.dataset.mobileLayoutTabTarget;
+    if (isMobileLayoutTabTarget(mobileLayoutTabTarget)) {
+      context.setMobileLayoutTab?.(mobileLayoutTabTarget);
+      return;
+    }
+
+    const locale = action.dataset.setLocale;
+    if (isSupportedLocale(locale)) {
+      context.setLocale?.(locale);
+      return;
+    }
+
+    const exportFormat = action.dataset.exportFormat;
+    const saveMode = action.dataset.saveMode;
+    if (isExportFormat(exportFormat) && isSaveMode(saveMode)) {
+      await context.exportTwinArtifact(exportFormat, saveMode);
+      return;
+    }
+
+    const importMode = action.dataset.importMode;
+    if (isImportMode(importMode)) {
+      context.triggerImportJsonWithMode(importMode);
+    }
+  }
+
   /** preset combobox と metadata input の handler を登録する。 */
   function registerPresetAndMetadataHandlers() {
     context.elements.presetSelect.addEventListener("change", () => {
@@ -184,16 +254,19 @@ export function createTwinUiHandlers(context: TwinUiHandlersContext) {
       );
     });
 
+    context.elements.mobileHeaderMenuButton?.addEventListener("click", () => {
+      context.toggleHeaderSaveMenu(
+        context.elements.mobileHeaderMenuButton,
+        context.elements.mobileHeaderMenu,
+      );
+    });
+
     const handleHeaderSaveMenuClick = async (event: Event) => {
       const action = findHeaderActionMenuItem(event.target);
       if (!action) {
         return;
       }
-      context.closeHeaderSaveMenus();
-      await context.exportTwinArtifact(
-        action.dataset.exportFormat as "json" | "stl" | "svg" | "png" | "jpeg",
-        action.dataset.saveMode as "save" | "save-as",
-      );
+      await runUiAction(action);
     };
 
     context.elements.saveMenu?.addEventListener(
@@ -204,19 +277,24 @@ export function createTwinUiHandlers(context: TwinUiHandlersContext) {
       "click",
       handleHeaderSaveMenuClick,
     );
+    context.elements.importJsonMenu?.addEventListener(
+      "click",
+      handleHeaderSaveMenuClick,
+    );
+    context.elements.mobileHeaderMenu?.addEventListener(
+      "click",
+      handleHeaderSaveMenuClick,
+    );
 
-    context.elements.importJsonMenu?.addEventListener("click", (event) => {
-      const action = findHeaderActionMenuItem(event.target);
-      if (!action) {
-        return;
-      }
-      context.closeHeaderSaveMenus();
-      const mode = action.dataset.importMode;
-      context.triggerImportJsonWithMode(
-        mode === "preview-only" || mode === "crystal-only" || mode === "both"
-          ? mode
-          : "both",
-      );
+    context.elements.mobileOutputExportButtons?.forEach((button) => {
+      button.addEventListener("click", () => {
+        void runUiAction(button);
+      });
+    });
+    context.elements.mobileOutputImportButtons?.forEach((button) => {
+      button.addEventListener("click", () => {
+        void runUiAction(button);
+      });
     });
   }
 

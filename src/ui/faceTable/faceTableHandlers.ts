@@ -65,6 +65,8 @@ interface TwinFaceTableStateLike {
 interface TwinFaceTableElementsLike {
   facesTableHeadRow: HTMLElement;
   facesTableBody: HTMLElement;
+  faceMobileToolbar?: HTMLElement | null;
+  faceMobileList?: HTMLElement | null;
 }
 
 export interface TwinFaceTableHandlersContext {
@@ -111,10 +113,61 @@ export interface TwinFaceTableHandlersContext {
 export function createTwinFaceTableHandlers(
   context: TwinFaceTableHandlersContext,
 ) {
+  function addFace() {
+    context.commitParameters((next) => {
+      const crystalIndex = context.getEditableCrystalIndex();
+      const editableCrystalFaces = context.getTwinCrystalFaces(
+        next,
+        crystalIndex,
+      );
+      const nextFaces = [
+        ...editableCrystalFaces,
+        context.createEmptyDraftFace(next.crystalSystem),
+      ];
+      context.setTwinCrystalFaces(next, crystalIndex, nextFaces);
+    });
+  }
+
+  function clearFaces() {
+    if (!context.confirm(context.t("faces.clearConfirm"))) {
+      return;
+    }
+
+    context.commitParameters((next) => {
+      const crystalIndex = context.getEditableCrystalIndex();
+      context.setTwinCrystalFaces(next, crystalIndex, []);
+      next.twin.crystals = next.twin.crystals.map((crystal, index) => {
+        if (index === crystalIndex) {
+          return {
+            ...crystal,
+            contact: {
+              ...(crystal.contact ?? {}),
+              derivedFaceRef: null,
+            },
+          };
+        }
+        const parentIndex = Math.max(
+          0,
+          Math.min(Number(crystal.from ?? 0), index - 1),
+        );
+        if (parentIndex !== crystalIndex) {
+          return crystal;
+        }
+        return {
+          ...crystal,
+          contact: {
+            ...(crystal.contact ?? {}),
+            baseFaceRef: null,
+          },
+        };
+      });
+    });
+  }
+
   function updateFaceTextFieldFromTarget(
     target: HTMLInputElement | HTMLSelectElement,
   ) {
-    const row = target.closest("tr");
+    const row = target.closest("[data-face-id]") as HTMLElement | null;
     const faceId = row?.dataset.faceId;
     const textFieldName = target.dataset.faceTextField;
     if (!faceId || !textFieldName) {
@@ -166,54 +219,11 @@ export function createTwinFaceTableHandlers(
         return;
       }
       if (target.id === "app-add-face-button") {
-        context.commitParameters((next) => {
-          const crystalIndex = context.getEditableCrystalIndex();
-          const editableCrystalFaces = context.getTwinCrystalFaces(
-            next,
-            crystalIndex,
-          );
-          const nextFaces = [
-            ...editableCrystalFaces,
-            context.createEmptyDraftFace(next.crystalSystem),
-          ];
-          context.setTwinCrystalFaces(next, crystalIndex, nextFaces);
-        });
+        addFace();
         return;
       }
       if (target.id === "app-clear-faces-button") {
-        if (!context.confirm(context.t("faces.clearConfirm"))) {
-          return;
-        }
-
-        context.commitParameters((next) => {
-          const crystalIndex = context.getEditableCrystalIndex();
-          context.setTwinCrystalFaces(next, crystalIndex, []);
-          next.twin.crystals = next.twin.crystals.map((crystal, index) => {
-            if (index === crystalIndex) {
-              return {
-                ...crystal,
-                contact: {
-                  ...(crystal.contact ?? {}),
-                  derivedFaceRef: null,
-                },
-              };
-            }
-            const parentIndex = Math.max(
-              0,
-              Math.min(Number(crystal.from ?? 0), index - 1),
-            );
-            if (parentIndex !== crystalIndex) {
-              return crystal;
-            }
-            return {
-              ...crystal,
-              contact: {
-                ...(crystal.contact ?? {}),
-                baseFaceRef: null,
-              },
-            };
-          });
-        });
+        clearFaces();
         return;
       }
       const sortField = target.dataset.sortField;
@@ -228,386 +238,417 @@ export function createTwinFaceTableHandlers(
       context.renderFaceTableHeader();
       context.renderFaceRows();
     });
-  }
 
-  /** テーブル body の input/change を登録する。 */
-  function registerFaceTableInputHandlers() {
-    context.elements.facesTableBody.addEventListener("input", (event) => {
-      const target = event.target;
-      if (!(target instanceof HTMLInputElement)) {
-        return;
-      }
-      updateFaceTextFieldFromTarget(target);
-    });
-
-    context.elements.facesTableBody.addEventListener("change", (event) => {
-      const target = event.target;
-      if (
-        !(
-          target instanceof HTMLInputElement ||
-          target instanceof HTMLSelectElement
-        )
-      ) {
-        return;
-      }
-
-      const row = target.closest("tr");
-      const faceIndex = Number(row?.dataset.faceIndex);
-      const faceId = row?.dataset.faceId;
-      const groupKey = row?.dataset.groupKey;
-      const groupCollapsed = row?.dataset.groupCollapsed === "true";
-      const fieldName = target.dataset.faceField;
-      if (!Number.isInteger(faceIndex) || !fieldName || !faceId) {
-        return;
-      }
-      const sourceFace = context
-        .getEditableFaces()
-        .find((face) => face.id === faceId);
-      const draftEmptyFields = context.getDraftEmptyFields(sourceFace);
-      if (
-        target.dataset.faceTextField &&
-        updateFaceTextFieldFromTarget(target)
-      ) {
-        return;
-      }
-
-      if (fieldName === "enabled" && target instanceof HTMLInputElement) {
-        const nextEnabled = target.checked;
-        context.commitParameters((next) => {
-          const crystalIndex = context.getEditableCrystalIndex();
-          const updatedFaces = context
-            .getTwinCrystalFaces(next, crystalIndex)
-            .map((face) =>
-              (
-                groupCollapsed
-                  ? context.getEquivalentFaceGroupKey(
-                      face,
-                      next.crystalSystem,
-                    ) === groupKey
-                  : face.id === faceId
-              )
-                ? { ...face, enabled: nextEnabled }
-                : face,
-            );
-          context.setTwinCrystalFaces(next, crystalIndex, updatedFaces);
-        });
-        return;
-      }
-
-      if (fieldName === "accentColor" && target instanceof HTMLInputElement) {
-        const nextAccentColor = normalizeFaceAccentColor(target.value);
-        if (!nextAccentColor) {
-          return;
-        }
-        context.commitParameters((next) => {
-          const crystalIndex = context.getEditableCrystalIndex();
-          const updatedFaces = context
-            .getTwinCrystalFaces(next, crystalIndex)
-            .map((face) =>
-              // 折り畳み代表行からの変更は等価面グループ全体へ反映する。
-              (
-                groupCollapsed
-                  ? context.getEquivalentFaceGroupKey(
-                      face,
-                      next.crystalSystem,
-                    ) === groupKey
-                  : face.id === faceId
-              )
-                ? { ...face, accentColor: nextAccentColor }
-                : face,
-            );
-          context.setTwinCrystalFaces(next, crystalIndex, updatedFaces);
-        });
-        return;
-      }
-
-      if (
-        target.value.trim() === "" &&
-        (draftEmptyFields.length > 0 ||
-          typeof sourceFace?.draftGroupKey === "string") &&
-        context.emptyDraftFaceFields.includes(fieldName)
-      ) {
-        context.commitParameters((next) => {
-          const crystalIndex = context.getEditableCrystalIndex();
-          const updatedFaces = context
-            .getTwinCrystalFaces(next, crystalIndex)
-            .map((face) =>
-              face.id === faceId
-                ? context.normalizeFaceForSystem(
-                    {
-                      ...face,
-                      [fieldName]: 0,
-                      enabled: false,
-                      draftEmptyFields: Array.from(
-                        new Set([
-                          ...context.getDraftEmptyFields(face),
-                          fieldName,
-                        ]),
-                      ),
-                    },
-                    next.crystalSystem,
-                  )
-                : face,
-            );
-          context.setTwinCrystalFaces(next, crystalIndex, updatedFaces);
-        });
-        return;
-      }
-
-      context.commitNumericInput(target.value, (value) => {
-        context.commitParameters((next) => {
-          const crystalIndex = context.getEditableCrystalIndex();
-          const updatedFaces = context
-            .getTwinCrystalFaces(next, crystalIndex)
-            .map((face) => {
-              const remainingDraftFields = context
-                .getDraftEmptyFields(face)
-                .filter((name) => name !== fieldName);
-              return (
-                groupCollapsed
-                  ? context.getEquivalentFaceGroupKey(
-                      face,
-                      next.crystalSystem,
-                    ) === groupKey
-                  : face.id === faceId
-              )
-                ? context.normalizeFaceForSystem(
-                    {
-                      ...face,
-                      [fieldName]: value,
-                      enabled: remainingDraftFields.length === 0,
-                      ...(remainingDraftFields.length > 0
-                        ? {
-                            draftEmptyFields: remainingDraftFields,
-                            draftGroupKey: face.draftGroupKey,
-                          }
-                        : {
-                            draftEmptyFields: undefined,
-                            draftGroupKey: undefined,
-                          }),
-                    },
-                    next.crystalSystem,
-                  )
-                : face;
-            });
-          context.setTwinCrystalFaces(next, crystalIndex, updatedFaces);
-        });
-      });
-    });
-  }
-
-  /** テーブル body の button click を登録する。 */
-  function registerFaceTableClickHandlers() {
-    context.elements.facesTableBody.addEventListener("mousedown", (event) => {
-      const target = event.target;
-      if (
-        target instanceof HTMLButtonElement &&
-        target.classList.contains("coefficient-spin-button")
-      ) {
-        event.preventDefault();
-      }
-    });
-
-    context.elements.facesTableBody.addEventListener("click", (event) => {
+    context.elements.faceMobileToolbar?.addEventListener("click", (event) => {
       const target = event.target;
       if (!(target instanceof HTMLButtonElement)) {
         return;
       }
-
-      const row = target.closest("tr");
-      const faceIndex = Number(row?.dataset.faceIndex);
-      const faceId = row?.dataset.faceId;
-      const groupKey = row?.dataset.groupKey;
-      const groupCollapsed = row?.dataset.groupCollapsed === "true";
-      if (!Number.isInteger(faceIndex) || !faceId) {
+      if (target.dataset.mobileFaceAction === "add") {
+        addFace();
         return;
       }
+      if (target.dataset.mobileFaceAction === "clear") {
+        clearFaces();
+      }
+    });
+  }
 
-      if (target.classList.contains("remove-face-button")) {
-        context.commitParameters((next) => {
-          const crystalIndex = context.getEditableCrystalIndex();
-          const editableCrystalFaces = context.getTwinCrystalFaces(
-            next,
-            crystalIndex,
-          );
-          const removedFaceIds = new Set(
-            editableCrystalFaces
-              .filter((face) =>
-                groupCollapsed
-                  ? context.getEquivalentFaceGroupKey(
-                      face,
+  /** テーブル body の input/change を登録する。 */
+  function registerFaceTableInputHandlers() {
+    const registerInputHandlersFor = (container: HTMLElement) => {
+      container.addEventListener("input", (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLInputElement)) {
+          return;
+        }
+        updateFaceTextFieldFromTarget(target);
+      });
+
+      container.addEventListener("change", (event) => {
+        const target = event.target;
+        if (
+          !(
+            target instanceof HTMLInputElement ||
+            target instanceof HTMLSelectElement
+          )
+        ) {
+          return;
+        }
+
+        const row = target.closest("[data-face-id]") as HTMLElement | null;
+        const faceIndex = Number(row?.dataset.faceIndex);
+        const faceId = row?.dataset.faceId;
+        const groupKey = row?.dataset.groupKey;
+        const groupCollapsed = row?.dataset.groupCollapsed === "true";
+        const fieldName = target.dataset.faceField;
+        if (!Number.isInteger(faceIndex) || !fieldName || !faceId) {
+          return;
+        }
+        const sourceFace = context
+          .getEditableFaces()
+          .find((face) => face.id === faceId);
+        const draftEmptyFields = context.getDraftEmptyFields(sourceFace);
+        if (
+          target.dataset.faceTextField &&
+          updateFaceTextFieldFromTarget(target)
+        ) {
+          return;
+        }
+
+        if (fieldName === "enabled" && target instanceof HTMLInputElement) {
+          const nextEnabled = target.checked;
+          context.commitParameters((next) => {
+            const crystalIndex = context.getEditableCrystalIndex();
+            const updatedFaces = context
+              .getTwinCrystalFaces(next, crystalIndex)
+              .map((face) =>
+                (
+                  groupCollapsed
+                    ? context.getEquivalentFaceGroupKey(
+                        face,
+                        next.crystalSystem,
+                      ) === groupKey
+                    : face.id === faceId
+                )
+                  ? { ...face, enabled: nextEnabled }
+                  : face,
+              );
+            context.setTwinCrystalFaces(next, crystalIndex, updatedFaces);
+          });
+          return;
+        }
+
+        if (fieldName === "accentColor" && target instanceof HTMLInputElement) {
+          const nextAccentColor = normalizeFaceAccentColor(target.value);
+          if (!nextAccentColor) {
+            return;
+          }
+          context.commitParameters((next) => {
+            const crystalIndex = context.getEditableCrystalIndex();
+            const updatedFaces = context
+              .getTwinCrystalFaces(next, crystalIndex)
+              .map((face) =>
+                (
+                  groupCollapsed
+                    ? context.getEquivalentFaceGroupKey(
+                        face,
+                        next.crystalSystem,
+                      ) === groupKey
+                    : face.id === faceId
+                )
+                  ? { ...face, accentColor: nextAccentColor }
+                  : face,
+              );
+            context.setTwinCrystalFaces(next, crystalIndex, updatedFaces);
+          });
+          return;
+        }
+
+        if (
+          target.value.trim() === "" &&
+          (draftEmptyFields.length > 0 ||
+            typeof sourceFace?.draftGroupKey === "string") &&
+          context.emptyDraftFaceFields.includes(fieldName)
+        ) {
+          context.commitParameters((next) => {
+            const crystalIndex = context.getEditableCrystalIndex();
+            const updatedFaces = context
+              .getTwinCrystalFaces(next, crystalIndex)
+              .map((face) =>
+                face.id === faceId
+                  ? context.normalizeFaceForSystem(
+                      {
+                        ...face,
+                        [fieldName]: 0,
+                        enabled: false,
+                        draftEmptyFields: Array.from(
+                          new Set([
+                            ...context.getDraftEmptyFields(face),
+                            fieldName,
+                          ]),
+                        ),
+                      },
                       next.crystalSystem,
-                    ) === groupKey
-                  : face.id === faceId,
-              )
-              .map((face) => face.id),
-          );
-          const remainingFaces = editableCrystalFaces.filter((face) =>
-            groupCollapsed
-              ? context.getEquivalentFaceGroupKey(face, next.crystalSystem) !==
-                groupKey
-              : face.id !== faceId,
-          );
-          context.setTwinCrystalFaces(next, crystalIndex, remainingFaces);
-          next.twin.crystals = next.twin.crystals.map((crystal, index) => {
-            if (index === crystalIndex) {
+                    )
+                  : face,
+              );
+            context.setTwinCrystalFaces(next, crystalIndex, updatedFaces);
+          });
+          return;
+        }
+
+        context.commitNumericInput(target.value, (value) => {
+          context.commitParameters((next) => {
+            const crystalIndex = context.getEditableCrystalIndex();
+            const updatedFaces = context
+              .getTwinCrystalFaces(next, crystalIndex)
+              .map((face) => {
+                const remainingDraftFields = context
+                  .getDraftEmptyFields(face)
+                  .filter((name) => name !== fieldName);
+                return (
+                  groupCollapsed
+                    ? context.getEquivalentFaceGroupKey(
+                        face,
+                        next.crystalSystem,
+                      ) === groupKey
+                    : face.id === faceId
+                )
+                  ? context.normalizeFaceForSystem(
+                      {
+                        ...face,
+                        [fieldName]: value,
+                        enabled: remainingDraftFields.length === 0,
+                        ...(remainingDraftFields.length > 0
+                          ? {
+                              draftEmptyFields: remainingDraftFields,
+                              draftGroupKey: face.draftGroupKey,
+                            }
+                          : {
+                              draftEmptyFields: undefined,
+                              draftGroupKey: undefined,
+                            }),
+                      },
+                      next.crystalSystem,
+                    )
+                  : face;
+              });
+            context.setTwinCrystalFaces(next, crystalIndex, updatedFaces);
+          });
+        });
+      });
+    };
+
+    registerInputHandlersFor(context.elements.facesTableBody);
+    if (context.elements.faceMobileList) {
+      registerInputHandlersFor(context.elements.faceMobileList);
+    }
+  }
+
+  /** テーブル body の button click を登録する。 */
+  function registerFaceTableClickHandlers() {
+    const registerClickHandlersFor = (container: HTMLElement) => {
+      container.addEventListener("mousedown", (event) => {
+        const target = event.target;
+        if (
+          target instanceof HTMLButtonElement &&
+          target.classList.contains("coefficient-spin-button")
+        ) {
+          event.preventDefault();
+        }
+      });
+
+      container.addEventListener("click", (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLButtonElement)) {
+          return;
+        }
+
+        const row = target.closest("[data-face-id]") as HTMLElement | null;
+        const faceIndex = Number(row?.dataset.faceIndex);
+        const faceId = row?.dataset.faceId;
+        const groupKey = row?.dataset.groupKey;
+        const groupCollapsed = row?.dataset.groupCollapsed === "true";
+        if (!Number.isInteger(faceIndex) || !faceId) {
+          return;
+        }
+
+        if (target.classList.contains("remove-face-button")) {
+          context.commitParameters((next) => {
+            const crystalIndex = context.getEditableCrystalIndex();
+            const editableCrystalFaces = context.getTwinCrystalFaces(
+              next,
+              crystalIndex,
+            );
+            const removedFaceIds = new Set(
+              editableCrystalFaces
+                .filter((face) =>
+                  groupCollapsed
+                    ? context.getEquivalentFaceGroupKey(
+                        face,
+                        next.crystalSystem,
+                      ) === groupKey
+                    : face.id === faceId,
+                )
+                .map((face) => face.id),
+            );
+            const remainingFaces = editableCrystalFaces.filter((face) =>
+              groupCollapsed
+                ? context.getEquivalentFaceGroupKey(
+                    face,
+                    next.crystalSystem,
+                  ) !== groupKey
+                : face.id !== faceId,
+            );
+            context.setTwinCrystalFaces(next, crystalIndex, remainingFaces);
+            next.twin.crystals = next.twin.crystals.map((crystal, index) => {
+              if (index === crystalIndex) {
+                return {
+                  ...crystal,
+                  contact: {
+                    ...(crystal.contact ?? {}),
+                    derivedFaceRef: removedFaceIds.has(
+                      crystal.contact?.derivedFaceRef ?? null,
+                    )
+                      ? (remainingFaces[0]?.id ?? null)
+                      : (crystal.contact?.derivedFaceRef ?? null),
+                  },
+                };
+              }
+              const parentIndex = Math.max(
+                0,
+                Math.min(Number(crystal.from ?? 0), index - 1),
+              );
+              if (parentIndex !== crystalIndex) {
+                return crystal;
+              }
+              const parentFaces = context.getTwinCrystalFaces(
+                next,
+                parentIndex,
+              );
               return {
                 ...crystal,
                 contact: {
                   ...(crystal.contact ?? {}),
-                  derivedFaceRef: removedFaceIds.has(
-                    crystal.contact?.derivedFaceRef ?? null,
+                  baseFaceRef: removedFaceIds.has(
+                    crystal.contact?.baseFaceRef ?? null,
                   )
-                    ? (remainingFaces[0]?.id ?? null)
-                    : (crystal.contact?.derivedFaceRef ?? null),
+                    ? (parentFaces[0]?.id ?? null)
+                    : (crystal.contact?.baseFaceRef ?? null),
                 },
               };
-            }
-            const parentIndex = Math.max(
-              0,
-              Math.min(Number(crystal.from ?? 0), index - 1),
-            );
-            if (parentIndex !== crystalIndex) {
-              return crystal;
-            }
-            const parentFaces = context.getTwinCrystalFaces(next, parentIndex);
-            return {
-              ...crystal,
-              contact: {
-                ...(crystal.contact ?? {}),
-                baseFaceRef: removedFaceIds.has(
-                  crystal.contact?.baseFaceRef ?? null,
-                )
-                  ? (parentFaces[0]?.id ?? null)
-                  : (crystal.contact?.baseFaceRef ?? null),
-              },
-            };
+            });
           });
-        });
-        return;
-      }
+          return;
+        }
 
-      if (target.classList.contains("equivalent-face-button")) {
-        context.commitParameters((next) => {
-          const crystalIndex = context.getEditableCrystalIndex();
-          const editableCrystalFaces = context.getTwinCrystalFaces(
-            next,
-            crystalIndex,
+        if (target.classList.contains("equivalent-face-button")) {
+          context.commitParameters((next) => {
+            const crystalIndex = context.getEditableCrystalIndex();
+            const editableCrystalFaces = context.getTwinCrystalFaces(
+              next,
+              crystalIndex,
+            );
+            const sourceFace = editableCrystalFaces.find(
+              (face) => face.id === faceId,
+            );
+            if (!sourceFace) {
+              return;
+            }
+            const missingEquivalentFaces = createMissingEquivalentFaces(
+              editableCrystalFaces,
+              sourceFace,
+              next.crystalSystem,
+            );
+            context.setTwinCrystalFaces(next, crystalIndex, [
+              ...editableCrystalFaces,
+              ...missingEquivalentFaces,
+            ]);
+          });
+          return;
+        }
+
+        if (target.classList.contains("coefficient-spin-button")) {
+          const coefficientInput = row.querySelector(
+            'input[data-face-field="coefficient"]',
           );
-          const sourceFace = editableCrystalFaces.find(
-            (face) => face.id === faceId,
+          const currentValue = Number(
+            coefficientInput instanceof HTMLInputElement
+              ? coefficientInput.value
+              : NaN,
           );
-          if (!sourceFace) {
+          const editableFaces = context.getEditableFaces();
+          const sourceFace = editableFaces.find((face) => face.id === faceId);
+          const fallbackValue = groupCollapsed
+            ? editableFaces.find(
+                (face) =>
+                  context.getEquivalentFaceGroupKey(
+                    face,
+                    context.state.parameters.crystalSystem,
+                  ) === groupKey,
+              )?.coefficient
+            : sourceFace?.coefficient;
+          const baseValue = Number.isFinite(currentValue)
+            ? currentValue
+            : Number(fallbackValue ?? 1);
+          const direction = target.dataset.spinDirection === "down" ? -1 : 1;
+          const nextValue = context.getNextCoefficientValue(
+            baseValue,
+            direction,
+          );
+          if (coefficientInput instanceof HTMLInputElement) {
+            coefficientInput.value = String(nextValue);
+          }
+          context.commitParameters((next) => {
+            const crystalIndex = context.getEditableCrystalIndex();
+            const updatedFaces = context
+              .getTwinCrystalFaces(next, crystalIndex)
+              .map((face) => {
+                const remainingDraftFields = context
+                  .getDraftEmptyFields(face)
+                  .filter((name) => name !== "coefficient");
+                return (
+                  groupCollapsed
+                    ? context.getEquivalentFaceGroupKey(
+                        face,
+                        next.crystalSystem,
+                      ) === groupKey
+                    : face.id === faceId
+                )
+                  ? context.normalizeFaceForSystem(
+                      {
+                        ...face,
+                        coefficient: nextValue,
+                        enabled: remainingDraftFields.length === 0,
+                        ...(remainingDraftFields.length > 0
+                          ? {
+                              draftEmptyFields: remainingDraftFields,
+                              draftGroupKey: face.draftGroupKey,
+                            }
+                          : {
+                              draftEmptyFields: undefined,
+                              draftGroupKey: undefined,
+                            }),
+                      },
+                      next.crystalSystem,
+                    )
+                  : face;
+              });
+            context.setTwinCrystalFaces(next, crystalIndex, updatedFaces);
+          });
+          return;
+        }
+
+        if (target.classList.contains("face-group-toggle")) {
+          const toggleKey = target.dataset.groupKey;
+          if (!toggleKey) {
             return;
           }
-          const missingEquivalentFaces = createMissingEquivalentFaces(
-            editableCrystalFaces,
-            sourceFace,
-            next.crystalSystem,
-          );
-          context.setTwinCrystalFaces(next, crystalIndex, [
-            ...editableCrystalFaces,
-            ...missingEquivalentFaces,
-          ]);
-        });
-        return;
-      }
-
-      if (target.classList.contains("coefficient-spin-button")) {
-        const coefficientInput = row.querySelector(
-          'input[data-face-field="coefficient"]',
-        );
-        const currentValue = Number(
-          coefficientInput instanceof HTMLInputElement
-            ? coefficientInput.value
-            : NaN,
-        );
-        const editableFaces = context.getEditableFaces();
-        const sourceFace = editableFaces.find((face) => face.id === faceId);
-        const fallbackValue = groupCollapsed
-          ? editableFaces.find(
-              (face) =>
-                context.getEquivalentFaceGroupKey(
-                  face,
-                  context.state.parameters.crystalSystem,
-                ) === groupKey,
-            )?.coefficient
-          : sourceFace?.coefficient;
-        const baseValue = Number.isFinite(currentValue)
-          ? currentValue
-          : Number(fallbackValue ?? 1);
-        const direction = target.dataset.spinDirection === "down" ? -1 : 1;
-        const nextValue = context.getNextCoefficientValue(baseValue, direction);
-        if (coefficientInput instanceof HTMLInputElement) {
-          coefficientInput.value = String(nextValue);
-        }
-        context.commitParameters((next) => {
-          const crystalIndex = context.getEditableCrystalIndex();
-          const updatedFaces = context
-            .getTwinCrystalFaces(next, crystalIndex)
-            .map((face) => {
-              const remainingDraftFields = context
-                .getDraftEmptyFields(face)
-                .filter((name) => name !== "coefficient");
-              return (
-                groupCollapsed
-                  ? context.getEquivalentFaceGroupKey(
-                      face,
-                      next.crystalSystem,
-                    ) === groupKey
-                  : face.id === faceId
-              )
-                ? context.normalizeFaceForSystem(
-                    {
-                      ...face,
-                      coefficient: nextValue,
-                      enabled: remainingDraftFields.length === 0,
-                      ...(remainingDraftFields.length > 0
-                        ? {
-                            draftEmptyFields: remainingDraftFields,
-                            draftGroupKey: face.draftGroupKey,
-                          }
-                        : {
-                            draftEmptyFields: undefined,
-                            draftGroupKey: undefined,
-                          }),
-                    },
-                    next.crystalSystem,
-                  )
-                : face;
-            });
-          context.setTwinCrystalFaces(next, crystalIndex, updatedFaces);
-        });
-        return;
-      }
-
-      if (target.classList.contains("face-group-toggle")) {
-        const toggleKey = target.dataset.groupKey;
-        if (!toggleKey) {
+          const stateKey = context.getFaceGroupStateKey(toggleKey);
+          const currentCollapsed = row?.dataset.groupCollapsed === "true";
+          context.state.collapsedFaceGroups = {
+            ...context.state.collapsedFaceGroups,
+            [stateKey]: !currentCollapsed,
+          };
+          context.renderFaceRows();
           return;
         }
-        const stateKey = context.getFaceGroupStateKey(toggleKey);
-        const currentCollapsed = row?.dataset.groupCollapsed === "true";
-        context.state.collapsedFaceGroups = {
-          ...context.state.collapsedFaceGroups,
-          [stateKey]: !currentCollapsed,
-        };
-        context.renderFaceRows();
-        return;
-      }
 
-      if (target.classList.contains("toggle-face-text-button")) {
-        if (!faceId) {
-          return;
+        if (target.classList.contains("toggle-face-text-button")) {
+          context.state.faceTextEditorsExpanded = {
+            ...context.state.faceTextEditorsExpanded,
+            [faceId]: !context.state.faceTextEditorsExpanded[faceId],
+          };
+          context.renderFaceRows();
         }
-        context.state.faceTextEditorsExpanded = {
-          ...context.state.faceTextEditorsExpanded,
-          [faceId]: !context.state.faceTextEditorsExpanded[faceId],
-        };
-        context.renderFaceRows();
-        return;
-      }
-    });
+      });
+    };
+
+    registerClickHandlersFor(context.elements.facesTableBody);
+    if (context.elements.faceMobileList) {
+      registerClickHandlersFor(context.elements.faceMobileList);
+    }
   }
 
   return {

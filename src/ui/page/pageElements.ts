@@ -6,8 +6,17 @@
  */
 export function queryAppPageElements() {
   return {
+    mainContent: document.querySelector<HTMLElement>("#app-main-content"),
     localeLabel: document.querySelector("#app-locale-label"),
     localeSelect: document.querySelector("#app-locale-select"),
+    mobileLayoutTabs: document.querySelector<HTMLElement>(
+      "#app-mobile-layout-tabs",
+    ),
+    mobileLayoutTabButtons: Array.from(
+      document.querySelectorAll<HTMLButtonElement>(
+        "[data-mobile-layout-tab-button]",
+      ),
+    ),
     announcementModal: document.querySelector("#app-announcement-modal"),
     announcementBackdrop: document.querySelector("#app-announcement-backdrop"),
     announcementUpdatedAtValue: document.querySelector(
@@ -40,6 +49,10 @@ export function queryAppPageElements() {
     announcementOpenButton: document.querySelector(
       "#app-announcement-open-button",
     ),
+    mobileHeaderMenuButton: document.querySelector(
+      "#app-mobile-header-menu-button",
+    ),
+    mobileHeaderMenu: document.querySelector("#app-mobile-header-menu"),
     presetCombobox: document.querySelector("#app-preset-combobox"),
     presetSelect: document.querySelector("#app-preset-select"),
     presetClearButton: document.querySelector("#app-preset-clear-button"),
@@ -114,6 +127,8 @@ export function queryAppPageElements() {
     messagesPanel: document.querySelector("#app-messages-panel"),
     facesTableHeadRow: document.querySelector("#app-faces-table-head-row"),
     facesTableBody: document.querySelector("#app-faces-table-body"),
+    faceMobileToolbar: document.querySelector("#app-face-mobile-toolbar"),
+    faceMobileList: document.querySelector("#app-face-mobile-list"),
     addFaceButton: document.querySelector("#app-add-face-button"),
     clearFacesButton: document.querySelector("#app-clear-faces-button"),
     faceCrystalTabsContainer: document.querySelector(".crystal-tab-list"),
@@ -123,6 +138,16 @@ export function queryAppPageElements() {
     saveAsMenu: document.querySelector("#app-save-as-menu"),
     importJsonButton: document.querySelector("#app-import-json-button"),
     importJsonMenu: document.querySelector("#app-import-json-menu"),
+    mobileOutputExportButtons: Array.from(
+      document.querySelectorAll<HTMLButtonElement>(
+        ".mobile-output-flow [data-export-format][data-save-mode]",
+      ),
+    ),
+    mobileOutputImportButtons: Array.from(
+      document.querySelectorAll<HTMLButtonElement>(
+        ".mobile-output-flow [data-import-mode]",
+      ),
+    ),
     importJsonInput: document.querySelector("#app-import-json-input"),
     xrayFaceCanvas: document.querySelector("#app-xray-face-canvas"),
     canvas: document.querySelector("#app-preview-canvas"),

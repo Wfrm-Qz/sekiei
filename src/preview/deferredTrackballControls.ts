@@ -19,6 +19,36 @@ interface DeferredTrackballControlsResult {
   loadRealTrackballControls: () => Promise<TrackballControls>;
 }
 
+const TRACKBALL_STATE_NONE = -1;
+const TRACKBALL_STATE_TOUCH_ROTATE = 3;
+const TRACKBALL_STATE_TOUCH_ZOOM_PAN = 4;
+
+interface TrackballTouchPointerLike {
+  pointerId: number;
+}
+
+interface TrackballPointerPositionLike {
+  x: number;
+  y: number;
+}
+
+interface TrackballControlsTouchInternalLike extends TrackballControls {
+  state?: number;
+  _pointers?: TrackballTouchPointerLike[];
+  _pointerPositions?: Record<number, TrackballPointerPositionLike>;
+  _moveCurr?: THREE.Vector2;
+  _movePrev?: THREE.Vector2;
+  _panStart?: THREE.Vector2;
+  _panEnd?: THREE.Vector2;
+  _zoomStart?: THREE.Vector2;
+  _zoomEnd?: THREE.Vector2;
+  _getMouseOnCircle?: (pageX: number, pageY: number) => THREE.Vector2;
+  _onTouchStart?: (event: PointerEvent) => void;
+  _onTouchMove?: (event: PointerEvent) => void;
+  _onTouchEnd?: (event: PointerEvent) => void;
+  _sekieiTouchEndFixInstalled?: boolean;
+}
+
 /** TrackballControls へ渡している公開設定だけを proxy に持たせる。 */
 interface DeferredControlsShape {
   target: THREE.Vector3;
@@ -114,6 +144,113 @@ export function createDeferredTrackballControls(
     controls.target = proxyState.target;
   }
 
+  /**
+   * 2本指操作のあと1本指へ戻る瞬間に、TrackballControls の内部 state が
+   * `TOUCH_ZOOM_PAN` のまま残ることがある。
+   *
+   * そのままだと次の1本指 move でも pan/zoom 系の差分を引きずり、
+   * スマホで「回転中心がずれた」ように見えやすい。
+   * ここでは touch end 後の残 pointer 数を見て、1本だけ残る場合は
+   * 回転モードへ戻し、move 系ベクトルも残 pointer 位置へ揃え直す。
+   */
+  function installTouchTransitionFix(controls: TrackballControls) {
+    const internalControls = controls as TrackballControlsTouchInternalLike;
+    if (
+      internalControls._sekieiTouchEndFixInstalled ||
+      typeof internalControls._onTouchEnd !== "function"
+    ) {
+      return;
+    }
+
+    const originalOnTouchStart =
+      typeof internalControls._onTouchStart === "function"
+        ? internalControls._onTouchStart.bind(controls)
+        : null;
+    const originalOnTouchMove =
+      typeof internalControls._onTouchMove === "function"
+        ? internalControls._onTouchMove.bind(controls)
+        : null;
+    const originalOnTouchEnd = internalControls._onTouchEnd.bind(controls);
+    internalControls._sekieiTouchEndFixInstalled = true;
+    if (originalOnTouchStart) {
+      internalControls._onTouchStart = (event: PointerEvent) => {
+        originalOnTouchStart(event);
+        // スマホの 2 本指 gesture は pinch 中に midpoint が少しぶれやすく、
+        // TrackballControls 標準の pan 計算へそのまま入れると target が流れて
+        // 次の 1 本指回転で「回転中心が変わった」ように見えやすい。
+        if (
+          event.pointerType === "touch" &&
+          (internalControls._pointers?.length ?? 0) >= 2 &&
+          internalControls._panStart &&
+          internalControls._panEnd
+        ) {
+          internalControls._panEnd.copy(internalControls._panStart);
+        }
+      };
+    }
+    if (originalOnTouchMove) {
+      internalControls._onTouchMove = (event: PointerEvent) => {
+        originalOnTouchMove(event);
+        if (
+          event.pointerType === "touch" &&
+          (internalControls._pointers?.length ?? 0) >= 2 &&
+          internalControls._panStart &&
+          internalControls._panEnd
+        ) {
+          internalControls._panEnd.copy(internalControls._panStart);
+        }
+      };
+    }
+    internalControls._onTouchEnd = (event: PointerEvent) => {
+      const hadMultiplePointers =
+        (internalControls._pointers?.length ?? 0) >= 2;
+      originalOnTouchEnd(event);
+
+      if (!hadMultiplePointers) {
+        return;
+      }
+
+      queueMicrotask(() => {
+        const remainingPointers = internalControls._pointers ?? [];
+        if (remainingPointers.length === 1) {
+          const remainingPointer = remainingPointers[0];
+          const position =
+            internalControls._pointerPositions?.[remainingPointer.pointerId];
+          internalControls.state = TRACKBALL_STATE_TOUCH_ROTATE;
+
+          if (
+            position &&
+            internalControls._moveCurr &&
+            internalControls._movePrev &&
+            typeof internalControls._getMouseOnCircle === "function"
+          ) {
+            const nextPointerPosition = internalControls._getMouseOnCircle(
+              position.x,
+              position.y,
+            );
+            internalControls._moveCurr.copy(nextPointerPosition);
+            internalControls._movePrev.copy(nextPointerPosition);
+          }
+
+          if (internalControls._panStart && internalControls._panEnd) {
+            internalControls._panStart.copy(internalControls._panEnd);
+          }
+          if (internalControls._zoomStart && internalControls._zoomEnd) {
+            internalControls._zoomStart.copy(internalControls._zoomEnd);
+          }
+          return;
+        }
+
+        if (
+          remainingPointers.length === 0 &&
+          internalControls.state === TRACKBALL_STATE_TOUCH_ZOOM_PAN
+        ) {
+          internalControls.state = TRACKBALL_STATE_NONE;
+        }
+      });
+    };
+  }
+
   function loadControlsModule() {
     controlsModulePromise ??=
       import("three/addons/controls/TrackballControls.js");
@@ -128,6 +265,7 @@ export function createDeferredTrackballControls(
           domElement,
         );
         syncProxyStateToRealControls(controls);
+        installTouchTransitionFix(controls);
         replayListeners(controls);
         realControls = controls;
         return controls;

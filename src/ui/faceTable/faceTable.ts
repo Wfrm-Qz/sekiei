@@ -243,6 +243,114 @@ export function buildTwinFaceRowMarkup(
   return createTwinFaceRowElement(options).outerHTML;
 }
 
+function buildTwinFaceIndexText(
+  face: TwinFaceRowMarkupOptions["item"]["face"],
+  useFourAxis: boolean,
+) {
+  const parts = [String(face.h), String(face.k)];
+  if (useFourAxis) {
+    parts.push(String(face.i ?? 0));
+  }
+  parts.push(String(face.l));
+  return `(${parts.join(", ")})`;
+}
+
+function createFaceNumberInput(fieldName: string, value: string) {
+  const input = document.createElement("input");
+  input.dataset.faceField = fieldName;
+  input.type = "number";
+  input.step = "1";
+  input.value = value;
+  input.setAttribute("value", value);
+  return input;
+}
+
+function createFaceTextEditorElement(
+  options: TwinFaceRowMarkupOptions,
+): HTMLDivElement {
+  const text = {
+    ...FACE_TEXT_DEFAULTS,
+    ...(options.item.face.text ?? {}),
+  };
+  const editor = document.createElement("div");
+  editor.className = "face-text-editor";
+
+  const appendField = (
+    className: string,
+    labelText: string,
+    control: HTMLInputElement | HTMLSelectElement,
+  ) => {
+    const label = document.createElement("label");
+    label.className = `face-text-field ${className}`.trim();
+    const span = document.createElement("span");
+    span.textContent = labelText;
+    label.append(span, control);
+    editor.append(label);
+  };
+
+  const createNumberInput = (
+    fieldName: string,
+    value: number,
+    step = "any",
+  ) => {
+    const input = document.createElement("input");
+    input.type = "number";
+    input.step = step;
+    input.value = String(value);
+    input.dataset.faceTextField = fieldName;
+    return input;
+  };
+
+  const contentInput = document.createElement("input");
+  contentInput.type = "text";
+  contentInput.value = text.content;
+  contentInput.dataset.faceTextField = "content";
+  appendField(
+    "face-text-field-content",
+    options.labels.faceTextContent,
+    contentInput,
+  );
+
+  const fontSelect = document.createElement("select");
+  fontSelect.dataset.faceTextField = "fontId";
+  FACE_TEXT_FONTS.forEach((font) => {
+    const option = document.createElement("option");
+    option.value = font.id;
+    option.textContent = font.label;
+    option.selected = font.id === text.fontId;
+    fontSelect.append(option);
+  });
+  appendField("", options.labels.faceTextFont, fontSelect);
+
+  appendField(
+    "",
+    options.labels.faceTextFontSize,
+    createNumberInput("fontSize", text.fontSize),
+  );
+  appendField(
+    "",
+    options.labels.faceTextDepth,
+    createNumberInput("depth", text.depth),
+  );
+  appendField(
+    "",
+    options.labels.faceTextOffsetU,
+    createNumberInput("offsetU", text.offsetU),
+  );
+  appendField(
+    "",
+    options.labels.faceTextOffsetV,
+    createNumberInput("offsetV", text.offsetV),
+  );
+  appendField(
+    "",
+    options.labels.faceTextRotation,
+    createNumberInput("rotationDeg", text.rotationDeg),
+  );
+
+  return editor;
+}
+
 /** 面一覧 1 行分の DOM を安全に組み立てる。 */
 export function createTwinFaceRowElement(
   options: TwinFaceRowMarkupOptions,
@@ -270,16 +378,6 @@ export function createTwinFaceRowElement(
     options.groupColor.background,
   );
   row.style.setProperty("--face-group-border", options.groupColor.border);
-
-  const createNumberInput = (fieldName: string, value: string) => {
-    const input = document.createElement("input");
-    input.dataset.faceField = fieldName;
-    input.type = "number";
-    input.step = "1";
-    input.value = value;
-    input.setAttribute("value", value);
-    return input;
-  };
 
   const createTd = (...children: HTMLElement[]) => {
     const cell = document.createElement("td");
@@ -326,21 +424,21 @@ export function createTwinFaceRowElement(
   labelCell.append(labelWrap);
   row.append(labelCell);
 
-  const hInput = createNumberInput("h", hValue);
+  const hInput = createFaceNumberInput("h", hValue);
   hInput.disabled = options.isCollapsedRepresentative;
   row.append(createTd(hInput));
 
-  const kInput = createNumberInput("k", kValue);
+  const kInput = createFaceNumberInput("k", kValue);
   kInput.disabled = options.isCollapsedRepresentative;
   row.append(createTd(kInput));
 
   if (options.useFourAxis) {
-    const iInput = createNumberInput("i", iValue);
+    const iInput = createFaceNumberInput("i", iValue);
     iInput.readOnly = true;
     row.append(createTd(iInput));
   }
 
-  const lInput = createNumberInput("l", lValue);
+  const lInput = createFaceNumberInput("l", lValue);
   lInput.disabled = options.isCollapsedRepresentative;
   row.append(createTd(lInput));
 
@@ -441,10 +539,6 @@ export function createTwinFaceRowElement(
 export function createTwinFaceTextRowElement(
   options: TwinFaceRowMarkupOptions,
 ): HTMLTableRowElement {
-  const text = {
-    ...FACE_TEXT_DEFAULTS,
-    ...(options.item.face.text ?? {}),
-  };
   const row = document.createElement("tr");
   row.dataset.faceId = options.item.face.id;
   row.dataset.faceIndex = String(options.item.index);
@@ -459,85 +553,227 @@ export function createTwinFaceTextRowElement(
 
   const cell = document.createElement("td");
   cell.colSpan = options.useFourAxis ? 7 : 6;
-  const editor = document.createElement("div");
-  editor.className = "face-text-editor";
-
-  const appendField = (
-    className: string,
-    labelText: string,
-    control: HTMLInputElement | HTMLSelectElement,
-  ) => {
-    const label = document.createElement("label");
-    label.className = `face-text-field ${className}`.trim();
-    const span = document.createElement("span");
-    span.textContent = labelText;
-    label.append(span, control);
-    editor.append(label);
-  };
-
-  const createNumberInput = (
-    fieldName: string,
-    value: number,
-    step = "any",
-  ) => {
-    const input = document.createElement("input");
-    input.type = "number";
-    input.step = step;
-    input.value = String(value);
-    input.dataset.faceTextField = fieldName;
-    return input;
-  };
-
-  const contentInput = document.createElement("input");
-  contentInput.type = "text";
-  contentInput.value = text.content;
-  contentInput.dataset.faceTextField = "content";
-  appendField(
-    "face-text-field-content",
-    options.labels.faceTextContent,
-    contentInput,
-  );
-
-  const fontSelect = document.createElement("select");
-  fontSelect.dataset.faceTextField = "fontId";
-  FACE_TEXT_FONTS.forEach((font) => {
-    const option = document.createElement("option");
-    option.value = font.id;
-    option.textContent = font.label;
-    option.selected = font.id === text.fontId;
-    fontSelect.append(option);
-  });
-  appendField("", options.labels.faceTextFont, fontSelect);
-
-  appendField(
-    "",
-    options.labels.faceTextFontSize,
-    createNumberInput("fontSize", text.fontSize),
-  );
-  appendField(
-    "",
-    options.labels.faceTextDepth,
-    createNumberInput("depth", text.depth),
-  );
-  appendField(
-    "",
-    options.labels.faceTextOffsetU,
-    createNumberInput("offsetU", text.offsetU),
-  );
-  appendField(
-    "",
-    options.labels.faceTextOffsetV,
-    createNumberInput("offsetV", text.offsetV),
-  );
-  appendField(
-    "",
-    options.labels.faceTextRotation,
-    createNumberInput("rotationDeg", text.rotationDeg),
-  );
-
-  cell.append(editor);
+  cell.append(createFaceTextEditorElement(options));
   row.append(cell);
   return row;
+}
+
+/** スマホ向けの面カードを DOM で組み立てる。 */
+export function createTwinFaceMobileCardElement(
+  options: TwinFaceRowMarkupOptions,
+): HTMLElement {
+  const emptyFields = new Set(options.item.face.draftEmptyFields ?? []);
+  const hValue = emptyFields.has("h") ? "" : String(options.item.face.h);
+  const kValue = emptyFields.has("k") ? "" : String(options.item.face.k);
+  const lValue = emptyFields.has("l") ? "" : String(options.item.face.l);
+  const iValue =
+    emptyFields.has("h") || emptyFields.has("k")
+      ? ""
+      : String(options.item.face.i ?? "");
+  const coefficientValue = emptyFields.has("coefficient")
+    ? ""
+    : String(options.item.face.coefficient);
+
+  const card = document.createElement("article");
+  card.className = "face-mobile-card";
+  card.dataset.faceId = options.item.face.id;
+  card.dataset.faceIndex = String(options.item.index);
+  card.dataset.groupKey = options.groupKey;
+  card.dataset.groupCollapsed = String(options.isCollapsedRepresentative);
+  card.style.setProperty(
+    "--face-group-background",
+    options.groupColor.background,
+  );
+  card.style.setProperty("--face-group-border", options.groupColor.border);
+
+  const header = document.createElement("div");
+  header.className = "face-mobile-card__header";
+
+  const titleWrap = document.createElement("div");
+  titleWrap.className = "face-mobile-card__title";
+  const titleIndex = document.createElement("span");
+  titleIndex.className = "face-mobile-card__title-index";
+  titleIndex.textContent = `#${options.item.index + 1}`;
+  const titleFace = document.createElement("span");
+  titleFace.className = "face-mobile-card__title-face";
+  titleFace.textContent = buildTwinFaceIndexText(
+    options.item.face,
+    options.useFourAxis,
+  );
+  titleWrap.append(titleIndex, titleFace);
+
+  const headerActions = document.createElement("div");
+  headerActions.className = "face-mobile-card__header-actions";
+  const enabledLabel = document.createElement("label");
+  enabledLabel.className = "face-enabled-toggle";
+  enabledLabel.title = options.labels.showFaceTitle;
+  const enabledInput = document.createElement("input");
+  enabledInput.dataset.faceField = "enabled";
+  enabledInput.type = "checkbox";
+  enabledInput.checked = options.item.face.enabled !== false;
+  enabledLabel.append(enabledInput);
+  headerActions.append(enabledLabel);
+
+  if (options.groupItemCount > 1 && options.isGroupStart) {
+    const toggleButton = document.createElement("button");
+    toggleButton.className = "face-group-toggle";
+    toggleButton.type = "button";
+    toggleButton.dataset.groupKey = options.groupKey;
+    toggleButton.setAttribute("aria-expanded", String(!options.collapsed));
+    toggleButton.textContent = options.collapsed
+      ? options.labels.expand
+      : options.labels.collapse;
+    headerActions.append(toggleButton);
+
+    const groupCount = document.createElement("span");
+    groupCount.className = "face-group-count";
+    groupCount.textContent = String(options.groupItemCount);
+    headerActions.append(groupCount);
+  }
+
+  header.append(titleWrap, headerActions);
+  card.append(header);
+
+  const fieldGrid = document.createElement("div");
+  fieldGrid.className = "face-mobile-card__fields";
+  const appendField = (
+    fieldLabel: string,
+    input: HTMLInputElement,
+    fieldOptions: {
+      disabled?: boolean;
+      readOnly?: boolean;
+      coefficient?: boolean;
+    } = {},
+  ) => {
+    const label = document.createElement("label");
+    label.className = "face-mobile-card__field";
+    const span = document.createElement("span");
+    span.textContent = fieldLabel;
+    label.append(span);
+    if (fieldOptions.coefficient) {
+      const wrap = document.createElement("div");
+      wrap.className = "coefficient-input-wrap";
+      input.className = "coefficient-input";
+      input.min = "0";
+      input.step = "any";
+      if (fieldOptions.disabled) {
+        input.disabled = true;
+      }
+      wrap.append(input);
+
+      const spinButtons = document.createElement("div");
+      spinButtons.className = "coefficient-spin-buttons";
+      const upButton = document.createElement("button");
+      upButton.className = "coefficient-spin-button";
+      upButton.type = "button";
+      upButton.dataset.spinDirection = "up";
+      upButton.setAttribute(
+        "aria-label",
+        options.labels.sortAscending(options.labels.coefficient),
+      );
+      upButton.textContent = "▲";
+      const downButton = document.createElement("button");
+      downButton.className = "coefficient-spin-button";
+      downButton.type = "button";
+      downButton.dataset.spinDirection = "down";
+      downButton.setAttribute(
+        "aria-label",
+        options.labels.sortDescending(options.labels.coefficient),
+      );
+      downButton.textContent = "▼";
+      spinButtons.append(upButton, downButton);
+      wrap.append(spinButtons);
+      label.append(wrap);
+      fieldGrid.append(label);
+      return;
+    }
+
+    if (fieldOptions.disabled) {
+      input.disabled = true;
+    }
+    if (fieldOptions.readOnly) {
+      input.readOnly = true;
+    }
+    label.append(input);
+    fieldGrid.append(label);
+  };
+
+  appendField("h", createFaceNumberInput("h", hValue), {
+    disabled: options.isCollapsedRepresentative,
+  });
+  appendField("k", createFaceNumberInput("k", kValue), {
+    disabled: options.isCollapsedRepresentative,
+  });
+  if (options.useFourAxis) {
+    appendField("i", createFaceNumberInput("i", iValue), {
+      readOnly: true,
+    });
+  }
+  appendField("l", createFaceNumberInput("l", lValue), {
+    disabled: options.isCollapsedRepresentative,
+  });
+  appendField(
+    options.labels.coefficient,
+    createFaceNumberInput("coefficient", coefficientValue),
+    {
+      coefficient: true,
+    },
+  );
+  card.append(fieldGrid);
+
+  const actionsWrap = document.createElement("div");
+  actionsWrap.className = "face-mobile-card__actions";
+
+  if (!options.isCollapsedRepresentative) {
+    const textToggleButton = document.createElement("button");
+    textToggleButton.className = "toggle-face-text-button";
+    textToggleButton.type = "button";
+    textToggleButton.dataset.faceTextToggle = "true";
+    textToggleButton.setAttribute(
+      "aria-expanded",
+      String(Boolean(options.textExpanded)),
+    );
+    textToggleButton.textContent = options.textExpanded
+      ? options.labels.faceTextToggleClose
+      : options.labels.faceTextToggleOpen;
+    actionsWrap.append(textToggleButton);
+
+    const equivalentButton = document.createElement("button");
+    equivalentButton.className = "equivalent-face-button";
+    equivalentButton.type = "button";
+    equivalentButton.disabled = !options.canCreateEquivalentFace;
+    equivalentButton.textContent = options.labels.createEquivalentFace;
+    actionsWrap.append(equivalentButton);
+  }
+
+  const colorField = document.createElement("div");
+  colorField.className = "face-color-field";
+  const colorInput = document.createElement("input");
+  colorInput.type = "color";
+  colorInput.dataset.faceField = "accentColor";
+  colorInput.value =
+    normalizeFaceAccentColor(options.item.face.accentColor) ??
+    options.groupColor.preview;
+  colorField.append(colorInput);
+  actionsWrap.append(colorField);
+
+  const removeButton = document.createElement("button");
+  removeButton.className = "remove-face-button";
+  removeButton.type = "button";
+  removeButton.textContent = options.isCollapsedRepresentative
+    ? options.labels.deleteAllFaces
+    : options.labels.delete;
+  actionsWrap.append(removeButton);
+  card.append(actionsWrap);
+
+  if (!options.isCollapsedRepresentative && options.textExpanded) {
+    const textEditorWrap = document.createElement("div");
+    textEditorWrap.className = "face-mobile-card__text-editor";
+    textEditorWrap.append(createFaceTextEditorElement(options));
+    card.append(textEditorWrap);
+  }
+
+  return card;
 }
 
 /**

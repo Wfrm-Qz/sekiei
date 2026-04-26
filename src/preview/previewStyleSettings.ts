@@ -107,22 +107,22 @@ export function createDefaultTwinPreviewStyleSettings(): TwinPreviewStyleSetting
         c: "#005bac",
       },
       fontFamily: '"Segoe UI", "BIZ UDPGothic", sans-serif',
-      fontSizePx: 48,
+      fontSizePx: 24,
     },
     twinRuleLabel: {
       color: "#8b5fd1",
       fontFamily: '"Segoe UI", "BIZ UDPGothic", sans-serif',
-      fontSizePx: 24,
+      fontSizePx: 12,
     },
     presetMetadataName: {
       color: "#1f2a37",
       fontFamily: '"Segoe UI", "BIZ UDPGothic", sans-serif',
-      fontSizePx: 48,
+      fontSizePx: 24,
     },
     presetMetadataDescription: {
       color: "#516171",
       fontFamily: '"Segoe UI", "BIZ UDPGothic", sans-serif',
-      fontSizePx: 24,
+      fontSizePx: 12,
     },
     axisLines: {
       colors: {

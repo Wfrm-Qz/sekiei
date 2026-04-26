@@ -22,6 +22,7 @@ import {
 } from "./state/draftFaces.js";
 import { createTwinCrystalMutationActions } from "./state/crystalMutations.js";
 import {
+  createTwinFaceMobileCardElement,
   buildTwinFaceDisplayGroupsAndState,
   buildTwinFaceGroupPalette,
   buildTwinFaceGroupRenderPlan,
@@ -31,6 +32,7 @@ import {
 } from "./ui/faceTable/faceTable.js";
 import { queryAppPageElements } from "./ui/page/pageElements.js";
 import { createAnnouncementModalActions } from "./ui/page/announcementModal.js";
+import { createMobileLayoutActions } from "./ui/page/mobileLayout.js";
 import { createPageUiHelpers } from "./ui/page/pageUi.js";
 import { applyPageStaticTranslations } from "./ui/page/pageTranslations.js";
 import {
@@ -355,6 +357,10 @@ function closeHeaderSaveMenus() {
     { button: elements.saveButton, menu: elements.saveMenu },
     { button: elements.saveAsButton, menu: elements.saveAsMenu },
     { button: elements.importJsonButton, menu: elements.importJsonMenu },
+    {
+      button: elements.mobileHeaderMenuButton,
+      menu: elements.mobileHeaderMenu,
+    },
   ]);
 }
 
@@ -364,6 +370,10 @@ function toggleHeaderSaveMenu(button, menu) {
     { button: elements.saveButton, menu: elements.saveMenu },
     { button: elements.saveAsButton, menu: elements.saveAsMenu },
     { button: elements.importJsonButton, menu: elements.importJsonMenu },
+    {
+      button: elements.mobileHeaderMenuButton,
+      menu: elements.mobileHeaderMenu,
+    },
   ]);
 }
 
@@ -477,6 +487,15 @@ const { initAnnouncementModal, openAnnouncement } =
     getLocale: getCurrentLocale,
     onLocaleChange,
   });
+const { initMobileLayout, setActiveMobileLayoutTab } =
+  createMobileLayoutActions({
+    root: elements.mainContent,
+    tabButtons: elements.mobileLayoutTabButtons,
+    onLayoutChange: () => {
+      syncFaceSectionCardHeight();
+      requestPreviewOverlayUpdate();
+    },
+  });
 
 /** 面一覧カードの下端を現在のビューポート下端へ合わせる。 */
 function syncFaceSectionCardHeight() {
@@ -511,6 +530,8 @@ const { controls, loadRealTrackballControls } = createDeferredTrackballControls(
   camera,
   elements.canvas,
 );
+const activePreviewTouchPointerIds = new Set<number>();
+let previewTouchGestureUsedMultitouch = false;
 controls.rotateSpeed = 4;
 controls.zoomSpeed = 1.2;
 controls.panSpeed = 10;
@@ -849,24 +870,46 @@ controls.addEventListener("change", () => {
 });
 
 elements.canvas.addEventListener("pointerdown", (event) => {
+  if (event.pointerType === "touch") {
+    if (activePreviewTouchPointerIds.size === 0) {
+      previewTouchGestureUsedMultitouch = false;
+    }
+    activePreviewTouchPointerIds.add(event.pointerId);
+    if (activePreviewTouchPointerIds.size >= 2) {
+      previewTouchGestureUsedMultitouch = true;
+    }
+  }
   state.previewInertiaActive = false;
   state.isPreviewDragging = true;
-  state.previewDragButton = event.button;
+  state.previewDragButton = event.pointerType === "touch" ? null : event.button;
   applyLabelLayerVisibility();
   syncXrayFaceOverlayVisibility();
   requestPreviewRender();
 });
 
-window.addEventListener("pointerup", () => {
+window.addEventListener("pointerup", (event) => {
+  if (event.pointerType === "touch") {
+    activePreviewTouchPointerIds.delete(event.pointerId);
+    if (activePreviewTouchPointerIds.size > 0) {
+      return;
+    }
+  }
   if (!state.isPreviewDragging) {
     return;
   }
   const dragButton = state.previewDragButton;
   state.isPreviewDragging = false;
   state.previewDragButton = null;
-  if (state.useInertia && dragButton === 0) {
+  if (
+    state.useInertia &&
+    ((event.pointerType === "touch" && !previewTouchGestureUsedMultitouch) ||
+      (event.pointerType !== "touch" && dragButton === 0))
+  ) {
     state.previewInertiaActive = true;
     state.previewInertiaLastChangeAt = performance.now();
+  }
+  if (event.pointerType === "touch") {
+    previewTouchGestureUsedMultitouch = false;
   }
   applyLabelLayerVisibility();
   syncXrayFaceOverlayVisibility();
@@ -874,13 +917,22 @@ window.addEventListener("pointerup", () => {
   requestPreviewRender();
 });
 
-window.addEventListener("pointercancel", () => {
+window.addEventListener("pointercancel", (event) => {
+  if (event.pointerType === "touch") {
+    activePreviewTouchPointerIds.delete(event.pointerId);
+    if (activePreviewTouchPointerIds.size > 0) {
+      return;
+    }
+  }
   if (!state.isPreviewDragging) {
     return;
   }
   state.isPreviewDragging = false;
   state.previewDragButton = null;
   state.previewInertiaActive = false;
+  if (event.pointerType === "touch") {
+    previewTouchGestureUsedMultitouch = false;
+  }
   applyLabelLayerVisibility();
   syncXrayFaceOverlayVisibility();
   requestPreviewOverlayUpdate();
@@ -1086,7 +1138,7 @@ function renderFaceRows() {
     activeElement instanceof HTMLInputElement ||
     activeElement instanceof HTMLSelectElement
       ? (() => {
-          const row = activeElement.closest("tr[data-face-id]");
+          const row = activeElement.closest("[data-face-id]");
           const faceId = row?.getAttribute("data-face-id");
           const faceField = activeElement.dataset.faceField;
           const faceTextField = activeElement.dataset.faceTextField;
@@ -1097,6 +1149,11 @@ function renderFaceRows() {
             faceId,
             faceField: faceField ?? null,
             faceTextField: faceTextField ?? null,
+            source:
+              activeElement.closest("#app-face-mobile-list") instanceof
+              HTMLElement
+                ? "mobile"
+                : "table",
             selectionStart:
               activeElement instanceof HTMLInputElement &&
               activeElement.type === "text"
@@ -1128,6 +1185,9 @@ function renderFaceRows() {
   document
     .querySelector("#app-clear-faces-button")
     ?.toggleAttribute("disabled", editableFaces.length === 0);
+  elements.faceMobileToolbar
+    ?.querySelector<HTMLElement>('[data-mobile-face-action="clear"]')
+    ?.toggleAttribute("disabled", editableFaces.length === 0);
   const editableCrystalIndex = getEditableCrystalIndex();
   const { groups, collapsedFaceGroups } = buildTwinFaceDisplayGroupsAndState({
     editableFaces,
@@ -1147,7 +1207,30 @@ function renderFaceRows() {
   );
 
   elements.facesTableBody.replaceChildren();
-  const fragment = document.createDocumentFragment();
+  elements.faceMobileList?.replaceChildren();
+  const tableFragment = document.createDocumentFragment();
+  const mobileFragment = document.createDocumentFragment();
+  const labels = {
+    showFaceTitle: t("faceList.showFaceTitle"),
+    expand: t("common.expand"),
+    collapse: t("common.collapse"),
+    faceTextToggleOpen: t("faceText.toggleOpen"),
+    faceTextToggleClose: t("faceText.toggleClose"),
+    coefficient: t("common.coefficient"),
+    faceTextContent: t("faceText.content"),
+    faceTextFont: t("faceText.font"),
+    faceTextFontSize: t("faceText.fontSize"),
+    faceTextDepth: t("faceText.depth"),
+    faceTextOffsetU: t("faceText.offsetU"),
+    faceTextOffsetV: t("faceText.offsetV"),
+    faceTextRotation: t("faceText.rotation"),
+    color: t("crystals.colorLabel"),
+    createEquivalentFace: t("common.createEquivalentFace"),
+    deleteAllFaces: t("common.deleteAllFaces"),
+    delete: t("common.delete"),
+    sortAscending: (label) => t("common.sortAscending", { label }),
+    sortDescending: (label) => t("common.sortDescending", { label }),
+  };
   groups.forEach((group) => {
     const groupColor =
       groupColors.get(group.key) ?? createFaceGroupColor(group.key);
@@ -1168,118 +1251,59 @@ function renderFaceRows() {
         normalizeFaceAccentColor(item.face.accentColor)
           ? createFaceColorSetFromHex(item.face.accentColor)
           : groupColor;
-      fragment.append(
-        createTwinFaceRowElement({
-          groupKey: group.key,
-          groupItemCount: group.items.length,
-          groupColor: rowColor,
-          item: {
-            index: item.index,
-            face: {
-              id: item.face.id,
-              h: item.face.h,
-              k: item.face.k,
-              i: item.face.i,
-              l: item.face.l,
-              coefficient: item.face.coefficient,
-              enabled: isFaceEnabled(item.face),
-              accentColor: item.face.accentColor,
-              draftEmptyFields: getDraftEmptyFields(item.face),
-              text: item.face.text,
-            },
+      const rowOptions = {
+        groupKey: group.key,
+        groupItemCount: group.items.length,
+        groupColor: rowColor,
+        item: {
+          index: item.index,
+          face: {
+            id: item.face.id,
+            h: item.face.h,
+            k: item.face.k,
+            i: item.face.i,
+            l: item.face.l,
+            coefficient: item.face.coefficient,
+            enabled: isFaceEnabled(item.face),
+            accentColor: item.face.accentColor,
+            draftEmptyFields: getDraftEmptyFields(item.face),
+            text: item.face.text,
           },
-          useFourAxis,
-          collapsed: renderPlan.collapsed,
-          textExpanded: Boolean(state.faceTextEditorsExpanded[item.face.id]),
-          isCollapsedRepresentative,
-          isGroupStart: visibleIndex === 0,
-          canCreateEquivalentFace:
-            !isDraftFace(item.face) && missingEquivalentFaces.length > 0,
-          labels: {
-            showFaceTitle: t("faceList.showFaceTitle"),
-            expand: t("common.expand"),
-            collapse: t("common.collapse"),
-            faceTextToggleOpen: t("faceText.toggleOpen"),
-            faceTextToggleClose: t("faceText.toggleClose"),
-            coefficient: t("common.coefficient"),
-            faceTextContent: t("faceText.content"),
-            faceTextFont: t("faceText.font"),
-            faceTextFontSize: t("faceText.fontSize"),
-            faceTextDepth: t("faceText.depth"),
-            faceTextOffsetU: t("faceText.offsetU"),
-            faceTextOffsetV: t("faceText.offsetV"),
-            faceTextRotation: t("faceText.rotation"),
-            color: t("crystals.colorLabel"),
-            createEquivalentFace: t("common.createEquivalentFace"),
-            deleteAllFaces: t("common.deleteAllFaces"),
-            delete: t("common.delete"),
-            sortAscending: (label) => t("common.sortAscending", { label }),
-            sortDescending: (label) => t("common.sortDescending", { label }),
-          },
-        }),
-      );
+        },
+        useFourAxis,
+        collapsed: renderPlan.collapsed,
+        textExpanded: Boolean(state.faceTextEditorsExpanded[item.face.id]),
+        isCollapsedRepresentative,
+        isGroupStart: visibleIndex === 0,
+        canCreateEquivalentFace:
+          !isDraftFace(item.face) && missingEquivalentFaces.length > 0,
+        labels,
+      } as const;
+      tableFragment.append(createTwinFaceRowElement(rowOptions));
+      mobileFragment.append(createTwinFaceMobileCardElement(rowOptions));
       if (!isCollapsedRepresentative) {
-        fragment.append(
+        tableFragment.append(
           createTwinFaceTextRowElement({
-            groupKey: group.key,
-            groupItemCount: group.items.length,
-            groupColor: rowColor,
-            item: {
-              index: item.index,
-              face: {
-                id: item.face.id,
-                h: item.face.h,
-                k: item.face.k,
-                i: item.face.i,
-                l: item.face.l,
-                coefficient: item.face.coefficient,
-                enabled: isFaceEnabled(item.face),
-                accentColor: item.face.accentColor,
-                draftEmptyFields: getDraftEmptyFields(item.face),
-                text: item.face.text,
-              },
-            },
-            useFourAxis,
-            collapsed: renderPlan.collapsed,
-            textExpanded: Boolean(state.faceTextEditorsExpanded[item.face.id]),
+            ...rowOptions,
             isCollapsedRepresentative: false,
             isGroupStart: false,
-            canCreateEquivalentFace:
-              !isDraftFace(item.face) && missingEquivalentFaces.length > 0,
-            labels: {
-              showFaceTitle: t("faceList.showFaceTitle"),
-              expand: t("common.expand"),
-              collapse: t("common.collapse"),
-              faceTextToggleOpen: t("faceText.toggleOpen"),
-              faceTextToggleClose: t("faceText.toggleClose"),
-              coefficient: t("common.coefficient"),
-              faceTextContent: t("faceText.content"),
-              faceTextFont: t("faceText.font"),
-              faceTextFontSize: t("faceText.fontSize"),
-              faceTextDepth: t("faceText.depth"),
-              faceTextOffsetU: t("faceText.offsetU"),
-              faceTextOffsetV: t("faceText.offsetV"),
-              faceTextRotation: t("faceText.rotation"),
-              color: t("crystals.colorLabel"),
-              createEquivalentFace: t("common.createEquivalentFace"),
-              deleteAllFaces: t("common.deleteAllFaces"),
-              delete: t("common.delete"),
-              sortAscending: (label) => t("common.sortAscending", { label }),
-              sortDescending: (label) => t("common.sortDescending", { label }),
-            },
           }),
         );
       }
     });
   });
-  elements.facesTableBody.append(fragment);
+  elements.facesTableBody.append(tableFragment);
+  elements.faceMobileList?.append(mobileFragment);
   if (preservedFocusedField) {
     const escapedFaceId = CSS.escape(preservedFocusedField.faceId);
     const targetSelector = preservedFocusedField.faceTextField
-      ? `tr[data-face-id="${escapedFaceId}"] [data-face-text-field="${preservedFocusedField.faceTextField}"]`
-      : `tr[data-face-id="${escapedFaceId}"] [data-face-field="${preservedFocusedField.faceField}"]`;
-    const nextFocusedField =
-      elements.facesTableBody.querySelector(targetSelector);
+      ? `[data-face-id="${escapedFaceId}"] [data-face-text-field="${preservedFocusedField.faceTextField}"]`
+      : `[data-face-id="${escapedFaceId}"] [data-face-field="${preservedFocusedField.faceField}"]`;
+    const focusRoot =
+      preservedFocusedField.source === "mobile"
+        ? elements.faceMobileList
+        : elements.facesTableBody;
+    const nextFocusedField = focusRoot?.querySelector(targetSelector);
     if (
       nextFocusedField instanceof HTMLInputElement ||
       nextFocusedField instanceof HTMLSelectElement
@@ -1400,7 +1424,23 @@ const { registerPresetAndMetadataHandlers, registerHeaderSaveHandlers } =
     closeHeaderSaveMenus,
     toggleHeaderSaveMenu,
     openAnnouncementModal: () => openAnnouncement(),
+    setMobileLayoutTab: (tab) => {
+      setActiveMobileLayoutTab(tab);
+      elements.mobileLayoutTabs?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    },
     triggerImportJsonWithMode,
+    setLocale: (locale) => {
+      if (!(elements.localeSelect instanceof HTMLSelectElement)) {
+        return;
+      }
+      elements.localeSelect.value = locale;
+      elements.localeSelect.dispatchEvent(
+        new Event("change", { bubbles: true }),
+      );
+    },
     commitMetadataField,
     applyPresetMetadataSectionVisibility,
     exportTwinArtifact,
@@ -1520,6 +1560,7 @@ const { animate, init } = createPageLifecycleActions({
 });
 
 init();
+initMobileLayout();
 initAnnouncementModal();
 
 // @ts-nocheck

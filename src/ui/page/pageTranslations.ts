@@ -122,9 +122,14 @@ export function applyPageStaticTranslations(elements, locale, translate) {
     "aria-label",
     translate("preview.axisViewButtons"),
   );
-  document.querySelector(".preview-hint").textContent = translate(
-    "preview.controlsHint",
-  );
+  const previewHint = document.querySelector(".preview-hint");
+  if (previewHint) {
+    previewHint.textContent = translate("preview.controlsHint");
+  }
+  const mobilePreviewHint = document.querySelector(".mobile-preview-hint");
+  if (mobilePreviewHint) {
+    mobilePreviewHint.textContent = translate("preview.mobileControlsHint");
+  }
   const faceDisplayTranslations = {
     grouped: "preview.faceDisplay.grouped",
     solid: "preview.faceDisplay.solid",

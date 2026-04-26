@@ -8,10 +8,12 @@ import { FACE_TEXT_DEFAULTS } from "../../../../src/constants.ts";
 describe("ui/faceTableHandlers", () => {
   function createContext() {
     document.body.innerHTML = `
+      <div id="mobile-toolbar"></div>
       <table>
         <thead><tr id="head"></tr></thead>
         <tbody id="body"></tbody>
       </table>
+      <div id="mobile-list"></div>
     `;
 
     const state = {
@@ -68,6 +70,10 @@ describe("ui/faceTableHandlers", () => {
         elements: {
           facesTableHeadRow: document.getElementById("head") as HTMLElement,
           facesTableBody: document.getElementById("body") as HTMLElement,
+          faceMobileToolbar: document.getElementById(
+            "mobile-toolbar",
+          ) as HTMLElement,
+          faceMobileList: document.getElementById("mobile-list") as HTMLElement,
         },
         emptyDraftFaceFields: ["h", "k", "l", "coefficient"],
         commitParameters: vi.fn((mutator) => mutator(state.parameters)),
@@ -138,6 +144,24 @@ describe("ui/faceTableHandlers", () => {
     });
     expect(context.renderFaceTableHeader).toHaveBeenCalled();
     expect(context.renderFaceRows).toHaveBeenCalled();
+
+    context.elements.faceMobileToolbar!.innerHTML = `
+      <button data-mobile-face-action="add"></button>
+      <button data-mobile-face-action="clear"></button>
+    `;
+
+    (
+      context.elements.faceMobileToolbar!.querySelector(
+        '[data-mobile-face-action="add"]',
+      ) as HTMLButtonElement
+    ).click();
+    (
+      context.elements.faceMobileToolbar!.querySelector(
+        '[data-mobile-face-action="clear"]',
+      ) as HTMLButtonElement
+    ).click();
+    expect(context.createEmptyDraftFace).toHaveBeenCalled();
+    expect(context.confirm).toHaveBeenCalled();
   });
 
   it("registerFaceTableInputHandlers / ClickHandlers は enabled, text, spin, group toggle, text toggle を反映する", () => {
@@ -269,5 +293,50 @@ describe("ui/faceTableHandlers", () => {
         expect.objectContaining({ id: "face-2", accentColor: "#ff6600" }),
       ]),
     );
+  });
+
+  it("mobile list 側の click/input でも同じ face handlers を使える", () => {
+    const { context } = createContext();
+    const handlers = createTwinFaceTableHandlers(context);
+    handlers.registerFaceTableInputHandlers();
+    handlers.registerFaceTableClickHandlers();
+
+    context.elements.faceMobileList!.innerHTML = `
+      <article data-face-index="0" data-face-id="face-1" data-group-key="group-1" data-group-collapsed="false">
+        <input data-face-field="enabled" type="checkbox" />
+        <input data-face-field="accentColor" type="color" value="#2244aa" />
+        <input data-face-field="coefficient" value="1" />
+        <button class="coefficient-spin-button" data-spin-direction="down"></button>
+        <button class="toggle-face-text-button" data-face-text-toggle="true"></button>
+        <input data-face-text-field="content" value="R" />
+      </article>
+    `;
+
+    const enabledInput = context.elements.faceMobileList!.querySelector(
+      '[data-face-field="enabled"]',
+    ) as HTMLInputElement;
+    enabledInput.checked = false;
+    enabledInput.dispatchEvent(new Event("change", { bubbles: true }));
+
+    const textContentInput = context.elements.faceMobileList!.querySelector(
+      '[data-face-text-field="content"]',
+    ) as HTMLInputElement;
+    textContentInput.value = "MOBILE";
+    textContentInput.dispatchEvent(new Event("input", { bubbles: true }));
+
+    (
+      context.elements.faceMobileList!.querySelector(
+        ".coefficient-spin-button",
+      ) as HTMLButtonElement
+    ).click();
+    (
+      context.elements.faceMobileList!.querySelector(
+        ".toggle-face-text-button",
+      ) as HTMLButtonElement
+    ).click();
+
+    expect(context.commitParameters).toHaveBeenCalled();
+    expect(context.getNextCoefficientValue).toHaveBeenCalledWith(1, -1);
+    expect(context.state.faceTextEditorsExpanded["face-1"]).toBe(true);
   });
 });

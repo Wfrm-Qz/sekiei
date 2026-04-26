@@ -141,4 +141,118 @@ describe("preview/deferredTrackballControls", () => {
     expect(realControls.dynamicDampingFactor).toBe(0.12);
     expect(realControls.rotateSpeed).toBe(4);
   });
+
+  it("touch の2本指操作では pan 差分を残さない", async () => {
+    const camera = new THREE.OrthographicCamera();
+    const canvas = document.createElement("canvas");
+    const realControls = {
+      target: new THREE.Vector3(),
+      enabled: true,
+      rotateSpeed: 0,
+      zoomSpeed: 0,
+      panSpeed: 0,
+      dynamicDampingFactor: 0,
+      staticMoving: true,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      update: vi.fn(),
+      handleResize: vi.fn(),
+      _pointers: [{ pointerId: 21 }, { pointerId: 22 }],
+      _panStart: new THREE.Vector2(1, 2),
+      _panEnd: new THREE.Vector2(5, 6),
+      _onTouchStart: vi.fn(() => {
+        realControls._panStart.set(3, 4);
+        realControls._panEnd.set(3, 4);
+      }),
+      _onTouchMove: vi.fn(() => {
+        realControls._panEnd.set(9, 10);
+      }),
+      _onTouchEnd: vi.fn(),
+    };
+
+    vi.doMock("three/addons/controls/TrackballControls.js", () => ({
+      TrackballControls: class {
+        constructor() {
+          return realControls;
+        }
+      },
+    }));
+
+    const { loadRealTrackballControls } = createDeferredTrackballControls(
+      camera,
+      canvas,
+    );
+
+    const loaded =
+      (await loadRealTrackballControls()) as typeof realControls & {
+        _onTouchStart: (event: PointerEvent) => void;
+        _onTouchMove: (event: PointerEvent) => void;
+      };
+
+    loaded._onTouchStart({ pointerType: "touch" } as PointerEvent);
+    loaded._onTouchMove({ pointerType: "touch" } as PointerEvent);
+
+    expect(realControls._panStart.toArray()).toEqual([3, 4]);
+    expect(realControls._panEnd.toArray()).toEqual([3, 4]);
+  });
+
+  it("2本指操作のあと1本だけ残った時は touch rotate 状態へ戻す", async () => {
+    const camera = new THREE.OrthographicCamera();
+    const canvas = document.createElement("canvas");
+    const realControls = {
+      target: new THREE.Vector3(),
+      enabled: true,
+      rotateSpeed: 0,
+      zoomSpeed: 0,
+      panSpeed: 0,
+      dynamicDampingFactor: 0,
+      staticMoving: true,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      update: vi.fn(),
+      handleResize: vi.fn(),
+      state: 4,
+      _pointers: [{ pointerId: 11 }, { pointerId: 12 }],
+      _pointerPositions: {
+        11: { x: 40, y: 60 },
+      },
+      _moveCurr: new THREE.Vector2(),
+      _movePrev: new THREE.Vector2(),
+      _panStart: new THREE.Vector2(1, 2),
+      _panEnd: new THREE.Vector2(3, 4),
+      _zoomStart: new THREE.Vector2(5, 6),
+      _zoomEnd: new THREE.Vector2(7, 8),
+      _getMouseOnCircle: vi.fn(() => new THREE.Vector2(0.25, 0.75)),
+      _onTouchEnd: vi.fn(),
+    };
+
+    vi.doMock("three/addons/controls/TrackballControls.js", () => ({
+      TrackballControls: class {
+        constructor() {
+          return realControls;
+        }
+      },
+    }));
+
+    const { loadRealTrackballControls } = createDeferredTrackballControls(
+      camera,
+      canvas,
+    );
+
+    const loaded =
+      (await loadRealTrackballControls()) as typeof realControls & {
+        _onTouchEnd: (event: PointerEvent) => void;
+      };
+
+    loaded._onTouchEnd({ pointerId: 12 } as PointerEvent);
+    realControls._pointers = [{ pointerId: 11 }];
+
+    await Promise.resolve();
+
+    expect(realControls.state).toBe(3);
+    expect(realControls._moveCurr.toArray()).toEqual([0.25, 0.75]);
+    expect(realControls._movePrev.toArray()).toEqual([0.25, 0.75]);
+    expect(realControls._panStart.toArray()).toEqual([3, 4]);
+    expect(realControls._zoomStart.toArray()).toEqual([7, 8]);
+  });
 });

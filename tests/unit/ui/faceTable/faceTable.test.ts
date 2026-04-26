@@ -8,6 +8,7 @@ import {
   buildTwinFaceGroupPalette,
   buildTwinFaceGroupRenderPlan,
   buildTwinFaceRowMarkup,
+  createTwinFaceMobileCardElement,
   createTwinFaceRowElement,
   createTwinFaceTextRowElement,
   compareTwinFaceItemsForSort,
@@ -445,5 +446,51 @@ describe("ui/faceTable", () => {
     expect(toggleButton).not.toBeNull();
     expect(toggleButton?.getAttribute("aria-expanded")).toBe("false");
     expect(toggleButton?.textContent).toBe("文字");
+  });
+
+  it("スマホ向けカードは指数欄と文字編集欄を内包して描画できる", () => {
+    const card = createTwinFaceMobileCardElement({
+      groupKey: "face-1",
+      groupItemCount: 1,
+      groupColor: {
+        preview: "#cc0000",
+        background: "rgba(0,0,0,0.05)",
+        border: "rgba(0,0,0,0.2)",
+      },
+      item: {
+        index: 0,
+        face: {
+          id: "face-1",
+          h: 1,
+          k: 0,
+          l: 0,
+          coefficient: 1,
+          enabled: true,
+          text: {
+            content: "R",
+          },
+        },
+      },
+      useFourAxis: false,
+      collapsed: false,
+      textExpanded: true,
+      isCollapsedRepresentative: false,
+      isGroupStart: true,
+      canCreateEquivalentFace: true,
+      labels: createLabels(),
+    });
+
+    expect(card).toHaveAttribute("data-face-id", "face-1");
+    expect(
+      card.querySelector(".face-mobile-card__title-face")?.textContent,
+    ).toBe("(1, 0, 0)");
+    expect(
+      card.querySelector('[data-face-field="coefficient"]'),
+    ).not.toBeNull();
+    expect(card.querySelector(".toggle-face-text-button")).not.toBeNull();
+    expect(card.querySelector(".face-mobile-card__text-editor")).not.toBeNull();
+    expect(
+      card.querySelector('[data-face-text-field="content"]'),
+    ).not.toBeNull();
   });
 });

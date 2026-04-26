@@ -37,6 +37,8 @@
 
 3D preview と overlay 表示を扱います。
 
+- `deferredTrackballControls.ts`
+  - TrackballControls の遅延読込、proxy target 共有、mobile touch の遷移補正
 - `previewScene.ts`
   - scene object の組立、面文字輪郭の overlay 線追加
 - `previewRuntime.ts`
@@ -46,7 +48,7 @@
 - `previewProfiles.ts`
   - face/line profile と display mode
 - `previewStyleSettings.ts`
-  - preview 詳細設定の構造
+  - preview 詳細設定の構造と文字サイズ既定値
 
 ### `src/text`
 
@@ -77,13 +79,13 @@ UI の描画と DOM 配線です。
 - `formRender.ts`
   - input/select への値反映 helper
 - `page/`
-  - page element 参照、翻訳反映、軽量 UI helper
+  - page element 参照、翻訳反映、軽量 UI helper、mobile tab layout state
 - `preset/`
   - preset combobox、preset metadata、preset 適用 helper
 - `faceTable/`
-  - 面一覧テーブルと行内操作
+  - 面一覧 table と mobile card list、行内操作
 - `handlers/`
-  - import や preview 設定などのイベント配線
+  - import / export / お知らせ / mobile header menu などのイベント配線
 
 ### `src/content`
 
@@ -115,6 +117,7 @@ UI の描画と DOM 配線です。
   - `previewExportSurfaceProfiles.ts`
   - `previewExportSurfaceRendering.ts`
   - `previewExportSurfaceGeometry.ts`
+- mobile layout 試作では desktop / tablet の DOM を保ったまま、`src/ui/page/mobileLayout.ts` と `data-mobile-layout-*` 属性で mobile 時だけ section を切り替えています
 
 ## Public Development Guidance
 

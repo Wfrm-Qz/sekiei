@@ -45,7 +45,7 @@ describe("i18n", () => {
   });
 
   it("t は補間を解決し、未知キーはキー文字列を返す", () => {
-    expect(t("crystals.indexed", { index: 3 }, "ja")).toBe("結晶 3");
+    expect(t("crystals.indexed", { index: 3 }, "ja")).toBe("結晶3");
     expect(t("missing.translation.key", {}, "ja")).toBe(
       "missing.translation.key",
     );

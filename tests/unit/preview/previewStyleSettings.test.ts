@@ -8,10 +8,14 @@ import {
 } from "../../../src/preview/previewStyleSettings.ts";
 
 describe("preview/previewStyleSettings", () => {
-  it("createDefaultTwinPreviewStyleSettings は簡易説明サイズの既定値に 24px を使う", () => {
+  it("createDefaultTwinPreviewStyleSettings は面指数以外の文字サイズを控えめな既定値にする", () => {
     const settings = createDefaultTwinPreviewStyleSettings();
 
-    expect(settings.presetMetadataDescription.fontSizePx).toBe(24);
+    expect(settings.faceLabel.fontSizePx).toBe(14);
+    expect(settings.axisLabel.fontSizePx).toBe(24);
+    expect(settings.twinRuleLabel.fontSizePx).toBe(12);
+    expect(settings.presetMetadataName.fontSizePx).toBe(24);
+    expect(settings.presetMetadataDescription.fontSizePx).toBe(12);
   });
 
   it("normalizeTwinPreviewStyleSettings は欠落項目を既定値で補う", () => {

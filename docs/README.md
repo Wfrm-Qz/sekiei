@@ -20,6 +20,8 @@
   - 利用者向けの基本操作ガイド
 - [Preview Controls](./preview-controls.md)
   - プレビュー周辺の操作説明
+- [Mobile Layout Plan](./mobile-layout-plan.md)
+  - スマホ向けレイアウト再設計の方針と Phase 1 試作範囲
 
 ## Samples
 
