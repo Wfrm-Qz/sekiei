@@ -8,6 +8,33 @@ permissions:
   contents: read
 
 jobs:
+  master-source:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require develop as the source branch for master PRs
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          if [ "$EVENT_NAME" != "pull_request" ]; then
+            echo "Not a pull request; skipping source branch check."
+            exit 0
+          fi
+
+          if [ "$BASE_REF" != "master" ]; then
+            echo "Pull request targets $BASE_REF; no master source restriction applies."
+            exit 0
+          fi
+
+          if [ "$HEAD_REF" = "develop" ]; then
+            echo "master pull request source is develop."
+            exit 0
+          fi
+
+          echo "::error::Pull requests targeting master must use develop as the source branch. Current source: $HEAD_REF"
+          exit 1
+
   public-ready:
     runs-on: ubuntu-latest
     steps:

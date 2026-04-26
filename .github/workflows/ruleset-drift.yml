@@ -1,0 +1,40 @@
+name: Ruleset Drift
+
+on:
+  pull_request:
+    paths:
+      - ".github/rulesets/**"
+      - ".github/workflows/ruleset-drift.yml"
+      - "scripts/check-rulesets.mjs"
+  push:
+    branches:
+      - master
+      - develop
+    paths:
+      - ".github/rulesets/**"
+      - ".github/workflows/ruleset-drift.yml"
+      - "scripts/check-rulesets.mjs"
+  workflow_dispatch:
+  schedule:
+    - cron: "23 18 * * 0"
+
+permissions:
+  contents: read
+
+jobs:
+  ruleset-drift:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+
+      - name: Compare local ruleset files with GitHub settings
+        env:
+          GITHUB_TOKEN: ${{ secrets.RULESET_AUDIT_TOKEN || github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node ./scripts/check-rulesets.mjs

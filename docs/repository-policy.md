@@ -26,6 +26,10 @@
   - pull request / push ごとに `public-ready`、`lint`、`test`、`build`、`e2e` を分割実行する
   - `test` job では Vitest により unit / integration test をまとめて確認する
   - `e2e` job では Playwright で主要ブラウザフローを確認する
+  - `master-source` job では、`master` 向け pull request の source branch が `develop` であることを確認する
+- `.github/workflows/ruleset-drift.yml`
+  - `.github/rulesets/*.json` と GitHub 側の実 ruleset 設定が一致しているかを確認する
+  - ruleset そのものを直す pull request が詰まらないよう、required status check には含めない
 - `.github/CODEOWNERS`
   - owner を `@Wfrm-Qz` として review 導線を揃える
 - `.github/pull_request_template.md`
@@ -80,10 +84,13 @@ GitHub 側では、少なくとも次を branch protection または ruleset で
 - Require a pull request before merging
 - Require status checks to pass before merging
 - Require `public-ready`, `lint`, `test`, `build`, `e2e`
+- `master` only: require `master-source`
 - Require approvals
 - Require review from Code Owners
 - Do not allow bypassing the above except owner
 - Restrict force pushes
 - Restrict deletions
 
-`master` については、必要なら `develop` 以外からの merge を owner review / release flow でさらに絞る運用にします。
+`master` については、`master-source` job を required status check に含めることで `develop` 以外からの pull request merge を防ぎます。
+
+`Ruleset Drift` workflow は、GitHub 側の実設定と repository 内の ruleset JSON のずれを検知するための補助です。ruleset 変更 PR では一時的に mismatch になることがあるため、branch protection / ruleset の required checks には含めません。実 ruleset を読むには `RULESET_AUDIT_TOKEN` secret に ruleset read 権限を持つ token を入れる運用を想定します。

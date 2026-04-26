@@ -13,6 +13,7 @@
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
     "public:check": "node ./scripts/check-public-ready.mjs && npm run lint && npm run test:unit && npm run build",
+    "ruleset:check": "node ./scripts/check-rulesets.mjs",
     "hooks:install": "git config core.hooksPath .githooks",
     "lint": "npm run lint:ts && npm run lint:css && npm run lint:html",
     "lint:changed": "powershell -ExecutionPolicy Bypass -File ./scripts/run-lint-on-change.ps1",
