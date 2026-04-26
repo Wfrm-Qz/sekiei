@@ -697,14 +697,6 @@ function buildCrystalMeshDataInternal(
   const scaledSet = scaleVertices(vertices, Number(parameters.sizeMm), {
     normalizeSize,
   });
-  const scaledPolygons = rebuildScaledPolygons(
-    facePolygons,
-    scaledSet.scaled,
-    vertices,
-  ).map((face) => ({
-    ...face,
-    textUpVector: buildFaceTextUpVector(face.normal, directBasis),
-  }));
   const geometryUnitsPerMm =
     normalizeSize || !Number.isFinite(Number(parameters.sizeMm))
       ? 1
@@ -722,6 +714,15 @@ function buildCrystalMeshDataInternal(
         },
       ]),
   );
+  const scaledPolygons = rebuildScaledPolygons(
+    facePolygons,
+    scaledSet.scaled,
+    vertices,
+  ).map((face) => ({
+    ...face,
+    text: getLooseObjectField(sourceFaceMap.get(face.id), "text") ?? null,
+    textUpVector: buildFaceTextUpVector(face.normal, directBasis),
+  }));
   const triangulated = triangulateFacesFn(
     scaledPolygons,
     sourceFaceMap,

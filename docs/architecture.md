@@ -31,14 +31,14 @@
 単結晶形状の生成ロジックです。
 
 - `crystalGeometry.ts`
-  - 半空間交差、面ポリゴン化、validation、警告生成
+  - 半空間交差、面ポリゴン化、validation、警告生成、preview face への文字設定反映
 
 ### `src/preview`
 
 3D preview と overlay 表示を扱います。
 
 - `previewScene.ts`
-  - scene object の組立
+  - scene object の組立、面文字輪郭の overlay 線追加
 - `previewRuntime.ts`
   - preview 同期や表示状態の helper
 - `previewLabels.ts`
@@ -47,6 +47,13 @@
   - face/line profile と display mode
 - `previewStyleSettings.ts`
   - preview 詳細設定の構造
+
+### `src/text`
+
+面文字加工まわりです。
+
+- `faceTextGeometry.ts`
+  - 面文字のフィット、押し出し三角形化、preview 用輪郭線生成
 
 ### `src/export`
 

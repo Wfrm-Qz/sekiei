@@ -43,6 +43,16 @@ interface PreviewFaceLike {
   coefficient?: number;
   normal?: PreviewVertexLike;
   vertices?: PreviewVertexLike[];
+  textUpVector?: PreviewVertexLike;
+  text?: {
+    content?: string;
+    fontId?: string;
+    fontSize?: number;
+    depth?: number;
+    offsetU?: number;
+    offsetV?: number;
+    rotationDeg?: number;
+  } | null;
 }
 
 interface PreviewAxisGuideLike {
@@ -208,6 +218,10 @@ export interface TwinPreviewSceneContext {
       index: number;
       meshData: PreviewMeshDataLike;
     }[],
+  ) => number[];
+  buildFaceTextIntersectionLinePositions?: (
+    face: PreviewFaceLike,
+    sourceFace: PreviewFaceLike | null | undefined,
   ) => number[];
   buildSharedSolidFaceColorMap: (
     visibleCrystalEntries: {
@@ -735,9 +749,10 @@ export function createTwinPreviewSceneActions(
     if (!showFinalMesh) {
       const ridgeLinesGroup = new THREE.Group();
       const intersectionRidgeLinesGroup = new THREE.Group();
+      const faceTextIntersectionRidgeLinesGroup = new THREE.Group();
       const facePickTargetGroup = new THREE.Group();
       facePickTargetGroup.name = "face-pick-targets";
-      const intersectionPositions =
+      const crossCrystalIntersectionPositions =
         hasFinal &&
         visibleCrystalEntries.length === activeCrystalEntries.length &&
         visibleCrystalEntries.length > 1
@@ -748,7 +763,7 @@ export function createTwinPreviewSceneActions(
       const ridgeLineData = !canUseFinalWireframe
         ? context.buildVisibleRidgeLineData(
             visibleCrystalEntries,
-            intersectionPositions,
+            crossCrystalIntersectionPositions,
           )
         : { surfacePositions: [], occludedInteriorPositions: [] };
       const ridgePositions = lineProfile.showOccludedInteriorLines
@@ -757,17 +772,7 @@ export function createTwinPreviewSceneActions(
             ...ridgeLineData.occludedInteriorPositions,
           ]
         : ridgeLineData.surfacePositions;
-      if (ridgePositions.length > 0 || intersectionPositions.length > 0) {
-        const summary = buildXrayLineDebugSummary(
-          ridgeLineData,
-          intersectionPositions,
-          context.state.faceDisplayMode,
-        );
-        group.userData.previewLineDebug = summary;
-        (globalThis as Record<string, unknown>).__twinPreviewLineDebug =
-          summary;
-        console.info("[Twin Preview Lines]", summary);
-      }
+      const faceTextIntersectionPositions: number[] = [];
       visibleCrystalEntries.forEach(({ index, meshData }) => {
         const sourceName = `crystal-mesh-${index}`;
         const sourceFaces = getTwinCrystalFaces(
@@ -859,6 +864,15 @@ export function createTwinPreviewSceneActions(
             validSourceFaces[faceIndex] ??
             sourceFaces[faceIndex] ??
             null;
+          if (context.buildFaceTextIntersectionLinePositions) {
+            // 面文字輪郭は既存の交線レイヤーへ相乗りさせ、試作段階では UI を増やさない。
+            faceTextIntersectionPositions.push(
+              ...context.buildFaceTextIntersectionLinePositions(
+                face,
+                fallbackFace,
+              ),
+            );
+          }
           const faceId = face.id ?? fallbackFace?.id ?? null;
           const faceGroupKey = getEquivalentFaceGroupKey(
             fallbackFace ?? face,
@@ -891,6 +905,25 @@ export function createTwinPreviewSceneActions(
           ...context.createFaceLabelAnchors(meshData, sourceName),
         );
       });
+      if (
+        ridgePositions.length > 0 ||
+        crossCrystalIntersectionPositions.length > 0 ||
+        faceTextIntersectionPositions.length > 0
+      ) {
+        const summary = {
+          ...buildXrayLineDebugSummary(
+            ridgeLineData,
+            crossCrystalIntersectionPositions,
+            context.state.faceDisplayMode,
+          ),
+          faceTextIntersectionSegmentCount:
+            faceTextIntersectionPositions.length / 6,
+        };
+        group.userData.previewLineDebug = summary;
+        (globalThis as Record<string, unknown>).__twinPreviewLineDebug =
+          summary;
+        console.info("[Twin Preview Lines]", summary);
+      }
 
       if (sharedSolidFaceOverlayGroup) {
         sharedSolidFaceOverlayGroup.name = "shared-solid-face-overlays";
@@ -937,11 +970,11 @@ export function createTwinPreviewSceneActions(
         }
       }
 
-      if (intersectionPositions.length > 0) {
+      if (crossCrystalIntersectionPositions.length > 0) {
         const intersectionLineRenderOrder =
           lineProfile.useScreenSpaceLineOverlay ? 9 : undefined;
         const intersectionLines = context.createWireframeFromPositions(
-          intersectionPositions,
+          crossCrystalIntersectionPositions,
           {
             color: context.state.previewStyleSettings.intersectionLines.color,
             linewidth:
@@ -958,10 +991,40 @@ export function createTwinPreviewSceneActions(
         }
       }
 
+      if (faceTextIntersectionPositions.length > 0) {
+        const faceTextLineRenderOrder = lineProfile.useScreenSpaceLineOverlay
+          ? 9
+          : undefined;
+        const faceTextIntersectionLines = context.createWireframeFromPositions(
+          faceTextIntersectionPositions,
+          {
+            color: context.state.previewStyleSettings.intersectionLines.color,
+            linewidth:
+              context.state.previewStyleSettings.intersectionLines.width,
+            opacity:
+              context.state.previewStyleSettings.intersectionLines.opacity,
+            renderOrder: faceTextLineRenderOrder,
+            lineKind: "intersection",
+          },
+        );
+        if (faceTextIntersectionLines) {
+          faceTextIntersectionLines.name =
+            "preview-face-text-intersection-ridge-lines";
+          faceTextIntersectionRidgeLinesGroup.add(faceTextIntersectionLines);
+        }
+      }
+
       if (ridgeLinesGroup.children.length > 0) {
         ridgeLinesGroup.name = "preview-ridge-lines";
         group.add(ridgeLinesGroup);
         context.state.ridgeLines = ridgeLinesGroup;
+      }
+      if (faceTextIntersectionRidgeLinesGroup.children.length > 0) {
+        // 既定で見える面文字輪郭。交線トグルとは独立させつつ、xray/export 側の
+        // 既存判定に乗るよう祖先名は preview-intersection-ridge-lines を流用する。
+        faceTextIntersectionRidgeLinesGroup.name =
+          "preview-intersection-ridge-lines";
+        group.add(faceTextIntersectionRidgeLinesGroup);
       }
       if (intersectionRidgeLinesGroup.children.length > 0) {
         intersectionRidgeLinesGroup.name = "preview-intersection-ridge-lines";

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  buildFaceTextOutlineLinePositions,
   buildFaceClosedShellWithText,
   buildFaceStlReplacementPatchWithText,
   buildFaceTrianglesWithText,
@@ -204,6 +205,44 @@ describe("text/faceTextGeometry", () => {
     expect(shell.debug?.cavityBottomTriangleCount).toBe(0);
     expect(
       validation.warnings.some((warning) => warning.includes("未対応")),
+    ).toBe(true);
+  });
+
+  it("buildFaceTextOutlineLinePositions は面文字輪郭を preview 用線分へ変換する", () => {
+    const face = {
+      vertices: [
+        { x: -2, y: -2, z: 0 },
+        { x: 2, y: -2, z: 0 },
+        { x: 2, y: 2, z: 0 },
+        { x: -2, y: 2, z: 0 },
+      ],
+      normal: { x: 0, y: 0, z: 1 },
+      textUpVector: { x: 0, y: 1, z: 0 },
+    };
+    const mockFont = {
+      generateShapes: () => [
+        {
+          getPoints: () => [
+            { x: -0.8, y: -0.5 },
+            { x: 0.8, y: -0.5 },
+            { x: 0.8, y: 0.5 },
+            { x: -0.8, y: 0.5 },
+            { x: -0.8, y: -0.5 },
+          ],
+          holes: [],
+        },
+      ],
+    };
+
+    const positions = buildFaceTextOutlineLinePositions(
+      face,
+      { text: { content: "A", depth: 0.6, fontSize: 1 } },
+      mockFont,
+    );
+
+    expect(positions).toHaveLength(24);
+    expect(
+      positions.every((value, index) => index % 3 !== 2 || value > 0),
     ).toBe(true);
   });
 

@@ -20,6 +20,7 @@ const OUTLINE_SAMPLE_SEGMENTS = 3;
 const EXTRUDE_CURVE_SEGMENTS = 10;
 const INSIDE_MARGIN = 0.05;
 const EPSILON = 1e-6;
+const PREVIEW_SURFACE_OFFSET = 0.01;
 const RECOMMENDED_MIN_TEXT_SIZE_MM = 1.2;
 const RECOMMENDED_MIN_TEXT_DEPTH_MM = 0.25;
 const RECOMMENDED_MAX_TEXT_DEPTH_MM = 2.5;
@@ -339,6 +340,82 @@ function fitTextShapesToFace(font, textSettings, basis, faceContour) {
     scaleFactor: fallbackScale,
     fitConfirmed: false,
   };
+}
+
+function appendLoopLinePositions(target, loop, basis, depth) {
+  if (!Array.isArray(loop) || loop.length < 2) {
+    return;
+  }
+
+  for (let index = 0; index < loop.length; index += 1) {
+    const start = liftPoint(loop[index], basis, depth);
+    const end = liftPoint(loop[(index + 1) % loop.length], basis, depth);
+    target.push(start.x, start.y, start.z, end.x, end.y, end.z);
+  }
+}
+
+/**
+ * 面文字の輪郭を、preview 線表示用の flat position 配列へ変換する。
+ *
+ * 実体メッシュの文字加工と同じフィット計算を使い、面法線方向へごく薄く持ち上げて
+ * z-fighting を抑えた線分列を返す。
+ */
+export function buildFaceTextOutlineLinePositions(
+  face,
+  sourceFace,
+  font,
+  options: {
+    surfaceOffset?: number;
+  } = {},
+) {
+  if (!Array.isArray(face?.vertices) || face.vertices.length < 3) {
+    return [];
+  }
+
+  const textSettings = normalizeTextSettings(sourceFace?.text);
+  if (
+    !font ||
+    textSettings.content.trim() === "" ||
+    Math.abs(textSettings.depth) < EPSILON
+  ) {
+    return [];
+  }
+
+  const basis = createFaceBasis(face);
+  if (!basis) {
+    return [];
+  }
+
+  const faceContour = ensureWinding(
+    face.vertices.map((vertex) => projectPoint(vertex, basis)),
+    true,
+  );
+  const fittedShapes = fitTextShapesToFace(
+    font,
+    textSettings,
+    basis,
+    faceContour,
+  );
+  if (!fittedShapes?.shapes?.length) {
+    return [];
+  }
+
+  const surfaceOffset = Math.max(
+    0,
+    Number.isFinite(Number(options.surfaceOffset))
+      ? Number(options.surfaceOffset)
+      : PREVIEW_SURFACE_OFFSET,
+  );
+  const positions = [];
+
+  fittedShapes.shapes.forEach((shape) => {
+    appendLoopLinePositions(positions, shape.contour, basis, surfaceOffset);
+    shape.holes.forEach((hole) => {
+      appendLoopLinePositions(positions, hole, basis, surfaceOffset);
+    });
+  });
+
+  return positions;
 }
 
 function triangulateLoop(contour, holes, depth, basis) {

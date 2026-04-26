@@ -78,6 +78,30 @@ describe("geometry/crystalGeometry", () => {
     );
   });
 
+  it("preview 用 face には geometry 単位へ換算済みの text 設定を載せる", () => {
+    const parameters = createDefaultParameters();
+    parameters.faces[0].text = {
+      ...parameters.faces[0].text,
+      content: "A",
+      fontSize: 5,
+      depth: 1,
+      offsetU: 2,
+      offsetV: 3,
+    };
+    getFaceTextFontMock.mockReturnValue(createMockFont());
+
+    const result = buildCrystalMeshData(parameters, { normalizeSize: false });
+    const previewFace = result.geometry?.faces.find(
+      (face) => face.id === parameters.faces[0].id,
+    );
+
+    expect(previewFace?.text?.content).toBe("A");
+    expect(Number(previewFace?.text?.fontSize)).toBeLessThan(5);
+    expect(Number(previewFace?.text?.depth)).toBeLessThan(1);
+    expect(Number(previewFace?.text?.offsetU)).toBeLessThan(2);
+    expect(Number(previewFace?.text?.offsetV)).toBeLessThan(3);
+  });
+
   it("文字設定が不正なら validation に error を積む", () => {
     const parameters = createDefaultParameters();
     parameters.faces[0].text = {

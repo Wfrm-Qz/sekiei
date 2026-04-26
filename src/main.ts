@@ -56,6 +56,8 @@ import {
 } from "./preview/previewView.js";
 import { createDeferredTrackballControls } from "./preview/deferredTrackballControls.js";
 import { createDefaultTwinPreviewStyleSettings } from "./preview/previewStyleSettings.js";
+import { buildFaceTextOutlineLinePositions } from "./text/faceTextGeometry.js";
+import { getFaceTextFont } from "./text/fonts.js";
 import {
   createTwinPreviewExportActions,
   createTwinPreviewExportRuntimeActions,
@@ -693,6 +695,19 @@ const previewSceneContext: TwinPreviewSceneContext = {
   createWireframeFromPositions,
   buildVisibleRidgeLinePositions,
   buildCrossCrystalIntersectionLinePositions,
+  buildFaceTextIntersectionLinePositions: (face, sourceFace) => {
+    const previewScaledSourceFace = face?.text
+      ? {
+          ...sourceFace,
+          text: face.text,
+        }
+      : sourceFace;
+    return buildFaceTextOutlineLinePositions(
+      face,
+      previewScaledSourceFace,
+      getFaceTextFont(previewScaledSourceFace?.text?.fontId),
+    );
+  },
   buildSharedSolidFaceColorMap,
   buildSolidSharedFaceOverlayGroup,
   createXrayLineDepthMaskGroup,

@@ -65,6 +65,7 @@ describe("preview/previewScene", () => {
       }),
       buildVisibleRidgeLinePositions: () => [],
       buildCrossCrystalIntersectionLinePositions: () => [],
+      buildFaceTextIntersectionLinePositions: () => [],
       buildSharedSolidFaceColorMap: () => new Map(),
       buildSolidSharedFaceOverlayGroup: () => null,
       createXrayLineDepthMaskGroup: () => null,
@@ -219,6 +220,7 @@ describe("preview/previewScene", () => {
       }),
       buildVisibleRidgeLinePositions: () => [],
       buildCrossCrystalIntersectionLinePositions: () => [],
+      buildFaceTextIntersectionLinePositions: () => [],
       buildSharedSolidFaceColorMap: () => new Map(),
       buildSolidSharedFaceOverlayGroup: () => null,
       createXrayLineDepthMaskGroup,
@@ -310,6 +312,7 @@ describe("preview/previewScene", () => {
       }),
       buildVisibleRidgeLinePositions: () => [],
       buildCrossCrystalIntersectionLinePositions: () => [],
+      buildFaceTextIntersectionLinePositions: () => [],
       buildSharedSolidFaceColorMap: () => new Map(),
       buildSolidSharedFaceOverlayGroup: () => null,
       createXrayLineDepthMaskGroup: () => null,
@@ -449,6 +452,7 @@ describe("preview/previewScene", () => {
       }),
       buildVisibleRidgeLinePositions: () => [],
       buildCrossCrystalIntersectionLinePositions: () => [],
+      buildFaceTextIntersectionLinePositions: () => [],
       buildSharedSolidFaceColorMap: () => new Map(),
       buildSolidSharedFaceOverlayGroup: () => null,
       createXrayLineDepthMaskGroup: () => null,
@@ -551,6 +555,7 @@ describe("preview/previewScene", () => {
       }),
       buildVisibleRidgeLinePositions: () => [],
       buildCrossCrystalIntersectionLinePositions: () => [0, 0, 0, 0, 1, 0],
+      buildFaceTextIntersectionLinePositions: () => [],
       buildSharedSolidFaceColorMap: () => new Map(),
       buildSolidSharedFaceOverlayGroup: () => null,
       createXrayLineDepthMaskGroup: () => null,
@@ -666,6 +671,7 @@ describe("preview/previewScene", () => {
       }),
       buildVisibleRidgeLinePositions: () => [],
       buildCrossCrystalIntersectionLinePositions: () => [0, 0, 0, 0, 1, 0],
+      buildFaceTextIntersectionLinePositions: () => [],
       buildSharedSolidFaceColorMap: () => new Map(),
       buildSolidSharedFaceOverlayGroup: () => null,
       createXrayLineDepthMaskGroup: () => null,
@@ -764,6 +770,7 @@ describe("preview/previewScene", () => {
       }),
       buildVisibleRidgeLinePositions: () => [],
       buildCrossCrystalIntersectionLinePositions: () => [],
+      buildFaceTextIntersectionLinePositions: () => [],
       buildSharedSolidFaceColorMap: () => new Map(),
       buildSolidSharedFaceOverlayGroup: () => null,
       createXrayLineDepthMaskGroup: () => null,
@@ -776,5 +783,120 @@ describe("preview/previewScene", () => {
     const group = actions.buildPreviewGroup();
 
     expect(group?.getObjectByName("split-plane-guides")).toBeTruthy();
+  });
+
+  it("面文字がある face では文字輪郭を交線レイヤーへ追加する", () => {
+    const createWireframeFromPositions = vi.fn(() => new THREE.Group());
+    const buildFaceTextIntersectionLinePositions = vi
+      .fn()
+      .mockReturnValue([0, 0, 0.01, 1, 0, 0.01]);
+    const actions = createTwinPreviewSceneActions({
+      state: {
+        parameters: {
+          crystalSystem: "cubic",
+          faces: [
+            {
+              id: "face-1",
+              coefficient: 1,
+              text: { content: "A", fontId: "helvetiker", depth: 0.5 },
+            },
+          ],
+          twin: { enabled: false, crystals: [{ enabled: true }] },
+        },
+        stlSplit: createDefaultTwinStlSplitSettings("cubic"),
+        buildResult: {
+          crystalPreviewMeshData: [
+            {
+              vertices: [
+                { x: 0, y: 0, z: 0 },
+                { x: 1, y: 0, z: 0 },
+                { x: 0, y: 1, z: 0 },
+              ],
+              faces: [
+                {
+                  id: "face-1",
+                  normal: { x: 0, y: 0, z: 1 },
+                  vertices: [
+                    { x: 0, y: 0, z: 0 },
+                    { x: 1, y: 0, z: 0 },
+                    { x: 0, y: 1, z: 0 },
+                  ],
+                  textUpVector: { x: 0, y: 1, z: 0 },
+                },
+              ],
+            },
+          ],
+        },
+        previewRoot: null,
+        activeFaceCrystalIndex: 0,
+        axisGuideGroup: null,
+        splitPlaneGuideGroup: null,
+        twinRuleGuideGroup: null,
+        facePickTargetGroup: null,
+        facePickTargets: [],
+        ridgeLines: null,
+        intersectionRidgeLines: null,
+        faceLabelAnchors: [],
+        axisLabelAnchors: [],
+        twinRuleLabelAnchors: [],
+        faceDisplayMode: "grouped",
+        previewStyleSettings: createDefaultTwinPreviewStyleSettings(),
+        showRidgeLines: true,
+        showIntersectionRidgeLines: false,
+        showTwinRuleGuide: false,
+        showSplitPlaneGuide: false,
+        showAxisLinesInner: true,
+        showAxisLinesOuter: true,
+        showAxisLabels: true,
+      },
+      elements: {
+        faceLabelLayer: document.createElement("div"),
+      },
+      getCrystalAccentColor: () => "#d35b53",
+      isCrystalVisible: () => true,
+      requestPreviewRender: vi.fn(),
+      applyLabelLayerVisibility: vi.fn(),
+      createAxisLabelAnchors: vi.fn().mockReturnValue([]),
+      createFaceLabelAnchors: vi.fn().mockReturnValue([]),
+      createWideLineFromPoints: () => new THREE.Group(),
+      createPreviewLineFromPoints: () => new THREE.Group(),
+      createGroupedFaceMeshGroup: () => new THREE.Group(),
+      createXraySolidFaceMeshGroup: () => new THREE.Group(),
+      buildDisplayGeometry: () => new THREE.BufferGeometry(),
+      buildFlatFaceColors: () => [],
+      createWireframeFromGeometry: () => new THREE.Group(),
+      createWireframeFromPositions,
+      buildVisibleRidgeLineData: () => ({
+        surfacePositions: [],
+        occludedInteriorPositions: [],
+      }),
+      buildVisibleRidgeLinePositions: () => [],
+      buildCrossCrystalIntersectionLinePositions: () => [],
+      buildFaceTextIntersectionLinePositions,
+      buildSharedSolidFaceColorMap: () => new Map(),
+      buildSolidSharedFaceOverlayGroup: () => null,
+      createXrayLineDepthMaskGroup: () => null,
+      applyXrayPreviewMeshState: vi.fn(),
+      buildFaceCenter: () => new THREE.Vector3(),
+      buildAxisInnerSegment: () => null,
+      buildAxisOuterSegments: () => [],
+    });
+
+    const group = actions.buildPreviewGroup();
+
+    expect(buildFaceTextIntersectionLinePositions).toHaveBeenCalledWith(
+      expect.objectContaining({ id: "face-1" }),
+      expect.objectContaining({
+        id: "face-1",
+        text: expect.objectContaining({ content: "A" }),
+      }),
+    );
+    expect(createWireframeFromPositions).toHaveBeenCalledWith(
+      [0, 0, 0.01, 1, 0, 0.01],
+      expect.objectContaining({ lineKind: "intersection" }),
+    );
+    expect(
+      group?.getObjectByName("preview-intersection-ridge-lines"),
+    ).toBeTruthy();
   });
 });
