@@ -6,6 +6,7 @@ import {
   invertIndexLabelParts,
 } from "./previewLabels.js";
 import {
+  resolveTwinPreviewResponsiveFontSizePx,
   resolveTwinAxisStyleKey,
   type TwinPreviewStyleSettings,
 } from "./previewStyleSettings.js";
@@ -442,7 +443,10 @@ export function createTwinPreviewSceneActions(
           context.state.previewStyleSettings.twinRuleLabel.color;
         labelElement.style.fontFamily =
           context.state.previewStyleSettings.twinRuleLabel.fontFamily;
-        labelElement.style.fontSize = `${context.state.previewStyleSettings.twinRuleLabel.fontSizePx}px`;
+        labelElement.style.fontSize = `${resolveTwinPreviewResponsiveFontSizePx(
+          context.state.previewStyleSettings.twinRuleLabel.fontSizePx,
+          "twinRuleLabel",
+        )}px`;
         const positiveLabelParts = buildIndexLabelParts(
           guideCrystal.axis,
           usesFourAxisMiller(parameters.crystalSystem),

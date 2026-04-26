@@ -5,17 +5,48 @@ import {
   createTwinPreviewSettingsDocument,
   isTwinPreviewSettingsDocument,
   normalizeTwinPreviewStyleSettings,
+  resolveTwinPreviewResponsiveFontSizePx,
 } from "../../../src/preview/previewStyleSettings.ts";
 
 describe("preview/previewStyleSettings", () => {
-  it("createDefaultTwinPreviewStyleSettings は面指数以外の文字サイズを控えめな既定値にする", () => {
+  it("createDefaultTwinPreviewStyleSettings は desktop 基準の既定値を返す", () => {
     const settings = createDefaultTwinPreviewStyleSettings();
 
     expect(settings.faceLabel.fontSizePx).toBe(14);
-    expect(settings.axisLabel.fontSizePx).toBe(24);
-    expect(settings.twinRuleLabel.fontSizePx).toBe(12);
-    expect(settings.presetMetadataName.fontSizePx).toBe(24);
-    expect(settings.presetMetadataDescription.fontSizePx).toBe(12);
+    expect(settings.axisLabel.fontSizePx).toBe(48);
+    expect(settings.twinRuleLabel.fontSizePx).toBe(24);
+    expect(settings.presetMetadataName.fontSizePx).toBe(48);
+    expect(settings.presetMetadataDescription.fontSizePx).toBe(24);
+  });
+
+  it("resolveTwinPreviewResponsiveFontSizePx は mobile で面指数以外を半分にする", () => {
+    const originalMatchMedia = globalThis.matchMedia;
+    globalThis.matchMedia = (() => ({
+      matches: true,
+      media: "(max-width: 760px)",
+      onchange: null,
+      addListener: () => undefined,
+      removeListener: () => undefined,
+      addEventListener: () => undefined,
+      removeEventListener: () => undefined,
+      dispatchEvent: () => true,
+    })) as typeof globalThis.matchMedia;
+
+    try {
+      expect(resolveTwinPreviewResponsiveFontSizePx(14, "faceLabel")).toBe(14);
+      expect(resolveTwinPreviewResponsiveFontSizePx(48, "axisLabel")).toBe(24);
+      expect(resolveTwinPreviewResponsiveFontSizePx(24, "twinRuleLabel")).toBe(
+        12,
+      );
+      expect(
+        resolveTwinPreviewResponsiveFontSizePx(48, "presetMetadataName"),
+      ).toBe(24);
+      expect(
+        resolveTwinPreviewResponsiveFontSizePx(24, "presetMetadataDescription"),
+      ).toBe(12);
+    } finally {
+      globalThis.matchMedia = originalMatchMedia;
+    }
   });
 
   it("normalizeTwinPreviewStyleSettings は欠落項目を既定値で補う", () => {

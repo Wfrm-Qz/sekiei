@@ -48,7 +48,7 @@
 - `previewProfiles.ts`
   - face/line profile と display mode
 - `previewStyleSettings.ts`
-  - preview 詳細設定の構造と文字サイズ既定値
+  - preview 詳細設定の構造、文字サイズ既定値、mobile 向けの responsive な文字サイズ補正
 
 ### `src/text`
 

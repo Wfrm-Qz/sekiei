@@ -1,4 +1,8 @@
 ﻿import * as THREE from "three";
+import {
+  resolveTwinPreviewResponsiveFontSizePx,
+  type TwinPreviewResponsiveTextRole,
+} from "./previewStyleSettings.js";
 
 import {
   createAxisLabelAnchors as createPreviewAxisLabelAnchors,
@@ -183,10 +187,11 @@ export function createTwinPreviewLabelActions(
   function applyLabelTextStyle(
     element: HTMLElement,
     style: { color: string; fontFamily: string; fontSizePx: number },
+    role: TwinPreviewResponsiveTextRole,
   ) {
     element.style.color = style.color;
     element.style.fontFamily = style.fontFamily;
-    element.style.fontSize = `${style.fontSizePx}px`;
+    element.style.fontSize = `${resolveTwinPreviewResponsiveFontSizePx(style.fontSizePx, role)}px`;
   }
 
   function applyAnchorStyle(
@@ -196,6 +201,7 @@ export function createTwinPreviewLabelActions(
       applyLabelTextStyle(
         anchor.element,
         context.state.previewStyleSettings.faceLabel,
+        "faceLabel",
       );
       return;
     }
@@ -203,6 +209,7 @@ export function createTwinPreviewLabelActions(
       applyLabelTextStyle(
         anchor.element,
         context.state.previewStyleSettings.twinRuleLabel,
+        "twinRuleLabel",
       );
       return;
     }
@@ -211,10 +218,14 @@ export function createTwinPreviewLabelActions(
       axisLabelStyle.colors?.[anchor.axisStyleKey ?? "a"] ??
       axisLabelStyle.color ??
       "#003f78";
-    applyLabelTextStyle(anchor.element, {
-      ...axisLabelStyle,
-      color: resolvedAxisLabelColor,
-    });
+    applyLabelTextStyle(
+      anchor.element,
+      {
+        ...axisLabelStyle,
+        color: resolvedAxisLabelColor,
+      },
+      "axisLabel",
+    );
   }
 
   /** 面指数ラベル DOM の token 表示を更新する。 */

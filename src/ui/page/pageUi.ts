@@ -4,6 +4,7 @@ import {
   applyTwinPresetMetadataSectionVisibility,
   buildTwinPresetMetadataViewModel,
 } from "../preset/presetMetadata.js";
+import { resolveTwinPreviewResponsiveFontSizePx } from "../../preview/previewStyleSettings.js";
 
 /**
  * 小さな UI 描画 helper をまとめる module。
@@ -120,12 +121,18 @@ export function createPageUiHelpers(context: PageUiContext) {
       context.state.previewStyleSettings.presetMetadataName.color;
     context.elements.presetMetadataName.style.fontFamily =
       context.state.previewStyleSettings.presetMetadataName.fontFamily;
-    context.elements.presetMetadataName.style.fontSize = `${context.state.previewStyleSettings.presetMetadataName.fontSizePx}px`;
+    context.elements.presetMetadataName.style.fontSize = `${resolveTwinPreviewResponsiveFontSizePx(
+      context.state.previewStyleSettings.presetMetadataName.fontSizePx,
+      "presetMetadataName",
+    )}px`;
     context.elements.presetMetadataShortDescription.style.color =
       context.state.previewStyleSettings.presetMetadataDescription.color;
     context.elements.presetMetadataShortDescription.style.fontFamily =
       context.state.previewStyleSettings.presetMetadataDescription.fontFamily;
-    context.elements.presetMetadataShortDescription.style.fontSize = `${context.state.previewStyleSettings.presetMetadataDescription.fontSizePx}px`;
+    context.elements.presetMetadataShortDescription.style.fontSize = `${resolveTwinPreviewResponsiveFontSizePx(
+      context.state.previewStyleSettings.presetMetadataDescription.fontSizePx,
+      "presetMetadataDescription",
+    )}px`;
   }
 
   /** preset 情報カードの詳細欄の開閉状態を反映する。 */

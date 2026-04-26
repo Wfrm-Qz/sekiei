@@ -58,6 +58,14 @@ export interface TwinPreviewStyleSettings {
 
 export const TWIN_PREVIEW_SETTINGS_DOCUMENT_SCHEMA =
   "sekiei-twin-preview-document-v1";
+export const TWIN_PREVIEW_MOBILE_MEDIA_QUERY = "(max-width: 760px)";
+
+export type TwinPreviewResponsiveTextRole =
+  | "faceLabel"
+  | "axisLabel"
+  | "twinRuleLabel"
+  | "presetMetadataName"
+  | "presetMetadataDescription";
 
 const LEGACY_TWIN_PREVIEW_SETTINGS_DOCUMENT_SCHEMAS = new Set([
   LEGACY_TWIN_PREVIEW_SETTINGS_DOCUMENT_SCHEMA,
@@ -91,6 +99,23 @@ export const PREVIEW_FONT_FAMILY_OPTIONS = [
   { value: '"Consolas", monospace', label: "Consolas" },
 ];
 
+export function isTwinPreviewMobileViewport() {
+  return (
+    typeof globalThis.matchMedia === "function" &&
+    globalThis.matchMedia(TWIN_PREVIEW_MOBILE_MEDIA_QUERY).matches
+  );
+}
+
+export function resolveTwinPreviewResponsiveFontSizePx(
+  fontSizePx: number,
+  role: TwinPreviewResponsiveTextRole,
+) {
+  if (!isTwinPreviewMobileViewport() || role === "faceLabel") {
+    return fontSizePx;
+  }
+  return Math.max(1, fontSizePx * 0.5);
+}
+
 export function createDefaultTwinPreviewStyleSettings(): TwinPreviewStyleSettings {
   return {
     faceLabel: {
@@ -107,22 +132,22 @@ export function createDefaultTwinPreviewStyleSettings(): TwinPreviewStyleSetting
         c: "#005bac",
       },
       fontFamily: '"Segoe UI", "BIZ UDPGothic", sans-serif',
-      fontSizePx: 24,
+      fontSizePx: 48,
     },
     twinRuleLabel: {
       color: "#8b5fd1",
       fontFamily: '"Segoe UI", "BIZ UDPGothic", sans-serif',
-      fontSizePx: 12,
+      fontSizePx: 24,
     },
     presetMetadataName: {
       color: "#1f2a37",
       fontFamily: '"Segoe UI", "BIZ UDPGothic", sans-serif',
-      fontSizePx: 24,
+      fontSizePx: 48,
     },
     presetMetadataDescription: {
       color: "#516171",
       fontFamily: '"Segoe UI", "BIZ UDPGothic", sans-serif',
-      fontSizePx: 12,
+      fontSizePx: 24,
     },
     axisLines: {
       colors: {
