@@ -3,7 +3,13 @@ import path from "node:path";
 import { expect, test } from "@playwright/test";
 import { openSekieiApp } from "./helpers";
 
-const INPUT_JSON_PATH = path.resolve(process.cwd(), "temp", "左水晶 (1).json");
+const INPUT_JSON_PATH = path.resolve(
+  process.cwd(),
+  "tests",
+  "fixtures",
+  "face-text",
+  "leftQuartz.withText.v2.json",
+);
 
 test("左水晶 import 後の STL debug で fallback と composite candidate を比較できる", async ({
   page,

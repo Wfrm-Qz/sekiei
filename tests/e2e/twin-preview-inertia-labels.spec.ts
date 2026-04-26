@@ -29,6 +29,29 @@ test("回転の慣性終了後に軸ラベルが再表示される", async ({ pa
 
   await expect(axisLabels).toHaveCount(3);
   await expect
-    .poll(() => axisLabels.first().isVisible(), { timeout: 10_000 })
-    .toBe(true);
+    .poll(
+      () =>
+        page
+          .locator("#app-face-label-layer")
+          .evaluate((element) => getComputedStyle(element).display),
+      { timeout: 10_000 },
+    )
+    .toBe("block");
+  await expect
+    .poll(
+      () =>
+        axisLabels.evaluateAll(
+          (labels) =>
+            labels.filter((label) => {
+              const style = getComputedStyle(label);
+              return (
+                style.display !== "none" &&
+                style.visibility !== "hidden" &&
+                Number.parseFloat(style.opacity || "1") > 0
+              );
+            }).length,
+        ),
+      { timeout: 10_000 },
+    )
+    .toBeGreaterThan(0);
 });
