@@ -5,9 +5,9 @@ import { fileURLToPath, URL } from "node:url";
 const repo = process.env.GITHUB_REPOSITORY;
 const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
 const apiBaseUrl = process.env.GITHUB_API_URL || "https://api.github.com";
-const rulesetDirectory = fileURLToPath(
-  new URL("../.github/rulesets/", import.meta.url),
-);
+const currentFilePath = import.meta.url.startsWith("file:")
+  ? fileURLToPath(import.meta.url)
+  : "";
 
 function fail(message) {
   console.error(`[ruleset-check] ${message}`);
@@ -20,7 +20,7 @@ function sortByJson(values) {
   );
 }
 
-function normalizeRequiredStatusCheck(check) {
+export function normalizeRequiredStatusCheck(check) {
   const normalized = { context: check.context };
   if (check.integration_id != null) {
     normalized.integration_id = check.integration_id;
@@ -28,13 +28,24 @@ function normalizeRequiredStatusCheck(check) {
   return normalized;
 }
 
-function normalizeRule(rule) {
+export function normalizeRule(rule) {
   const normalized = { type: rule.type };
   if (!rule.parameters) {
     return normalized;
   }
 
   normalized.parameters = { ...rule.parameters };
+  if (
+    Array.isArray(normalized.parameters.required_reviewers) &&
+    normalized.parameters.required_reviewers.length === 0
+  ) {
+    delete normalized.parameters.required_reviewers;
+  }
+  if (Array.isArray(normalized.parameters.required_reviewers)) {
+    normalized.parameters.required_reviewers = sortByJson(
+      normalized.parameters.required_reviewers,
+    );
+  }
   if (Array.isArray(normalized.parameters.allowed_merge_methods)) {
     normalized.parameters.allowed_merge_methods = [
       ...normalized.parameters.allowed_merge_methods,
@@ -50,7 +61,7 @@ function normalizeRule(rule) {
   return normalized;
 }
 
-function normalizeRuleset(ruleset) {
+export function normalizeRuleset(ruleset) {
   return {
     name: ruleset.name,
     target: ruleset.target,
@@ -72,7 +83,12 @@ function normalizeRuleset(ruleset) {
   };
 }
 
-function readLocalRulesets() {
+function getRulesetDirectory() {
+  return fileURLToPath(new URL("../.github/rulesets/", import.meta.url));
+}
+
+export function readLocalRulesets() {
+  const rulesetDirectory = getRulesetDirectory();
   return readdirSync(rulesetDirectory)
     .filter((file) => file.endsWith(".json"))
     .map((file) => {
@@ -84,7 +100,7 @@ function readLocalRulesets() {
     });
 }
 
-async function githubApi(pathname) {
+export async function githubApi(pathname) {
   const response = await globalThis.fetch(`${apiBaseUrl}${pathname}`, {
     headers: {
       Accept: "application/vnd.github+json",
@@ -99,7 +115,7 @@ async function githubApi(pathname) {
   return response.json();
 }
 
-async function readRemoteRulesets() {
+export async function readRemoteRulesets() {
   const summaries = await githubApi(
     `/repos/${repo}/rulesets?per_page=100&includes_parents=false`,
   );
@@ -115,11 +131,16 @@ function stringify(value) {
   return JSON.stringify(value, null, 2);
 }
 
-if (!repo) {
-  fail("GITHUB_REPOSITORY is required, for example Wfrm-Qz/sekiei.");
-} else if (!token) {
-  fail("GITHUB_TOKEN or GH_TOKEN is required.");
-} else {
+export async function runRulesetCheck() {
+  if (!repo) {
+    fail("GITHUB_REPOSITORY is required, for example Wfrm-Qz/sekiei.");
+    return;
+  }
+  if (!token) {
+    fail("GITHUB_TOKEN or GH_TOKEN is required.");
+    return;
+  }
+
   try {
     const localRulesets = readLocalRulesets();
     const remoteRulesets = await readRemoteRulesets();
@@ -154,7 +175,7 @@ if (!repo) {
       if (!expectedNames.has(remoteName)) {
         console.warn(
           `[ruleset-check] remote ruleset "${remoteName}" has no local file under ${basename(
-            rulesetDirectory,
+            getRulesetDirectory(),
           )}/.`,
         );
       }
@@ -168,4 +189,8 @@ if (!repo) {
   } catch (error) {
     fail(error instanceof Error ? error.message : String(error));
   }
+}
+
+if (process.argv[1] === currentFilePath) {
+  await runRulesetCheck();
 }
