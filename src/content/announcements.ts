@@ -197,7 +197,7 @@ export function parseAnnouncementKnownIssuesMarkdown(
 export const ANNOUNCEMENTS: readonly AnnouncementEntry[] = [
   {
     id: "2026-04-26-notice-board",
-    updatedAt: "2026-04-26T05:15:00+09:00",
+    updatedAt: "2026-04-27T00:10:00+09:00",
     history: parseAnnouncementHistoryMarkdown(changelogMarkdown),
     knownIssues: parseAnnouncementKnownIssuesMarkdown(knownIssuesMarkdown),
     links: {
