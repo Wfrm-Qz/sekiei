@@ -12,6 +12,7 @@ interface PageLifecycleStateLike {
   previewViewState: unknown;
   previewInertiaActive: boolean;
   isPreviewDragging: boolean;
+  previewInertiaStartedAt: number;
   previewInertiaLastChangeAt: number;
   previewOverlayDirty: boolean;
   previewRenderDirty: boolean;
@@ -21,6 +22,7 @@ interface PageLifecycleContext {
   state: PageLifecycleStateLike;
   elements: PageLifecycleElementsLike;
   previewInertiaIdleTimeoutMs: number;
+  previewInertiaMaxDurationMs: number;
   initializeLocale: () => void;
   setupLocaleSelect: (select: HTMLSelectElement | null) => void;
   onLocaleChange: (listener: () => void) => void;
@@ -62,8 +64,10 @@ export function createPageLifecycleActions(context: PageLifecycleContext) {
     if (
       context.state.previewInertiaActive &&
       !context.state.isPreviewDragging &&
-      now - context.state.previewInertiaLastChangeAt >
-        context.previewInertiaIdleTimeoutMs
+      (now - context.state.previewInertiaLastChangeAt >
+        context.previewInertiaIdleTimeoutMs ||
+        now - context.state.previewInertiaStartedAt >
+          context.previewInertiaMaxDurationMs)
     ) {
       context.state.previewInertiaActive = false;
       context.applyLabelLayerVisibility();

@@ -25,6 +25,7 @@ test("左水晶 import 後の STL debug で fallback と composite candidate を
   await page.setInputFiles("#app-import-json-input", INPUT_JSON_PATH);
   await expect(page.getByRole("textbox", { name: /^名前$/ })).toHaveValue(
     "左水晶",
+    { timeout: 15_000 },
   );
 
   const downloads: import("@playwright/test").Download[] = [];

@@ -50,12 +50,14 @@ describe("ui/page/pageLifecycle", () => {
           previewViewState: null,
           previewInertiaActive: false,
           isPreviewDragging: false,
+          previewInertiaStartedAt: 0,
           previewInertiaLastChangeAt: 0,
           previewOverlayDirty: false,
           previewRenderDirty: false,
         },
         elements,
         previewInertiaIdleTimeoutMs: 800,
+        previewInertiaMaxDurationMs: 5000,
         initializeLocale: vi.fn(),
         setupLocaleSelect: vi.fn(),
         onLocaleChange: vi.fn((listener: () => void) => {
@@ -145,12 +147,14 @@ describe("ui/page/pageLifecycle", () => {
         previewViewState: null,
         previewInertiaActive: true,
         isPreviewDragging: false,
+        previewInertiaStartedAt: 0,
         previewInertiaLastChangeAt: 0,
         previewOverlayDirty: true,
         previewRenderDirty: true,
       },
       elements,
       previewInertiaIdleTimeoutMs: 100,
+      previewInertiaMaxDurationMs: 5000,
       initializeLocale: vi.fn(),
       setupLocaleSelect: vi.fn(),
       onLocaleChange: vi.fn(),
@@ -202,5 +206,64 @@ describe("ui/page/pageLifecycle", () => {
     expect(context.updateFaceLabelOverlay).toHaveBeenCalledTimes(1);
     expect(context.state.previewRenderDirty).toBe(false);
     expect(context.state.previewOverlayDirty).toBe(false);
+  });
+
+  it("animate は慣性 change が続いても最大継続時間後に停止する", () => {
+    const elements = mountElements();
+    const context = {
+      state: {
+        parameters: { presetId: "cube-00001" },
+        buildResult: null,
+        presetQuery: "",
+        previewRoot: { tag: "root" },
+        previewViewState: null,
+        previewInertiaActive: true,
+        isPreviewDragging: false,
+        previewInertiaStartedAt: 0,
+        previewInertiaLastChangeAt: 999,
+        previewOverlayDirty: true,
+        previewRenderDirty: true,
+      },
+      elements,
+      previewInertiaIdleTimeoutMs: 800,
+      previewInertiaMaxDurationMs: 1000,
+      initializeLocale: vi.fn(),
+      setupLocaleSelect: vi.fn(),
+      onLocaleChange: vi.fn(),
+      getPresetLabelById: vi.fn(),
+      applyStaticTranslations: vi.fn(),
+      renderCrystalSystemOptions: vi.fn(),
+      renderPresetOptions: vi.fn(),
+      renderFormValues: vi.fn(),
+      syncPreview: vi.fn(),
+      loadFaceTextFonts: vi.fn(),
+      hasAnyFaceTextContent: vi.fn(),
+      loadRealTrackballControls: vi.fn(),
+      controlsHandleResize: vi.fn(),
+      fitPreviewToObject: vi.fn(),
+      capturePreviewViewState: vi.fn(),
+      requestPreviewOverlayUpdate: vi.fn(),
+      requestPreviewRender: vi.fn(),
+      applyLabelLayerVisibility: vi.fn(),
+      syncXrayFaceOverlayVisibility: vi.fn(),
+      animateFrame: vi.fn(),
+      resizeRenderer: vi.fn(),
+      attachHandlers: vi.fn(),
+      performanceNow: vi.fn(() => 1200),
+      isPreviewRotating: vi.fn(() => false),
+      controlsUpdate: vi.fn(),
+      updateXrayTransparentFaceRenderOrder: vi.fn(),
+      shouldUseScreenSpacePreviewOverlay: vi.fn(() => false),
+      applyXrayOverlaySceneVisibility: vi.fn(),
+      renderScene: vi.fn(),
+      renderScreenSpaceXrayFaceOverlay: vi.fn(),
+      updateFaceLabelOverlay: vi.fn(),
+      syncFaceSectionCardHeight: vi.fn(),
+    };
+
+    createPageLifecycleActions(context).animate();
+
+    expect(context.state.previewInertiaActive).toBe(false);
+    expect(context.applyLabelLayerVisibility).toHaveBeenCalledTimes(1);
   });
 });

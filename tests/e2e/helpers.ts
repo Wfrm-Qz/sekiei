@@ -21,6 +21,10 @@ export async function openSekieiApp(page: Page) {
     },
   );
   await page.goto("/");
+  await expect(page.locator("#app-metadata-name-input")).toHaveValue(
+    /立方体|Cube/,
+    { timeout: 15_000 },
+  );
 }
 
 /**

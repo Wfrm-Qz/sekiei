@@ -241,6 +241,7 @@ function createInitialState() {
     isPreviewDragging: false,
     previewDragButton: null,
     previewInertiaActive: false,
+    previewInertiaStartedAt: 0,
     previewInertiaLastChangeAt: 0,
     previewXraySortDebugFrame: 0,
     collapsedFaceGroups: {},
@@ -542,6 +543,7 @@ controls.target.set(0, 0, 0);
 // TrackballControls の damping 中は change 発火が疎になることがあるため、
 // ここを短くしすぎると慣性が視覚上ほぼ消える。操作感維持のため猶予を持たせる。
 const PREVIEW_INERTIA_IDLE_TIMEOUT_MS = 800;
+const PREVIEW_INERTIA_MAX_DURATION_MS = 5000;
 
 /** preview overlay 再描画要求フラグを立てる。 */
 function requestPreviewOverlayUpdate() {
@@ -880,6 +882,7 @@ elements.canvas.addEventListener("pointerdown", (event) => {
     }
   }
   state.previewInertiaActive = false;
+  state.previewInertiaStartedAt = 0;
   state.isPreviewDragging = true;
   state.previewDragButton = event.pointerType === "touch" ? null : event.button;
   applyLabelLayerVisibility();
@@ -906,7 +909,8 @@ window.addEventListener("pointerup", (event) => {
       (event.pointerType !== "touch" && dragButton === 0))
   ) {
     state.previewInertiaActive = true;
-    state.previewInertiaLastChangeAt = performance.now();
+    state.previewInertiaStartedAt = performance.now();
+    state.previewInertiaLastChangeAt = state.previewInertiaStartedAt;
   }
   if (event.pointerType === "touch") {
     previewTouchGestureUsedMultitouch = false;
@@ -930,6 +934,7 @@ window.addEventListener("pointercancel", (event) => {
   state.isPreviewDragging = false;
   state.previewDragButton = null;
   state.previewInertiaActive = false;
+  state.previewInertiaStartedAt = 0;
   if (event.pointerType === "touch") {
     previewTouchGestureUsedMultitouch = false;
   }
@@ -1515,6 +1520,7 @@ const { animate, init } = createPageLifecycleActions({
   state,
   elements,
   previewInertiaIdleTimeoutMs: PREVIEW_INERTIA_IDLE_TIMEOUT_MS,
+  previewInertiaMaxDurationMs: PREVIEW_INERTIA_MAX_DURATION_MS,
   initializeLocale,
   setupLocaleSelect,
   onLocaleChange,
