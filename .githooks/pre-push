@@ -1,5 +1,48 @@
 #!/bin/sh
 set -eu
 
+zero_oid="0000000000000000000000000000000000000000"
+cr="$(printf '\r')"
+
+while read -r local_ref local_sha remote_ref remote_sha
+do
+  local_ref="${local_ref%"$cr"}"
+  local_sha="${local_sha%"$cr"}"
+  remote_ref="${remote_ref%"$cr"}"
+  remote_sha="${remote_sha%"$cr"}"
+
+  case "$remote_ref" in
+    refs/heads/master|refs/heads/develop)
+      protected_branch="${remote_ref#refs/heads/}"
+
+      if [ "$local_sha" = "$zero_oid" ]; then
+        echo "[pre-push] deleting protected branch '$protected_branch' is blocked."
+        exit 1
+      fi
+
+      if [ "$remote_sha" != "$zero_oid" ] &&
+        ! git merge-base --is-ancestor "$remote_sha" "$local_sha"
+      then
+        echo "[pre-push] non-fast-forward pushes to '$protected_branch' are blocked."
+        exit 1
+      fi
+
+      if [ "$remote_sha" = "$zero_oid" ] &&
+        [ "${SEKIEI_ALLOW_PROTECTED_BOOTSTRAP:-}" = "1" ]
+      then
+        echo "[pre-push] allowing bootstrap push to '$protected_branch' because SEKIEI_ALLOW_PROTECTED_BOOTSTRAP=1."
+        continue
+      fi
+
+      echo "[pre-push] direct pushes to protected branch '$protected_branch' are blocked."
+      echo "[pre-push] open a pull request instead."
+      if [ "$remote_sha" = "$zero_oid" ]; then
+        echo "[pre-push] this remote branch does not exist yet. If you are bootstrapping the empty remote, rerun once with SEKIEI_ALLOW_PROTECTED_BOOTSTRAP=1."
+      fi
+      exit 1
+      ;;
+  esac
+done
+
 echo "[pre-push] running public readiness checks..."
 npm run public:check
