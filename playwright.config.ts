@@ -1,5 +1,7 @@
 import { defineConfig } from "@playwright/test";
 
+const isCi = Boolean(process.env.CI);
+
 /**
  * Sekiei の重要ジャーニーを実ブラウザで確認するための Playwright 設定。
  *
@@ -9,12 +11,14 @@ import { defineConfig } from "@playwright/test";
 export default defineConfig({
   testDir: "./tests/e2e",
   timeout: 30_000,
+  retries: isCi ? 1 : 0,
+  workers: isCi ? 2 : undefined,
   reporter: [["list"], ["html", { open: "never" }]],
   use: {
     baseURL: "http://127.0.0.1:4173",
     trace: "retain-on-failure",
     browserName: "chromium",
-    channel: "msedge",
+    ...(isCi ? {} : { channel: "msedge" }),
   },
   webServer: {
     command: "npm run dev -- --host 127.0.0.1 --port 4173",

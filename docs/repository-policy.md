@@ -23,7 +23,9 @@
   - `master` と `develop` への non-fast-forward push を block
   - それ以外の branch push では `npm run public:check` を実行
 - `.github/workflows/ci.yml`
-  - pull request / push ごとに `npm run public:check` を走らせる
+  - pull request / push ごとに `public-ready`、`lint`、`test`、`build`、`e2e` を分割実行する
+  - `test` job では Vitest により unit / integration test をまとめて確認する
+  - `e2e` job では Playwright で主要ブラウザフローを確認する
 - `.github/CODEOWNERS`
   - owner を `@Wfrm-Qz` として review 導線を揃える
 - `.github/pull_request_template.md`
@@ -77,6 +79,7 @@ GitHub 側では、少なくとも次を branch protection または ruleset で
 
 - Require a pull request before merging
 - Require status checks to pass before merging
+- Require `public-ready`, `lint`, `test`, `build`, `e2e`
 - Require approvals
 - Require review from Code Owners
 - Do not allow bypassing the above except owner

@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { openSekieiApp } from "./helpers";
 
 /**
  * 半透明や操作系の refactor 後も、慣性回転終了時に軸ラベルが戻ることを確認する E2E。
@@ -7,10 +8,7 @@ import { expect, test } from "@playwright/test";
  * preview 操作を伴う smoke test として固定する。
  */
 test("回転の慣性終了後に軸ラベルが再表示される", async ({ page }) => {
-  await page.addInitScript(() => {
-    localStorage.setItem("sekiei.locale", "ja");
-  });
-  await page.goto("/");
+  await openSekieiApp(page);
 
   await page.getByLabel("回転の慣性").check();
   const axisLabels = page.locator(".axis-overlay-label");
@@ -29,7 +27,8 @@ test("回転の慣性終了後に軸ラベルが再表示される", async ({ pa
   });
   await page.mouse.up();
 
-  await page.waitForTimeout(500);
   await expect(axisLabels).toHaveCount(3);
-  await expect(axisLabels.first()).toBeVisible();
+  await expect
+    .poll(() => axisLabels.first().isVisible(), { timeout: 10_000 })
+    .toBe(true);
 });

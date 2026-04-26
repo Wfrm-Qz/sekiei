@@ -13,6 +13,8 @@ Sekiei では、主に次の 3 層でテストします。
 - E2E test
   - ブラウザ上の主要操作フロー確認
 
+現在の `npm run test:unit` は、名前に反して `tests/unit` と `tests/integration` の両方を Vitest で実行します。
+
 ## Common Commands
 
 通常の確認:
@@ -73,3 +75,4 @@ npm run test:e2e
 - UI の見た目調整だけでも、少なくとも `npm run build` は通してください
 - 公開前の最終確認は `npm run public:check` を優先します
 - preview / export / builder まわりの変更では、可能なら `npm run test:unit` まで確認するのが安全です
+- pull request 向けの GitHub Actions では、`public-ready`、`lint`、Vitest (`unit + integration`)、`build`、Playwright E2E をそれぞれ個別 job で実行します

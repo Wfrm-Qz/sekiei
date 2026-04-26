@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { openSekieiApp, selectPreset } from "./helpers";
 
 /**
  * preview ベースの raster export が、union 実装差し替え後も
@@ -12,15 +13,8 @@ for (const format of ["png", "jpeg"] as const) {
       await dialog.dismiss();
     });
 
-    await page.addInitScript(() => {
-      localStorage.setItem("sekiei.locale", "ja");
-    });
-    await page.goto("/");
-
-    const presetInput = page.getByPlaceholder("プリセット選択");
-    await expect(presetInput).toBeVisible();
-    await presetInput.fill("日本式双晶");
-    await presetInput.press("Enter");
+    await openSekieiApp(page);
+    await selectPreset(page, "石英", "quartz-00002");
 
     await expect(page.locator("#app-crystal-system-select")).toHaveValue(
       "trigonal",

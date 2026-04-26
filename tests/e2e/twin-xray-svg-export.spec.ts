@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { openSekieiApp, selectPreset } from "./helpers";
 
 /**
  * 半透明 SVG export の実行経路を守る smoke test。
@@ -14,15 +15,8 @@ test("半透明表示でも SVG を保存できる", async ({ page }) => {
     await dialog.dismiss();
   });
 
-  await page.addInitScript(() => {
-    localStorage.setItem("sekiei.locale", "ja");
-  });
-  await page.goto("/");
-
-  const presetInput = page.getByPlaceholder("プリセット選択");
-  await expect(presetInput).toBeVisible();
-  await presetInput.fill("コランダム");
-  await presetInput.press("Enter");
+  await openSekieiApp(page);
+  await selectPreset(page, "コランダム", "corundum-00001");
 
   await page
     .locator("#app-face-display-mode-select")
