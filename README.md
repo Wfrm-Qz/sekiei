@@ -88,6 +88,20 @@ npm run preview
 - [Testing](./docs/testing.md)
   - テスト方針と実行コマンド
 
+## 現在の更新履歴
+
+詳細は [docs/changelog.md](./docs/changelog.md) を参照してください。
+
+> `2026-04-27 / v0.1.0`
+>
+> Sekiei を公開しました。
+
+## 現在の既知の問題
+
+詳細は [docs/known-issues.md](./docs/known-issues.md) を参照してください。
+
+> 現在、公開中の既知の問題はありません。
+
 公開 sample:
 
 - [cube.json](./docs/samples/cube.json)
