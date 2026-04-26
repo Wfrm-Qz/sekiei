@@ -2,6 +2,8 @@
 
 このディレクトリには、公開レポジトリ向けに整理した Sekiei の補助ドキュメントを置きます。
 
+公開版: https://sekiei.pages.dev/
+
 ## Documents
 
 - [Modeling Features](./modeling-features.md)

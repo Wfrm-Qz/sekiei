@@ -2,6 +2,8 @@
 
 Sekiei は Vite の静的 build を Cloudflare Pages へ配置する想定です。
 
+Production URL: https://sekiei.pages.dev/
+
 ## Cloudflare Pages
 
 - Framework preset: `Vite`
