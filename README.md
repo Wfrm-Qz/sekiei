@@ -43,11 +43,6 @@ Sekiei は、結晶学パラメーターから結晶の 3D モデルを生成し
   - 公開 sample JSON
   - wrapper schema ベースの保存/読込
 
-## 画面入口
-
-- 正式版かつ唯一のページ入口:
-  - [index.html](./index.html)
-
 ## すぐに試す
 
 依存をインストールして開発サーバーを起動します。
@@ -88,7 +83,7 @@ npm run preview
 - [Testing](./docs/testing.md)
   - テスト方針と実行コマンド
 
-## 現在の更新履歴
+## 更新履歴
 
 詳細は [docs/changelog.md](./docs/changelog.md) を参照してください。
 
@@ -96,7 +91,7 @@ npm run preview
 >
 > Sekiei を公開しました。
 
-## 現在の既知の問題
+## 既知の問題
 
 詳細は [docs/known-issues.md](./docs/known-issues.md) を参照してください。
 
