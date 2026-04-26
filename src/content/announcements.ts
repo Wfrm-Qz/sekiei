@@ -202,7 +202,7 @@ export const ANNOUNCEMENTS: readonly AnnouncementEntry[] = [
     knownIssues: parseAnnouncementKnownIssuesMarkdown(knownIssuesMarkdown),
     links: {
       githubRepositoryUrl: "https://github.com/Wfrm-Qz/sekiei",
-      authorXUrl: "https://x.com/Wfrm_Qz",
+      authorXUrl: "https://x.com/wolframiteQrz",
     },
   },
 ];
