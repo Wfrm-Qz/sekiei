@@ -12,10 +12,33 @@ function readJson(path: string) {
 }
 
 describe("third-party license inventory", () => {
-  it("declares the project license as MIT and keeps a root LICENSE file", () => {
+  it("declares the package license expression and keeps project license files", () => {
     const packageJson = readJson(PACKAGE_JSON_PATH);
-    expect(packageJson.license).toBe("MIT");
+    expect(packageJson.license).toBe("MIT AND CC-BY-4.0");
     expect(existsSync(resolve(ROOT_DIR, "LICENSE"))).toBe(true);
+    expect(existsSync(resolve(ROOT_DIR, "docs/licensing.md"))).toBe(true);
+    expect(existsSync(resolve(ROOT_DIR, "src/data/presets/README.md"))).toBe(
+      true,
+    );
+  });
+
+  it("documents preset data attribution through source references", () => {
+    const presetLicense = readFileSync(
+      resolve(ROOT_DIR, "src/data/presets/README.md"),
+      "utf8",
+    );
+    const licensingDoc = readFileSync(
+      resolve(ROOT_DIR, "docs/licensing.md"),
+      "utf8",
+    );
+
+    [presetLicense, licensingDoc].forEach((text) => {
+      expect(text).toContain("Creative Commons Attribution 4.0");
+      expect(text).toContain("parameters.metadata.fullReference");
+      expect(text).toContain("reference.md");
+      expect(text).toContain("Attribution to Sekiei or Wfrm-Qz is appreciated");
+      expect(text).toContain("not required");
+    });
   });
 
   it("tracks expected licenses for direct runtime dependencies", () => {

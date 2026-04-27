@@ -3,6 +3,13 @@
 This file summarizes the third-party software and bundled font assets included in
 this repository.
 
+For this repository's own licensing terms, see:
+
+- `LICENSE` for the MIT-licensed application source code and project
+  documentation
+- `docs/licensing.md` for the separate CC BY 4.0 preset data notice
+- `src/data/presets/README.md` for the preset data attribution requirements
+
 ## Runtime Dependencies
 
 ### Three.js
