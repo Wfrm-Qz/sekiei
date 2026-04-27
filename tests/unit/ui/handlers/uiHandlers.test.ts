@@ -16,9 +16,11 @@ describe("ui/uiHandlers", () => {
       <button id="metadata-toggle"></button>
       <input id="metadata-name" />
       <button id="announcement-open"></button>
+      <button id="manual-open"></button>
       <button id="mobile-menu-button"></button>
       <div id="mobile-menu">
         <button class="header-action-menu-item" data-open-announcement="true">updates</button>
+        <button class="header-action-menu-item" data-open-manual="true">manual</button>
       </div>
       <button id="save"></button>
       <div id="save-menu"><button class="header-action-menu-item" data-export-format="json" data-save-mode="save">save</button></div>
@@ -56,6 +58,9 @@ describe("ui/uiHandlers", () => {
         announcementOpenButton: document.getElementById(
           "announcement-open",
         ) as HTMLButtonElement,
+        manualOpenButton: document.getElementById(
+          "manual-open",
+        ) as HTMLButtonElement,
         mobileHeaderMenuButton: document.getElementById(
           "mobile-menu-button",
         ) as HTMLButtonElement,
@@ -80,6 +85,7 @@ describe("ui/uiHandlers", () => {
       closeHeaderSaveMenus: vi.fn(),
       toggleHeaderSaveMenu: vi.fn(),
       openAnnouncementModal: vi.fn(),
+      openManualModal: vi.fn(),
       triggerImportJsonWithMode: vi.fn(),
       commitMetadataField: vi.fn(),
       applyPresetMetadataSectionVisibility: vi.fn(),
@@ -124,6 +130,10 @@ describe("ui/uiHandlers", () => {
     expect(context.closeHeaderSaveMenus).toHaveBeenCalledTimes(1);
     expect(context.openAnnouncementModal).toHaveBeenCalledTimes(1);
 
+    context.elements.manualOpenButton?.click();
+    expect(context.closeHeaderSaveMenus).toHaveBeenCalledTimes(2);
+    expect(context.openManualModal).toHaveBeenCalledTimes(1);
+
     context.elements.saveButton.click();
     expect(context.toggleHeaderSaveMenu).toHaveBeenCalledWith(
       context.elements.saveButton,
@@ -145,10 +155,16 @@ describe("ui/uiHandlers", () => {
     expect(context.exportTwinArtifact).toHaveBeenCalledWith("json", "save");
 
     const mobileMenuItem = context.elements.mobileHeaderMenu?.querySelector(
-      ".header-action-menu-item",
+      '[data-open-announcement="true"]',
     ) as HTMLButtonElement;
     mobileMenuItem.click();
     expect(context.openAnnouncementModal).toHaveBeenCalledTimes(2);
+
+    const mobileManualItem = context.elements.mobileHeaderMenu?.querySelector(
+      '[data-open-manual="true"]',
+    ) as HTMLButtonElement;
+    mobileManualItem.click();
+    expect(context.openManualModal).toHaveBeenCalledTimes(2);
 
     context.elements.mobileOutputExportButtons?.[0]?.click();
     expect(context.exportTwinArtifact).toHaveBeenCalledWith("svg", "save");

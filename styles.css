@@ -62,7 +62,8 @@ textarea {
   color: var(--text);
 }
 
-.page-root.announcement-modal-open {
+.page-root.announcement-modal-open,
+.page-root.manual-modal-open {
   overflow: hidden;
 }
 

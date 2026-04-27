@@ -27,6 +27,7 @@ interface TwinUiHandlerElementsLike {
   presetMetadataToggleButton: HTMLButtonElement;
   metadataInputs: Record<string, HTMLInputElement | HTMLTextAreaElement>;
   announcementOpenButton?: HTMLButtonElement | null;
+  manualOpenButton?: HTMLButtonElement | null;
   mobileHeaderMenuButton?: HTMLButtonElement | null;
   mobileHeaderMenu?: HTMLElement | null;
   saveButton?: HTMLButtonElement | null;
@@ -55,6 +56,7 @@ export interface TwinUiHandlersContext {
     menu?: HTMLElement | null,
   ) => void;
   openAnnouncementModal: () => void;
+  openManualModal: () => void;
   setMobileLayoutTab?: (
     tab: "basic" | "face" | "twin" | "display" | "output",
   ) => void;
@@ -105,6 +107,11 @@ export function createTwinUiHandlers(context: TwinUiHandlersContext) {
 
     if (action.dataset.openAnnouncement === "true") {
       context.openAnnouncementModal();
+      return;
+    }
+
+    if (action.dataset.openManual === "true") {
+      context.openManualModal();
       return;
     }
 
@@ -231,6 +238,11 @@ export function createTwinUiHandlers(context: TwinUiHandlersContext) {
     context.elements.announcementOpenButton?.addEventListener("click", () => {
       context.closeHeaderSaveMenus();
       context.openAnnouncementModal();
+    });
+
+    context.elements.manualOpenButton?.addEventListener("click", () => {
+      context.closeHeaderSaveMenus();
+      context.openManualModal();
     });
 
     context.elements.saveButton?.addEventListener("click", () => {
