@@ -74,7 +74,7 @@ describe("content/announcements", () => {
     const latestAnnouncement = getLatestAnnouncement();
 
     expect(latestAnnouncement?.history.length).toBeGreaterThan(0);
-    expect(latestAnnouncement?.history[0]?.version).toBe("v0.1.0");
+    expect(latestAnnouncement?.history[0]?.version).toBe("v0.1.1");
     expect(latestAnnouncement?.knownIssues).toEqual([]);
   });
 
