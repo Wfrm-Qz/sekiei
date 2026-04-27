@@ -28,6 +28,8 @@ const translations = {
     "common.createEquivalentFace": "等価な面を作成",
     "common.expand": "展開",
     "common.collapse": "折りたたむ",
+    "common.increaseField": "{label} を増やす",
+    "common.decreaseField": "{label} を減らす",
     "common.sortAscending": "{label} を昇順ソート",
     "common.sortDescending": "{label} を降順ソート",
     "common.noPresetMatches": "一致するプリセットはありません",
@@ -79,6 +81,130 @@ const translations = {
     "manual.tocClose": "目次を閉じる",
     "manual.dismiss": "閉じる",
     "manual.closeAria": "マニュアルを閉じる",
+    "help.genericControlFallbackLabel": "この項目",
+    "help.genericControl": "{label} を操作します。",
+    "help.disabled.generic": "{label} は現在の条件では操作できません。",
+    "help.disabled.crystalSystemLocked":
+      "現在の結晶系では自動で決まる値のため、直接編集できません。",
+    "help.disabled.autoI":
+      "i は h と k から自動で決まるため、直接編集できません。",
+    "help.disabled.faceIndexIReadonly":
+      "i は h と k から自動で決まるため、直接編集できません。",
+    "help.disabled.faceGroupCollapsed":
+      "等価面グループを展開すると、この値を編集できます。",
+    "help.disabled.noFaces": "面がないため実行できません。",
+    "help.disabled.noEquivalentFaces":
+      "この面から追加できる等価面はすでに揃っています。",
+    "help.disabled.baseCrystal": "結晶1は基準になるため削除できません。",
+    "help.disabled.maxCrystals": "結晶は最大8個までです。",
+    "help.disabled.hiddenCrystal":
+      "この結晶は現在の設定で無効なため、表示を切り替えられません。",
+    "help.disabled.hiddenByCrystalSystem":
+      "現在の結晶系ではこの項目は使いません。",
+    "help.language": "画面表示の言語を切り替えます。",
+    "help.header.github": "GitHub のレポジトリを開きます。",
+    "help.header.x": "作者 X を開きます。",
+    "help.header.notice": "更新履歴や既知の問題を確認します。",
+    "help.header.manual": "このツールのマニュアルを開きます。",
+    "help.header.menu": "スマホ向けのメニューを開きます。",
+    "help.header.save": "現在の内容を既定名で保存します。",
+    "help.header.saveAs": "形式を選び、名前を付けて保存します。",
+    "help.header.import": "JSON の読み込み方法を選びます。",
+    "help.modal.dismiss": "この画面を閉じます。",
+    "help.modal.close": "この画面を閉じます。",
+    "help.export.json": "現在の編集内容を JSON として保存します。",
+    "help.export.stl": "3Dプリント向けの STL モデルを書き出します。",
+    "help.export.svg": "プレビューを SVG 画像として書き出します。",
+    "help.export.png": "プレビューを PNG 画像として書き出します。",
+    "help.export.jpeg": "プレビューを JPEG 画像として書き出します。",
+    "help.import.all": "結晶データとプレビュー設定をまとめて読み込みます。",
+    "help.import.crystal": "結晶データだけを読み込みます。",
+    "help.import.preview": "プレビュー設定だけを読み込みます。",
+    "help.mobile.tab": "スマホ向けの編集カテゴリを切り替えます。",
+    "help.mobile.menuTab": "指定した編集カテゴリへ移動します。",
+    "help.preset.query":
+      "プリセットを検索して、結晶パラメーターと面一覧の初期値を読み込みます。",
+    "help.preset.clear": "プリセット入力を空にします。",
+    "help.preset.options": "プリセット候補を表示します。",
+    "help.preset.metadataToggle":
+      "プリセット情報の詳細項目を表示または折りたたみます。",
+    "help.preset.metadata.name":
+      "保存するプリセット名を入力します。空でもモデル作成はできます。",
+    "help.preset.metadata.shortDescription":
+      "プリセットの短い説明を入力します。",
+    "help.preset.metadata.altName":
+      "もう一方の言語で表示するプリセット名を入力します。",
+    "help.preset.metadata.description": "プリセットの説明を入力します。",
+    "help.preset.metadata.reference":
+      "プリセットデータの主な出典を入力します。",
+    "help.preset.metadata.fullReference": "出典の詳細や補足情報を入力します。",
+    "help.crystal.system":
+      "結晶系を選びます。軸比や角度の一部は結晶系に合わせて自動固定されます。",
+    "help.crystal.size": "完成モデルの基準サイズを mm 単位で指定します。",
+    "help.crystal.axisRatio":
+      "{label} 軸の長さの比率を調整します。絶対寸法ではなく、軸同士の比です。",
+    "help.crystal.axisAngle": "{label} の軸間角を度数で調整します。",
+    "help.crystal.add": "面一覧で編集する結晶を追加します。",
+    "help.crystal.tab": "面一覧で編集する結晶を切り替えます。",
+    "help.crystal.menu": "結晶の複製、色変更、削除メニューを開きます。",
+    "help.crystal.duplicate": "この結晶を複製して新しい結晶を作ります。",
+    "help.crystal.delete": "この結晶を削除します。",
+    "help.crystal.color": "この結晶の表示色を変更します。",
+    "help.stlSplit.enabled": "STL 出力時に、指定した面でモデルを分割します。",
+    "help.stlSplit.planeIndex": "STL 分割に使う面の {label} 指数を指定します。",
+    "help.twin.fromCrystal": "この結晶を作る元の結晶を選びます。",
+    "help.twin.type": "接触双晶または貫入双晶を選びます。",
+    "help.twin.ruleIndex": "双晶則に使う {label} 指数を指定します。",
+    "help.twin.rotation": "双晶を配置するときの回転角を指定します。",
+    "help.twin.baseContactFace": "生成元結晶側で接触させる面を選びます。",
+    "help.twin.derivedContactFace": "この結晶側で接触させる面を選びます。",
+    "help.twin.referenceAxis": "接触面上で向きを合わせる基準方向を選びます。",
+    "help.preview.reset": "プレビューの向きと拡大率を見やすい状態に戻します。",
+    "help.preview.inertia":
+      "ドラッグ後に回転を少しだけ続けるかを切り替えます。",
+    "help.preview.axisView":
+      "正の {label} 軸側から結晶中心を見る視点に切り替えます。",
+    "help.preview.faceDisplay": "面の色や透明度の表示モードを切り替えます。",
+    "help.preview.toggle.faceLabels": "面指数ラベルの表示を切り替えます。",
+    "help.preview.toggle.ridgeLines": "稜線の表示を切り替えます。",
+    "help.preview.toggle.intersectionLines":
+      "刻印文字と面の交線の表示を切り替えます。",
+    "help.preview.toggle.axisInner": "モデル内部の軸線表示を切り替えます。",
+    "help.preview.toggle.axisOuter": "モデル外側の軸線表示を切り替えます。",
+    "help.preview.toggle.axisLabels": "軸ラベルの表示を切り替えます。",
+    "help.preview.toggle.twinRule": "双晶軸または双晶面の表示を切り替えます。",
+    "help.preview.toggle.metadata":
+      "プリセット名などのラベル表示を切り替えます。",
+    "help.preview.toggle.splitPlane": "STL 分割面のガイド表示を切り替えます。",
+    "help.preview.crystalVisibility":
+      "この結晶をプレビューに表示するか切り替えます。",
+    "help.previewStyle.summary": "プレビューの見た目の詳細設定を開閉します。",
+    "help.previewStyle.resetBasic":
+      "プレビュー詳細設定をデフォルト値に戻します。",
+    "help.previewStyle.resetAdvanced": "高度な設定をデフォルト値に戻します。",
+    "help.previewStyle.field": "プレビュー上のラベルや線の見た目を調整します。",
+    "help.face.clearAll": "現在の結晶に登録されている面をすべて削除します。",
+    "help.face.add": "現在の結晶に新しい面を追加します。",
+    "help.face.sort": "{label}",
+    "help.face.enabledToggle": "この面をモデル生成に使うか切り替えます。",
+    "help.face.groupToggle": "等価な面のグループを展開または折りたたみます。",
+    "help.face.index.h":
+      "a 軸方向に対する面の向きを変えます。0 の場合、その面は a 軸とは交わりません。",
+    "help.face.index.k":
+      "b 軸方向に対する面の向きを変えます。0 の場合、その面は b 軸とは交わりません。",
+    "help.face.index.i":
+      "六方晶系/三方晶系で使う補助指数です。h と k から自動で決まります。",
+    "help.face.index.l":
+      "c 軸方向に対する面の向きを変えます。0 の場合、その面は c 軸とは交わりません。",
+    "help.face.indexStep": "{label} の値を 1 ずつ増減します。",
+    "help.face.coefficient":
+      "面の大きさに関わる係数です。大きくすると基本的には面が大きくなり、小さくすると面が小さくなります。",
+    "help.face.coefficientStep": "係数を段階的に増減します。",
+    "help.face.color": "この面または等価面グループの色を変更します。",
+    "help.face.textToggle": "この面に入れる刻印文字の設定を開閉します。",
+    "help.face.equivalent": "現在の面から等価な面を追加します。",
+    "help.face.remove": "この面を削除します。",
+    "help.faceText.field": "面に入れる刻印文字の表示内容や位置を調整します。",
     "common.jsonLoadFailed": "JSON の読み込みに失敗しました: {message}",
     "app.pageTitle": "Sekiei",
     "app.headerTitle": "SEKIEI",
@@ -382,6 +508,8 @@ const translations = {
     "common.createEquivalentFace": "Create Equivalent Faces",
     "common.expand": "Expand",
     "common.collapse": "Collapse",
+    "common.increaseField": "Increase {label}",
+    "common.decreaseField": "Decrease {label}",
     "common.sortAscending": "Sort {label} in ascending order",
     "common.sortDescending": "Sort {label} in descending order",
     "common.noPresetMatches": "No matching presets found",
@@ -434,6 +562,141 @@ const translations = {
     "manual.tocClose": "Close contents",
     "manual.dismiss": "Close",
     "manual.closeAria": "Close manual",
+    "help.genericControlFallbackLabel": "this item",
+    "help.genericControl": "Use {label}.",
+    "help.disabled.generic": "{label} cannot be used in the current state.",
+    "help.disabled.crystalSystemLocked":
+      "This value is determined automatically by the current crystal system.",
+    "help.disabled.autoI":
+      "i is determined automatically from h and k, so it cannot be edited directly.",
+    "help.disabled.faceIndexIReadonly":
+      "i is determined automatically from h and k, so it cannot be edited directly.",
+    "help.disabled.faceGroupCollapsed":
+      "Expand the equivalent-face group to edit this value.",
+    "help.disabled.noFaces": "There are no faces to remove.",
+    "help.disabled.noEquivalentFaces":
+      "All equivalent faces that can be added from this face already exist.",
+    "help.disabled.baseCrystal":
+      "Crystal 1 is the base crystal and cannot be deleted.",
+    "help.disabled.maxCrystals": "Up to 8 crystals can be used.",
+    "help.disabled.hiddenCrystal":
+      "This crystal is disabled by the current settings, so its visibility cannot be changed.",
+    "help.disabled.hiddenByCrystalSystem":
+      "This item is not used by the current crystal system.",
+    "help.language": "Switch the display language.",
+    "help.header.github": "Open the GitHub repository.",
+    "help.header.x": "Open the author's X profile.",
+    "help.header.notice": "Review update history and known issues.",
+    "help.header.manual": "Open the manual for this tool.",
+    "help.header.menu": "Open the mobile menu.",
+    "help.header.save": "Save the current content with the default name.",
+    "help.header.saveAs": "Choose a format and save with a new name.",
+    "help.header.import": "Choose how to import JSON.",
+    "help.modal.dismiss": "Close this panel.",
+    "help.modal.close": "Close this panel.",
+    "help.export.json": "Save the current project as JSON.",
+    "help.export.stl": "Export an STL model for 3D printing.",
+    "help.export.svg": "Export the preview as an SVG image.",
+    "help.export.png": "Export the preview as a PNG image.",
+    "help.export.jpeg": "Export the preview as a JPEG image.",
+    "help.import.all": "Import both crystal data and preview settings.",
+    "help.import.crystal": "Import only crystal data.",
+    "help.import.preview": "Import only preview settings.",
+    "help.mobile.tab": "Switch the mobile editing category.",
+    "help.mobile.menuTab": "Move to the selected editing category.",
+    "help.preset.query":
+      "Search presets and load initial crystal parameters and faces.",
+    "help.preset.clear": "Clear the preset input.",
+    "help.preset.options": "Show preset candidates.",
+    "help.preset.metadataToggle":
+      "Show or collapse the detailed preset information fields.",
+    "help.preset.metadata.name":
+      "Enter the preset name. The model can still be created when this is blank.",
+    "help.preset.metadata.shortDescription":
+      "Enter a short description for the preset.",
+    "help.preset.metadata.altName":
+      "Enter the preset name shown in the other language.",
+    "help.preset.metadata.description": "Enter the preset description.",
+    "help.preset.metadata.reference":
+      "Enter the main source for the preset data.",
+    "help.preset.metadata.fullReference":
+      "Enter detailed citation or supplementary source information.",
+    "help.crystal.system":
+      "Choose the crystal system. Some axis ratios and angles are locked automatically.",
+    "help.crystal.size": "Set the reference model size in millimeters.",
+    "help.crystal.axisRatio":
+      "Adjust the length ratio of the {label} axis. This is a ratio, not an absolute size.",
+    "help.crystal.axisAngle": "Adjust the {label} interaxial angle in degrees.",
+    "help.crystal.add": "Add a crystal to edit in the face list.",
+    "help.crystal.tab": "Switch the crystal edited in the face list.",
+    "help.crystal.menu": "Open duplicate, color, and delete actions.",
+    "help.crystal.duplicate": "Duplicate this crystal as a new crystal.",
+    "help.crystal.delete": "Delete this crystal.",
+    "help.crystal.color": "Change the display color for this crystal.",
+    "help.stlSplit.enabled":
+      "Split the model by the specified plane when exporting STL.",
+    "help.stlSplit.planeIndex":
+      "Set the {label} index of the plane used for STL splitting.",
+    "help.twin.fromCrystal": "Choose the source crystal for this crystal.",
+    "help.twin.type": "Choose a contact twin or penetration twin.",
+    "help.twin.ruleIndex": "Set the {label} index used by the twin law.",
+    "help.twin.rotation": "Set the rotation angle used to place the twin.",
+    "help.twin.baseContactFace":
+      "Choose the contact face on the source crystal.",
+    "help.twin.derivedContactFace": "Choose the contact face on this crystal.",
+    "help.twin.referenceAxis":
+      "Choose the reference direction used to align the contact face.",
+    "help.preview.reset": "Reset the preview orientation and zoom.",
+    "help.preview.inertia":
+      "Toggle whether rotation continues briefly after dragging.",
+    "help.preview.axisView":
+      "Switch to a view from the positive {label}-axis side toward the crystal center.",
+    "help.preview.faceDisplay": "Switch face color and transparency mode.",
+    "help.preview.toggle.faceLabels": "Show or hide face index labels.",
+    "help.preview.toggle.ridgeLines": "Show or hide ridge lines.",
+    "help.preview.toggle.intersectionLines":
+      "Show or hide intersections between engraved text and faces.",
+    "help.preview.toggle.axisInner": "Show or hide internal axis lines.",
+    "help.preview.toggle.axisOuter": "Show or hide outer axis lines.",
+    "help.preview.toggle.axisLabels": "Show or hide axis labels.",
+    "help.preview.toggle.twinRule": "Show or hide the twin axis or twin plane.",
+    "help.preview.toggle.metadata": "Show or hide preset labels.",
+    "help.preview.toggle.splitPlane": "Show or hide the STL split-plane guide.",
+    "help.preview.crystalVisibility":
+      "Show or hide this crystal in the preview.",
+    "help.previewStyle.summary": "Open or close detailed preview styling.",
+    "help.previewStyle.resetBasic":
+      "Reset preview detail settings to their defaults.",
+    "help.previewStyle.resetAdvanced":
+      "Reset advanced settings to their defaults.",
+    "help.previewStyle.field": "Adjust preview label or line styling.",
+    "help.face.clearAll": "Remove all faces registered on the current crystal.",
+    "help.face.add": "Add a new face to the current crystal.",
+    "help.face.sort": "{label}",
+    "help.face.enabledToggle":
+      "Use or ignore this face when generating the model.",
+    "help.face.groupToggle": "Expand or collapse this equivalent-face group.",
+    "help.face.index.h":
+      "Change the face direction relative to the a axis. When this is 0, the face does not intersect the a axis.",
+    "help.face.index.k":
+      "Change the face direction relative to the b axis. When this is 0, the face does not intersect the b axis.",
+    "help.face.index.i":
+      "This auxiliary index is used for hexagonal/trigonal systems and is determined from h and k.",
+    "help.face.index.l":
+      "Change the face direction relative to the c axis. When this is 0, the face does not intersect the c axis.",
+    "help.face.indexStep": "Increase or decrease {label} by 1.",
+    "help.face.coefficient":
+      "This coefficient affects face size. Increasing it usually makes the face larger; decreasing it usually makes the face smaller.",
+    "help.face.coefficientStep":
+      "Increase or decrease the coefficient step by step.",
+    "help.face.color":
+      "Change the color of this face or equivalent-face group.",
+    "help.face.textToggle":
+      "Open or close engraved text settings for this face.",
+    "help.face.equivalent": "Add equivalent faces from the current face.",
+    "help.face.remove": "Remove this face.",
+    "help.faceText.field":
+      "Adjust the content, appearance, or position of engraved text on this face.",
     "common.jsonLoadFailed": "Failed to load JSON: {message}",
     "app.pageTitle": "Sekiei",
     "app.headerTitle": "SEKIEI",

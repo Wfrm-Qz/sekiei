@@ -168,6 +168,26 @@ textarea:focus-visible {
   box-shadow: var(--focus-ring);
 }
 
+.help-tooltip {
+  position: fixed;
+  z-index: 10000;
+  max-width: min(340px, calc(100vw - 16px));
+  padding: 0.58rem 0.72rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background: rgba(20, 26, 33, 0.96);
+  color: #fff;
+  box-shadow: 0 12px 28px rgba(20, 26, 33, 0.24);
+  font-size: 0.82rem;
+  line-height: 1.45;
+  pointer-events: none;
+  white-space: pre-line;
+}
+
+.help-tooltip[hidden] {
+  display: none;
+}
+
 .dads-button {
   min-height: 44px;
   font-weight: 700;
@@ -689,27 +709,33 @@ textarea:focus-visible {
   justify-self: center;
 }
 
-.coefficient-input-wrap {
+.coefficient-input-wrap,
+.face-index-input-wrap {
   position: relative;
   min-width: 84px;
 }
 
-.coefficient-input-wrap input {
+.coefficient-input-wrap input,
+.face-index-input-wrap input {
   padding-right: 1.7rem;
 }
 
 .coefficient-input::-webkit-outer-spin-button,
-.coefficient-input::-webkit-inner-spin-button {
+.coefficient-input::-webkit-inner-spin-button,
+.face-index-input::-webkit-outer-spin-button,
+.face-index-input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.coefficient-input {
+.coefficient-input,
+.face-index-input {
   appearance: textfield;
   -moz-appearance: textfield;
 }
 
-.coefficient-spin-buttons {
+.coefficient-spin-buttons,
+.face-index-spin-buttons {
   position: absolute;
   top: 50%;
   right: 0.18rem;
@@ -718,7 +744,8 @@ textarea:focus-visible {
   transform: translateY(-50%);
 }
 
-.coefficient-spin-button {
+.coefficient-spin-button,
+.face-index-spin-button {
   width: 1.2rem;
   height: 0.9rem;
   padding: 0;
@@ -731,10 +758,17 @@ textarea:focus-visible {
   box-shadow: none;
 }
 
-.coefficient-spin-button:hover {
+.coefficient-spin-button:hover:not(:disabled),
+.face-index-spin-button:hover:not(:disabled) {
   transform: none;
   box-shadow: none;
   background: rgba(145, 107, 42, 0.12);
+}
+
+.coefficient-spin-button:disabled,
+.face-index-spin-button:disabled {
+  cursor: default;
+  opacity: 0.35;
 }
 
 .face-table input:disabled {
