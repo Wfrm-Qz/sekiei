@@ -1,4 +1,3 @@
-import fs from "node:fs/promises";
 import path from "node:path";
 import { expect, test } from "@playwright/test";
 import { openSekieiApp } from "./helpers";
@@ -11,9 +10,9 @@ const INPUT_JSON_PATH = path.resolve(
   "leftQuartz.withText.v2.json",
 );
 
-test("左水晶 import 後の STL debug で fallback と composite candidate を比較できる", async ({
+test("左水晶 import 後の STL 保存でデバッグ JSON を自動保存しない", async ({
   page,
-}, testInfo) => {
+}) => {
   let dialogMessage: string | null = null;
   page.on("dialog", async (dialog) => {
     dialogMessage = dialog.message();
@@ -38,36 +37,17 @@ test("左水晶 import 後の STL debug で fallback と composite candidate を
 
   await expect
     .poll(() => downloads.length, { timeout: 15_000 })
-    .toBeGreaterThanOrEqual(2);
+    .toBeGreaterThanOrEqual(1);
 
+  const stlDownload = downloads.find((download) =>
+    /\.stl$/i.test(download.suggestedFilename()),
+  );
+  expect(stlDownload).toBeTruthy();
+  await page.waitForTimeout(500);
   const debugDownload = downloads.find((download) =>
     /-stl-debug\.json$/i.test(download.suggestedFilename()),
   );
-  expect(debugDownload).toBeTruthy();
-  if (!debugDownload) {
-    throw new Error("STL debug JSON download が見つかりません");
-  }
-
-  const debugPath = testInfo.outputPath(debugDownload.suggestedFilename());
-  await debugDownload.saveAs(debugPath);
-  const debugJson = JSON.parse(await fs.readFile(debugPath, "utf8"));
-
-  const summary = {
-    selectedSource: debugJson.selectedSource ?? null,
-    preferTextPreservingFallback:
-      debugJson.preferTextPreservingFallback ?? null,
-    fallbackTopology:
-      debugJson.fallbackCandidate?.topologyAfterOrientation ?? null,
-    compositeTopology:
-      debugJson.compositeCandidate?.topologyAfterOrientation ?? null,
-    unionTopology: debugJson.unionCandidate?.topologyAfterOrientation ?? null,
-    dialogMessage,
-  };
-  const summaryPath = testInfo.outputPath("stl-compare-summary.json");
-  await fs.writeFile(summaryPath, JSON.stringify(summary, null, 2), "utf8");
+  expect(debugDownload).toBeUndefined();
 
   expect(dialogMessage).toBeNull();
-  expect(summary.fallbackTopology).toBeTruthy();
-  expect(summary.compositeTopology).toBeTruthy();
-  expect(path.basename(summaryPath)).toBe("stl-compare-summary.json");
 });
