@@ -71,7 +71,7 @@ npm run preview
 公開向けの補助ドキュメントは [docs/README.md](./docs/README.md) から辿れます。
 
 - [User Manual](./docs/user-manual.md)
-  - 基本操作
+  - スクリーンショット付きの基本操作
 - [Preview Controls](./docs/preview-controls.md)
   - プレビュー周辺の使い方
 - [Changelog](./docs/changelog.md)

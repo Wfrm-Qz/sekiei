@@ -29,7 +29,7 @@
 - [Repository Policy](./repository-policy.md)
   - branch 運用、local hook、GitHub 側で設定したい保護ルール
 - [User Manual](./user-manual.md)
-  - 利用者向けの基本操作ガイド
+  - 利用者向けのスクリーンショット付き基本操作ガイド
 - [Preview Controls](./preview-controls.md)
   - プレビュー周辺の操作説明
 - [Mobile Layout Plan](./mobile-layout-plan.md)
