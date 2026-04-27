@@ -16,6 +16,8 @@
   - built-in preset データの出典一覧
 - [Project License](../LICENSE)
   - このプロジェクト自体のライセンス（MIT）
+- [Licensing](./licensing.md)
+  - アプリ本体とプリセットデータのライセンス境界
 - [Architecture](./architecture.md)
   - 現在のソース構成と責務分担
 - [JSON Format](./json-format.md)

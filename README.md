@@ -165,8 +165,15 @@ npm run test:e2e
 
 ## ライセンス
 
-このプロジェクト自体は [MIT License](./LICENSE) で提供します。
+アプリケーション本体とプロジェクト文書は [MIT License](./LICENSE) で提供します。
 
+`src/data/presets/` 配下のプリセットデータは
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) で提供します。
+流用・改変する場合は、各プリセットの `metadata.fullReference` または
+[Preset References](./reference.md) にある出典表記を引き継いでください。
+Sekiei / Wfrm-Qz への帰属表示は任意です。
+
+詳しいライセンス境界は [Licensing](./docs/licensing.md) にあります。
 第三者依存と bundled font のライセンス整理は [LICENSES.md](./LICENSES.md) にあります。
 
 ## 補足
