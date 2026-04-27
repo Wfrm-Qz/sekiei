@@ -3,6 +3,16 @@
 Sekiei のお知らせモーダルで表示する更新履歴です。  
 This file is also used as the source for the in-app announcement modal.
 
+## 2026-04-28 / v0.1.4
+
+### ja
+
+- 英語 UI では英語版マニュアルと英語スクリーンショットを表示するようにしました。
+
+### en
+
+- Added an English user manual and English screenshots for the English UI.
+
 ## 2026-04-27 / v0.1.3
 
 ### ja
