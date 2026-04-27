@@ -56,4 +56,33 @@ describe("ui/page/manualModal", () => {
 
     expect(elements.manualModal).toHaveAttribute("hidden");
   });
+
+  it("見出しから目次を作り、項目クリックで本文見出しへ移動できる", () => {
+    const elements = mountManualModal();
+    const { initManualModal, openManual } = createManualModalActions({
+      elements,
+    });
+
+    initManualModal();
+    openManual();
+
+    const toc = elements.manualBody?.querySelector(".manual-modal__toc");
+    const tocLinks = Array.from(
+      elements.manualBody?.querySelectorAll<HTMLButtonElement>(
+        ".manual-modal__toc-link",
+      ) ?? [],
+    );
+
+    expect(toc).toHaveAccessibleName("目次");
+    expect(tocLinks.length).toBeGreaterThan(8);
+    expect(tocLinks[0]).toHaveTextContent("できること");
+
+    const faceListLink = tocLinks.find((link) =>
+      link.textContent?.includes("面一覧"),
+    );
+    faceListLink?.click();
+
+    expect(faceListLink).toHaveAttribute("aria-current", "true");
+    expect(document.activeElement).toHaveTextContent("面一覧");
+  });
 });

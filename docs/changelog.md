@@ -3,6 +3,16 @@
 Sekiei のお知らせモーダルで表示する更新履歴です。  
 This file is also used as the source for the in-app announcement modal.
 
+## 2026-04-27 / v0.1.3
+
+### ja
+
+- ツール内マニュアルに目次を追加し、項目へ移動しやすくしました。
+
+### en
+
+- Added a table of contents to the in-app manual so sections are easier to navigate.
+
 ## 2026-04-27 / v0.1.2
 
 ### ja
