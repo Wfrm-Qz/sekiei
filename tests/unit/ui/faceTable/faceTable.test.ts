@@ -40,6 +40,8 @@ describe("ui/faceTable", () => {
       createEquivalentFace: "等価面を作成",
       deleteAllFaces: "全削除",
       delete: "削除",
+      increaseField: (label) => `${label} 増加`,
+      decreaseField: (label) => `${label} 減少`,
       sortAscending: (label) => `${label} 昇順`,
       sortDescending: (label) => `${label} 降順`,
     };
@@ -290,6 +292,51 @@ describe("ui/faceTable", () => {
     expect(markup).toContain('data-face-field="coefficient" type="number"');
   });
 
+  it("指数入力は常時表示の増減ボタンを持つ", () => {
+    const row = createTwinFaceRowElement({
+      groupKey: "face-1",
+      groupItemCount: 1,
+      groupColor: {
+        preview: "#cc0000",
+        background: "rgba(0,0,0,0.05)",
+        border: "rgba(0,0,0,0.2)",
+      },
+      item: {
+        index: 0,
+        face: {
+          id: "face-1",
+          h: 1,
+          k: 0,
+          i: -1,
+          l: 0,
+          coefficient: 1,
+          enabled: true,
+        },
+      },
+      useFourAxis: true,
+      collapsed: false,
+      isCollapsedRepresentative: false,
+      isGroupStart: true,
+      canCreateEquivalentFace: false,
+      labels: createLabels(),
+    });
+
+    expect(row.querySelectorAll(".face-index-spin-button")).toHaveLength(6);
+    expect(
+      row.querySelector(
+        '[data-face-index-field="h"][data-spin-direction="up"]',
+      ),
+    ).toHaveAccessibleName("h 増加");
+    expect(
+      row.querySelector(
+        '[data-face-index-field="l"][data-spin-direction="down"]',
+      ),
+    ).toHaveAccessibleName("l 減少");
+    expect(
+      row.querySelector('[data-face-field="i"] + .face-index-spin-buttons'),
+    ).toBeNull();
+  });
+
   it("文字掘り込み行は content/font/size/depth/offset/rotation の入力欄を持つ", () => {
     const row = createTwinFaceTextRowElement({
       groupKey: "face-1",
@@ -487,6 +534,7 @@ describe("ui/faceTable", () => {
     expect(
       card.querySelector('[data-face-field="coefficient"]'),
     ).not.toBeNull();
+    expect(card.querySelectorAll(".face-index-spin-button")).toHaveLength(6);
     expect(card.querySelector(".toggle-face-text-button")).not.toBeNull();
     expect(card.querySelector(".face-mobile-card__text-editor")).not.toBeNull();
     expect(

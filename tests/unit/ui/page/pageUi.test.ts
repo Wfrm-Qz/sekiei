@@ -109,6 +109,12 @@ describe("ui/pageUi", () => {
     expect(
       context.elements.axisViewButtons.querySelector("button"),
     ).toHaveTextContent("a");
+    expect(
+      context.elements.axisViewButtons.querySelector("button"),
+    ).toHaveAttribute("data-help-key", "help.preview.axisView");
+    expect(
+      context.elements.axisViewButtons.querySelector("button"),
+    ).toHaveAttribute("data-help-label", "a");
 
     context.getPreviewAxisGuides = () => [];
     helpers.renderAxisViewButtons();

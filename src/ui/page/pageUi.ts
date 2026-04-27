@@ -93,11 +93,14 @@ export function createPageUiHelpers(context: PageUiContext) {
 
     const fragment = document.createDocumentFragment();
     axisGuides.forEach((axis) => {
+      const label = String(axis.label ?? "");
       const button = document.createElement("button");
       button.className = "preview-axis-view-button";
       button.type = "button";
-      button.dataset.axisLabel = String(axis.label ?? "");
-      button.textContent = String(axis.label ?? "");
+      button.dataset.axisLabel = label;
+      button.dataset.helpKey = "help.preview.axisView";
+      button.dataset.helpLabel = label;
+      button.textContent = label;
       fragment.append(button);
     });
     context.elements.axisViewButtons.append(fragment);

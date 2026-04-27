@@ -32,6 +32,8 @@ import {
 } from "./ui/faceTable/faceTable.js";
 import { queryAppPageElements } from "./ui/page/pageElements.js";
 import { createAnnouncementModalActions } from "./ui/page/announcementModal.js";
+import { applyControlHelpAttributes } from "./ui/page/controlHelp.js";
+import { setupHelpTooltip } from "./ui/page/helpTooltip.js";
 import { createManualModalActions } from "./ui/page/manualModal.js";
 import { createMobileLayoutActions } from "./ui/page/mobileLayout.js";
 import { createPageUiHelpers } from "./ui/page/pageUi.js";
@@ -256,6 +258,7 @@ function createInitialState() {
 /** 静的ラベル群へ現在ロケールの翻訳を適用する。 */
 function applyStaticTranslations() {
   applyPageStaticTranslations(elements, getCurrentLocale(), t);
+  applyControlHelpAttributes(document);
 }
 
 /** 面一覧編集中の active crystal index を返す。 */
@@ -455,6 +458,7 @@ function openTabMenuPopover(trigger, crystalIndex) {
   deleteButton.textContent = t("crystals.delete");
   applyTabMenuItemLayout(deleteButton);
   elements.tabMenuPopover.append(deleteButton);
+  applyControlHelpAttributes(elements.tabMenuPopover);
   trigger.setAttribute("aria-expanded", "true");
   elements.tabMenuPopover.hidden = false;
   const popoverWidth = 164;
@@ -1237,6 +1241,8 @@ function renderFaceRows() {
     createEquivalentFace: t("common.createEquivalentFace"),
     deleteAllFaces: t("common.deleteAllFaces"),
     delete: t("common.delete"),
+    increaseField: (label) => t("common.increaseField", { label }),
+    decreaseField: (label) => t("common.decreaseField", { label }),
     sortAscending: (label) => t("common.sortAscending", { label }),
     sortDescending: (label) => t("common.sortDescending", { label }),
   };
@@ -1303,6 +1309,7 @@ function renderFaceRows() {
   });
   elements.facesTableBody.append(tableFragment);
   elements.faceMobileList?.append(mobileFragment);
+  applyControlHelpAttributes(document);
   if (preservedFocusedField) {
     const escapedFaceId = CSS.escape(preservedFocusedField.faceId);
     const targetSelector = preservedFocusedField.faceTextField
@@ -1574,5 +1581,6 @@ init();
 initMobileLayout();
 initAnnouncementModal();
 initManualModal();
+setupHelpTooltip();
 
 // @ts-nocheck

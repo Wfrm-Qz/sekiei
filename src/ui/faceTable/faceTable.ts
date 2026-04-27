@@ -5,6 +5,8 @@
  */
 export type TwinFaceSortField = "#" | "h" | "k" | "i" | "l" | "coefficient";
 
+type EditableFaceIndexField = "h" | "k" | "l";
+
 /** 面一覧テーブルのソート向き。 */
 export type TwinFaceSortDirection = "asc" | "desc";
 
@@ -61,6 +63,8 @@ export interface TwinFaceRowLabelSet {
   createEquivalentFace: string;
   deleteAllFaces: string;
   delete: string;
+  increaseField: (label: string) => string;
+  decreaseField: (label: string) => string;
   sortAscending: (label: string) => string;
   sortDescending: (label: string) => string;
 }
@@ -265,6 +269,50 @@ function createFaceNumberInput(fieldName: string, value: string) {
   return input;
 }
 
+function createFaceIndexInputWrap(options: {
+  fieldName: EditableFaceIndexField;
+  value: string;
+  labels: TwinFaceRowLabelSet;
+  disabled?: boolean;
+}) {
+  const wrap = document.createElement("div");
+  wrap.className = "face-index-input-wrap";
+  const input = createFaceNumberInput(options.fieldName, options.value);
+  input.className = "face-index-input";
+  input.disabled = Boolean(options.disabled);
+  wrap.append(input);
+
+  const spinButtons = document.createElement("div");
+  spinButtons.className = "face-index-spin-buttons";
+  const upButton = document.createElement("button");
+  upButton.className = "face-index-spin-button";
+  upButton.type = "button";
+  upButton.dataset.spinDirection = "up";
+  upButton.dataset.faceIndexField = options.fieldName;
+  upButton.disabled = Boolean(options.disabled);
+  upButton.setAttribute(
+    "aria-label",
+    options.labels.increaseField(options.fieldName),
+  );
+  upButton.textContent = "▲";
+
+  const downButton = document.createElement("button");
+  downButton.className = "face-index-spin-button";
+  downButton.type = "button";
+  downButton.dataset.spinDirection = "down";
+  downButton.dataset.faceIndexField = options.fieldName;
+  downButton.disabled = Boolean(options.disabled);
+  downButton.setAttribute(
+    "aria-label",
+    options.labels.decreaseField(options.fieldName),
+  );
+  downButton.textContent = "▼";
+
+  spinButtons.append(upButton, downButton);
+  wrap.append(spinButtons);
+  return wrap;
+}
+
 function createFaceTextEditorElement(
   options: TwinFaceRowMarkupOptions,
 ): HTMLDivElement {
@@ -424,13 +472,27 @@ export function createTwinFaceRowElement(
   labelCell.append(labelWrap);
   row.append(labelCell);
 
-  const hInput = createFaceNumberInput("h", hValue);
-  hInput.disabled = options.isCollapsedRepresentative;
-  row.append(createTd(hInput));
+  row.append(
+    createTd(
+      createFaceIndexInputWrap({
+        fieldName: "h",
+        value: hValue,
+        labels: options.labels,
+        disabled: options.isCollapsedRepresentative,
+      }),
+    ),
+  );
 
-  const kInput = createFaceNumberInput("k", kValue);
-  kInput.disabled = options.isCollapsedRepresentative;
-  row.append(createTd(kInput));
+  row.append(
+    createTd(
+      createFaceIndexInputWrap({
+        fieldName: "k",
+        value: kValue,
+        labels: options.labels,
+        disabled: options.isCollapsedRepresentative,
+      }),
+    ),
+  );
 
   if (options.useFourAxis) {
     const iInput = createFaceNumberInput("i", iValue);
@@ -438,9 +500,16 @@ export function createTwinFaceRowElement(
     row.append(createTd(iInput));
   }
 
-  const lInput = createFaceNumberInput("l", lValue);
-  lInput.disabled = options.isCollapsedRepresentative;
-  row.append(createTd(lInput));
+  row.append(
+    createTd(
+      createFaceIndexInputWrap({
+        fieldName: "l",
+        value: lValue,
+        labels: options.labels,
+        disabled: options.isCollapsedRepresentative,
+      }),
+    ),
+  );
 
   const coefficientCell = document.createElement("td");
   const coefficientWrap = document.createElement("div");
@@ -642,6 +711,7 @@ export function createTwinFaceMobileCardElement(
     fieldOptions: {
       disabled?: boolean;
       readOnly?: boolean;
+      indexStepper?: boolean;
       coefficient?: boolean;
     } = {},
   ) => {
@@ -694,15 +764,29 @@ export function createTwinFaceMobileCardElement(
     if (fieldOptions.readOnly) {
       input.readOnly = true;
     }
+    if (fieldOptions.indexStepper) {
+      label.append(
+        createFaceIndexInputWrap({
+          fieldName: input.dataset.faceField as EditableFaceIndexField,
+          value: input.value,
+          labels: options.labels,
+          disabled: fieldOptions.disabled,
+        }),
+      );
+      fieldGrid.append(label);
+      return;
+    }
     label.append(input);
     fieldGrid.append(label);
   };
 
   appendField("h", createFaceNumberInput("h", hValue), {
     disabled: options.isCollapsedRepresentative,
+    indexStepper: true,
   });
   appendField("k", createFaceNumberInput("k", kValue), {
     disabled: options.isCollapsedRepresentative,
+    indexStepper: true,
   });
   if (options.useFourAxis) {
     appendField("i", createFaceNumberInput("i", iValue), {
@@ -711,6 +795,7 @@ export function createTwinFaceMobileCardElement(
   }
   appendField("l", createFaceNumberInput("l", lValue), {
     disabled: options.isCollapsedRepresentative,
+    indexStepper: true,
   });
   appendField(
     options.labels.coefficient,
