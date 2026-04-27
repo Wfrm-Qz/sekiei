@@ -126,3 +126,8 @@ wrapper の `preview` には次が入ります。
 ## Practical Tip
 
 公開リポジトリに preset を追加したい場合は、まずアプリから JSON 保存したものをベースにするのが一番安全です。その JSON を `src/data/presets/` に置き、必要な metadata を整える流れを推奨します。
+
+`src/data/presets/` 配下の built-in preset data は CC BY 4.0 で提供します。
+流用・改変時は、各 preset の `metadata.fullReference` または
+[`reference.md`](../reference.md) にある出典表記を引き継いでください。
+Sekiei / Wfrm-Qz への帰属表示は任意です。
