@@ -80,6 +80,12 @@ interface TwinStlSourceSelection {
 }
 
 type TwinStlModule = typeof import("../io/formats/stl.js");
+type TwinPreviewSvgExportResult =
+  | string
+  | {
+      svgMarkup: string;
+      debugLog?: unknown;
+    };
 
 let twinStlModulePromise: Promise<TwinStlModule> | null = null;
 
@@ -93,10 +99,9 @@ function loadTwinStlModule() {
 export interface TwinExportActionsContext {
   state: TwinExportStateLike;
   getVisibleCrystalIndexes: () => number[];
-  buildPreviewExportSvg: (options?: { includeDebug?: boolean }) => {
-    svgMarkup: string;
-    debugLog: unknown;
-  };
+  buildPreviewExportSvg: (options?: {
+    includeDebug?: boolean;
+  }) => TwinPreviewSvgExportResult;
   buildPreviewRasterBackedSvg: () => string;
   buildPreviewPngBlob: () => Promise<Blob>;
   buildPreviewJpegBlob: () => Promise<Blob>;
@@ -468,8 +473,7 @@ export function createTwinExportActions(context: TwinExportActionsContext) {
     hasActiveFaceText: boolean;
     activeCrystalCount: number;
   }): TwinStlSourceSelection {
-    const normalizedFallbackScore =
-      fallbackScore ?? Number.POSITIVE_INFINITY;
+    const normalizedFallbackScore = fallbackScore ?? Number.POSITIVE_INFINITY;
     const preferredTextSource =
       compositeScore !== null && compositeScore < normalizedFallbackScore
         ? "composited-crystal-stl-geometries"
@@ -496,6 +500,11 @@ export function createTwinExportActions(context: TwinExportActionsContext) {
         shouldCompareSingleCrystalComposite,
       textPreservingFallbackStrategy: preferredTextSource,
     };
+  }
+
+  /** SVG export は本体 markup だけを保存対象にする。 */
+  function getPreviewSvgMarkup(result: TwinPreviewSvgExportResult) {
+    return typeof result === "string" ? result : result.svgMarkup;
   }
 
   /**
@@ -595,8 +604,7 @@ export function createTwinExportActions(context: TwinExportActionsContext) {
         fallbackScore: selection.fallbackScore,
         compositeScore: selection.compositeScore,
         previewToFinalScaleFactor: scaleFactor,
-        preferTextPreservingFallback:
-          selection.preferTextPreservingFallback,
+        preferTextPreservingFallback: selection.preferTextPreservingFallback,
         textPreservingFallbackStrategy:
           selection.textPreservingFallbackStrategy,
         textPreservingUnionErrorMessage: null,
@@ -692,10 +700,14 @@ export function createTwinExportActions(context: TwinExportActionsContext) {
       halfSpaceSize,
     );
     const mergedPositive = fillOpenEdgeLoops(
-      split.positive ? stlModule.prepareGeometryForStlExport(split.positive).geometry : null,
+      split.positive
+        ? stlModule.prepareGeometryForStlExport(split.positive).geometry
+        : null,
     );
     const mergedNegative = fillOpenEdgeLoops(
-      split.negative ? stlModule.prepareGeometryForStlExport(split.negative).geometry : null,
+      split.negative
+        ? stlModule.prepareGeometryForStlExport(split.negative).geometry
+        : null,
     );
     if (!mergedPositive && !mergedNegative) {
       return null;
@@ -776,8 +788,8 @@ export function createTwinExportActions(context: TwinExportActionsContext) {
   /**
    * 双晶データまたは preview 画像を現在の保存モードで書き出す。
    *
-   * format ごとに生成物と保存 API が異なるためここで分岐し、SVG では診断 JSON も
-   * 同時に出す。副作用として download を発火し、失敗時は alert を出す。
+   * format ごとに生成物と保存 API が異なるためここで分岐する。
+   * 副作用として download を発火し、失敗時は alert を出す。
    */
   async function exportTwinArtifact(
     format: "json" | "stl" | "svg" | "png" | "jpeg",
@@ -812,10 +824,6 @@ export function createTwinExportActions(context: TwinExportActionsContext) {
         return;
       }
       const defaultFilename = `${getExportBaseFilename("twin-model")}.stl`;
-      const debugFilename = defaultFilename.replace(
-        /\.stl$/i,
-        "-stl-debug.json",
-      );
       const artifact =
         context.state.stlSplit.enabled === true
           ? await buildSplitTwinStlArtifact(context.state.buildResult)
@@ -832,19 +840,12 @@ export function createTwinExportActions(context: TwinExportActionsContext) {
       }
       const stlModule = await loadTwinStlModule();
       if (saveMode === "save-as") {
-        const saved = await triggerNamedDownload(
+        await triggerNamedDownload(
           artifact.content,
           defaultFilename,
           stlModule.STL_FORMAT.mimeType,
           `.${stlModule.STL_FORMAT.extension}`,
         );
-        if (saved && artifact.debug) {
-          triggerDownload(
-            JSON.stringify(artifact.debug, null, 2),
-            debugFilename,
-            "application/json",
-          );
-        }
         return;
       }
       triggerDownload(
@@ -852,13 +853,6 @@ export function createTwinExportActions(context: TwinExportActionsContext) {
         defaultFilename,
         stlModule.STL_FORMAT.mimeType,
       );
-      if (artifact.debug) {
-        triggerDownload(
-          JSON.stringify(artifact.debug, null, 2),
-          debugFilename,
-          "application/json",
-        );
-      }
       return;
     }
 
@@ -866,64 +860,24 @@ export function createTwinExportActions(context: TwinExportActionsContext) {
       try {
         const defaultFilename = `${getExportBaseFilename("twin-preview")}.svg`;
         const usesVectorBody = context.shouldUseVectorCrystalBodyForSvgExport();
-        const svgArtifact = usesVectorBody
-          ? context.buildPreviewExportSvg({ includeDebug: true })
-          : {
-              svgMarkup: context.buildPreviewRasterBackedSvg(),
-              debugLog: {
-                schema: "twin-svg-export-debug-v1",
-                vectorBody: false,
-                generatedAt: new Date().toISOString(),
-                reason: "raster-backed-svg-path",
-              },
-            };
-        const debugFilename = defaultFilename.replace(
-          /\.svg$/i,
-          "-svg-debug.json",
-        );
-        const debugContent = JSON.stringify(svgArtifact.debugLog, null, 2);
+        const svgMarkup = usesVectorBody
+          ? getPreviewSvgMarkup(context.buildPreviewExportSvg())
+          : context.buildPreviewRasterBackedSvg();
         if (saveMode === "save-as") {
-          const saved = await triggerNamedDownload(
-            svgArtifact.svgMarkup,
+          await triggerNamedDownload(
+            svgMarkup,
             defaultFilename,
             "image/svg+xml;charset=utf-8",
             ".svg",
           );
-          if (saved) {
-            triggerDownload(debugContent, debugFilename, "application/json");
-          }
           return;
         }
         triggerDownload(
-          svgArtifact.svgMarkup,
+          svgMarkup,
           defaultFilename,
           "image/svg+xml;charset=utf-8",
         );
-        triggerDownload(debugContent, debugFilename, "application/json");
       } catch (error) {
-        const defaultFilename = `${getExportBaseFilename("twin-preview")}.svg`;
-        const errorFilename = defaultFilename.replace(
-          /\.svg$/i,
-          "-svg-export-error.json",
-        );
-        const errorDebug = {
-          schema: "twin-svg-export-error-v1",
-          generatedAt: new Date().toISOString(),
-          message: error instanceof Error ? error.message : String(error),
-          stack: error instanceof Error ? error.stack : null,
-          faceDisplayMode: context.state.faceDisplayMode,
-          hasPreviewRoot: Boolean(context.state.previewRoot),
-          hasBuildResult: Boolean(context.state.buildResult),
-          hasPreviewFinalGeometry: Boolean(
-            context.state.buildResult?.previewFinalGeometry,
-          ),
-          hasFinalGeometry: Boolean(context.state.buildResult?.finalGeometry),
-        };
-        triggerDownload(
-          JSON.stringify(errorDebug, null, 2),
-          errorFilename,
-          "application/json",
-        );
         context.alert(
           t("export.failed.svg", {
             message: error instanceof Error ? error.message : String(error),
