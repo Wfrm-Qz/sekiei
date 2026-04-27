@@ -37,6 +37,16 @@
 - Playwright の E2E spec は `tests/e2e/` に置きます。
 - `docs/testing.md` が公開向けのテスト説明の正本です。旧 `docs/TEST-RUNNING.md` 前提では扱いません。
 
+## Issue 起点の作業
+
+- Sekiei の修正作業では、原則として実装・ドキュメント編集に入る前に GitHub Issue を作成します。
+- Issue 作成後、その Issue 番号に対応する `issue/*` ブランチを作って作業します。
+  - 例: `issue/12-fix-announcement-date`
+- Pull request は通常 `issue/* -> develop` で作成します。
+- `develop -> master` は公開反映用の PR として分けます。
+- 既に該当 Issue がある場合は、その Issue を使います。
+- ユーザーが明示的に Issue 不要、または直接作業を指示した場合だけ、この手順を省略してよいです。
+
 ## ライセンスと同梱資産
 
 - 第三者依存と bundled font の公開向け整理は `LICENSES.md` を正とします。
