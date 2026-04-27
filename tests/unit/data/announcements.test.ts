@@ -77,4 +77,20 @@ describe("content/announcements", () => {
     expect(latestAnnouncement?.history[0]?.version).toBe("v0.1.0");
     expect(latestAnnouncement?.knownIssues).toEqual([]);
   });
+
+  it("keeps the announcement updated date at least as new as the latest changelog entry", () => {
+    const latestAnnouncement = getLatestAnnouncement();
+
+    if (!latestAnnouncement) {
+      throw new Error("latest announcement is required for this test");
+    }
+    const latestHistoryDate = latestAnnouncement.history[0]?.date;
+    if (!latestHistoryDate) {
+      throw new Error("latest announcement history is required for this test");
+    }
+
+    expect(
+      new Date(latestAnnouncement.updatedAt).getTime(),
+    ).toBeGreaterThanOrEqual(new Date(latestHistoryDate).getTime());
+  });
 });

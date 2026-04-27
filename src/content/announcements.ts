@@ -34,7 +34,9 @@ function createAnnouncementMarkdownError(
   lineNumber: number,
   message: string,
 ) {
-  return new Error(`[announcement markdown:${sourceName}:${lineNumber}] ${message}`);
+  return new Error(
+    `[announcement markdown:${sourceName}:${lineNumber}] ${message}`,
+  );
 }
 
 function stripMarkdownComments(markdown: string) {
@@ -91,7 +93,9 @@ function finalizeParsedAnnouncementSection(
 }
 
 function parseAnnouncementSections(markdown: string, sourceName: string) {
-  const lines = stripMarkdownComments(markdown).replace(/\r\n?/g, "\n").split("\n");
+  const lines = stripMarkdownComments(markdown)
+    .replace(/\r\n?/g, "\n")
+    .split("\n");
   const sections: ParsedAnnouncementSection[] = [];
   let currentSection: ParsedAnnouncementSection | null = null;
   let currentLocale: SupportedLocale | null = null;
@@ -197,7 +201,7 @@ export function parseAnnouncementKnownIssuesMarkdown(
 export const ANNOUNCEMENTS: readonly AnnouncementEntry[] = [
   {
     id: "2026-04-26-notice-board",
-    updatedAt: "2026-04-27T00:10:00+09:00",
+    updatedAt: "2026-04-27",
     history: parseAnnouncementHistoryMarkdown(changelogMarkdown),
     knownIssues: parseAnnouncementKnownIssuesMarkdown(knownIssuesMarkdown),
     links: {

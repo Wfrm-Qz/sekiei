@@ -49,6 +49,12 @@ export function queryAppPageElements() {
     announcementOpenButton: document.querySelector(
       "#app-announcement-open-button",
     ),
+    manualModal: document.querySelector("#app-manual-modal"),
+    manualBackdrop: document.querySelector("#app-manual-backdrop"),
+    manualBody: document.querySelector("#app-manual-body"),
+    manualDismissButton: document.querySelector("#app-manual-dismiss-button"),
+    manualCloseButton: document.querySelector("#app-manual-close-button"),
+    manualOpenButton: document.querySelector("#app-manual-open-button"),
     mobileHeaderMenuButton: document.querySelector(
       "#app-mobile-header-menu-button",
     ),

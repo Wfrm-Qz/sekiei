@@ -33,9 +33,22 @@
 - この公開リポジトリに `tasks/` を復活させないでください。
 - `.agents/` はローカル運用用として Git 管理対象から外します。
 - 公開 sample JSON は `docs/samples/` に置きます。
+- スクリーンショット付きマニュアルの画像は `docs/images/user-manual/` に置きます。
+- UI の配置、主要ラベル、基本操作の流れを変えた時は、`docs/user-manual.md` の説明とスクリーンショットを必要に応じて差し替えます。
+- ツール内のマニュアル表示は `docs/user-manual.md` を `src/content/userManual.ts` から読むため、マニュアル画像リンクを変えた時は import map と画像リンク test も追従します。
 - integration test fixture は `tests/fixtures/` に置きます。
 - Playwright の E2E spec は `tests/e2e/` に置きます。
 - `docs/testing.md` が公開向けのテスト説明の正本です。旧 `docs/TEST-RUNNING.md` 前提では扱いません。
+
+## Issue 起点の作業
+
+- Sekiei の修正作業では、原則として実装・ドキュメント編集に入る前に GitHub Issue を作成します。
+- Issue 作成後、その Issue 番号に対応する `issue/*` ブランチを作って作業します。
+  - 例: `issue/12-fix-announcement-date`
+- Pull request は通常 `issue/* -> develop` で作成します。
+- `develop -> master` は公開反映用の PR として分けます。
+- 既に該当 Issue がある場合は、その Issue を使います。
+- ユーザーが明示的に Issue 不要、または直接作業を指示した場合だけ、この手順を省略してよいです。
 
 ## ライセンスと同梱資産
 

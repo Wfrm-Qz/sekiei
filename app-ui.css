@@ -633,6 +633,116 @@
   }
 }
 
+.manual-modal__card {
+  width: min(100%, 920px);
+  height: min(86vh, 820px);
+  height: min(86dvh, 820px);
+}
+
+.manual-modal__content {
+  display: block;
+  overflow-y: auto;
+  padding-right: 8px;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+.manual-modal__heading {
+  margin: 22px 0 10px;
+  line-height: 1.35;
+}
+
+.manual-modal__heading:first-child {
+  margin-top: 0;
+}
+
+.manual-modal__heading--level-1,
+.manual-modal__heading--level-2 {
+  font-size: 1.18rem;
+}
+
+.manual-modal__heading--level-3,
+.manual-modal__heading--level-4 {
+  font-size: 1.03rem;
+}
+
+.manual-modal__paragraph {
+  margin: 0 0 12px;
+  color: var(--text);
+  line-height: 1.75;
+}
+
+.manual-modal__paragraph code,
+.manual-modal__list code {
+  padding: 0.1em 0.32em;
+  border-radius: 6px;
+  background: var(--surface-muted);
+  color: var(--accent-strong);
+  font-size: 0.9em;
+}
+
+.manual-modal__paragraph a,
+.manual-modal__list a {
+  color: var(--accent-strong);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+
+.manual-modal__figure {
+  display: grid;
+  gap: 8px;
+  margin: 16px 0 20px;
+}
+
+.manual-modal__figure img {
+  display: block;
+  width: 100%;
+  max-height: 520px;
+  object-fit: contain;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.manual-modal__figure figcaption {
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.manual-modal__list {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 14px;
+  padding-left: 1.35rem;
+  line-height: 1.65;
+}
+
+.manual-modal__list li {
+  margin-left: calc(var(--manual-list-indent, 0) * 1.2rem);
+}
+
+@media (max-width: 640px) {
+  .manual-modal__card {
+    width: 100%;
+    height: 100%;
+  }
+
+  .manual-modal__content {
+    padding-right: 2px;
+  }
+
+  .manual-modal__figure img {
+    max-height: 360px;
+    border-radius: 10px;
+  }
+
+  .manual-modal__list li {
+    margin-left: calc(var(--manual-list-indent, 0) * 0.9rem);
+  }
+}
+
 .crystal-tab-list {
   display: flex;
   flex-direction: column;
@@ -979,6 +1089,7 @@
   }
 
   .header-actions > #app-announcement-open-button,
+  .header-actions > #app-manual-open-button,
   .header-actions > .header-select,
   .header-actions > .header-menu-wrap:not(.mobile-header-menu-wrap) {
     display: none;
