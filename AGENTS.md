@@ -35,9 +35,9 @@
 - ユーザーが認識できる挙動、UI、出力内容、既知の制約が変わる場合は、同じ作業で `docs/changelog.md` を更新します。
 - `docs/changelog.md` の最新項目を変えた場合は、README の更新履歴抜粋と `tests/unit/data/announcements.test.ts` の最新 version 期待値も追従します。
 - 公開 sample JSON は `docs/samples/` に置きます。
-- スクリーンショット付きマニュアルの画像は `docs/images/user-manual/` に置きます。
-- UI の配置、主要ラベル、基本操作の流れを変えた時は、`docs/user-manual.md` の説明とスクリーンショットを必要に応じて差し替えます。
-- ツール内のマニュアル表示は `docs/user-manual.md` を `src/content/userManual.ts` から読むため、マニュアル画像リンクを変えた時は import map と画像リンク test も追従します。
+- スクリーンショット付きマニュアルの画像は日本語版を `docs/images/user-manual/`、英語版を `docs/images/user-manual/en/` に置きます。
+- UI の配置、主要ラベル、基本操作の流れを変えた時は、`docs/user-manual.md` と `docs/user-manual.en.md` の説明とスクリーンショットを必要に応じて差し替えます。
+- ツール内のマニュアル表示は `docs/user-manual.md` / `docs/user-manual.en.md` を `src/content/userManual.ts` からロケール別に読むため、マニュアル画像リンクを変えた時は import map と画像リンク test も追従します。
 - integration test fixture は `tests/fixtures/` に置きます。
 - Playwright の E2E spec は `tests/e2e/` に置きます。
 - `docs/testing.md` が公開向けのテスト説明の正本です。旧 `docs/TEST-RUNNING.md` 前提では扱いません。
