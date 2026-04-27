@@ -1,7 +1,21 @@
 import { expect, type Page } from "@playwright/test";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 
-const ANNOUNCEMENT_REVISION =
-  "2026-04-26-notice-board::2026-04-27T00:10:00+09:00";
+function resolveLatestAnnouncementRevision() {
+  const source = readFileSync(
+    resolve(process.cwd(), "src/content/announcements.ts"),
+    "utf8",
+  );
+  const id = source.match(/\bid:\s*"([^"]+)"/)?.[1];
+  const updatedAt = source.match(/\bupdatedAt:\s*"([^"]+)"/)?.[1];
+  if (!id || !updatedAt) {
+    throw new Error("Could not resolve latest announcement revision for E2E.");
+  }
+  return `${id}::${updatedAt}`;
+}
+
+const ANNOUNCEMENT_REVISION = resolveLatestAnnouncementRevision();
 
 /**
  * E2E では本筋と無関係な起動時お知らせを既読扱いにして、主要フローへすぐ入る。
