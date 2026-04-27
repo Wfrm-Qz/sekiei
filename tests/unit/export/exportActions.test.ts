@@ -154,6 +154,16 @@ describe("export/exportActions", () => {
     };
   }
 
+  function expectNoAutomaticDebugDownload() {
+    expect(triggerDownload).not.toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringMatching(
+        /-(?:stl|svg)-debug\.json$|-svg-export-error\.json$/i,
+      ),
+      "application/json",
+    );
+  }
+
   it("正常系として json export は保存関数を呼ぶ", async () => {
     const context = createContext();
     const actions = createTwinExportActions(context);
@@ -198,6 +208,38 @@ describe("export/exportActions", () => {
     await actions.exportTwinArtifact("svg", "save");
 
     expect(context.alert).toHaveBeenCalled();
+    expectNoAutomaticDebugDownload();
+  });
+
+  it("正常系として svg export はデバッグ JSON を自動保存しない", async () => {
+    const context = createContext();
+    const actions = createTwinExportActions(context);
+
+    await actions.exportTwinArtifact("svg", "save");
+
+    expect(triggerDownload).toHaveBeenCalledTimes(1);
+    expect(triggerDownload).toHaveBeenCalledWith(
+      "<svg></svg>",
+      "コランダム.svg",
+      "image/svg+xml;charset=utf-8",
+    );
+    expectNoAutomaticDebugDownload();
+  });
+
+  it("名前を付けて SVG 保存してもデバッグ JSON を自動保存しない", async () => {
+    const context = createContext();
+    triggerNamedDownload.mockResolvedValue(true);
+    const actions = createTwinExportActions(context);
+
+    await actions.exportTwinArtifact("svg", "save-as");
+
+    expect(triggerNamedDownload).toHaveBeenCalledWith(
+      "<svg></svg>",
+      "コランダム.svg",
+      "image/svg+xml;charset=utf-8",
+      ".svg",
+    );
+    expectNoAutomaticDebugDownload();
   });
 
   it("複数結晶で文字掘り込みがあるときの STL export は text 付き fallback を優先する", async () => {
@@ -265,30 +307,7 @@ describe("export/exportActions", () => {
       "コランダム.stl",
       "model/stl",
     );
-    expect(triggerDownload).toHaveBeenCalledWith(
-      expect.stringContaining('"preferTextPreservingFallback": true'),
-      "コランダム-stl-debug.json",
-      "application/json",
-    );
-    expect(triggerDownload).toHaveBeenCalledWith(
-      expect.stringContaining(
-        '"textPreservingFallbackStrategy": "composited-crystal-stl-geometries"',
-      ),
-      "コランダム-stl-debug.json",
-      "application/json",
-    );
-    expect(triggerDownload).toHaveBeenCalledWith(
-      expect.stringContaining('"compositeCandidate"'),
-      "コランダム-stl-debug.json",
-      "application/json",
-    );
-    expect(triggerDownload).toHaveBeenCalledWith(
-      expect.stringContaining(
-        '"selectedSource": "composited-crystal-stl-geometries"',
-      ),
-      "コランダム-stl-debug.json",
-      "application/json",
-    );
+    expectNoAutomaticDebugDownload();
   });
 
   it("単結晶で文字掘り込みがあるときの STL export も composite 候補を比較して選べる", async () => {
@@ -346,13 +365,23 @@ describe("export/exportActions", () => {
       "コランダム.stl",
       "model/stl",
     );
-    expect(triggerDownload).toHaveBeenCalledWith(
-      expect.stringContaining(
-        '"selectedSource": "composited-crystal-stl-geometries"',
-      ),
-      "コランダム-stl-debug.json",
-      "application/json",
+    expectNoAutomaticDebugDownload();
+  });
+
+  it("名前を付けて STL 保存してもデバッグ JSON を自動保存しない", async () => {
+    const context = createContext();
+    triggerNamedDownload.mockResolvedValue(true);
+    const actions = createTwinExportActions(context);
+
+    await actions.exportTwinArtifact("stl", "save-as");
+
+    expect(triggerNamedDownload).toHaveBeenCalledWith(
+      "union-stl",
+      "コランダム.stl",
+      "model/stl",
+      ".stl",
     );
+    expectNoAutomaticDebugDownload();
   });
 
   it("STL 分割が有効なときは通常の STL 保存で split 経路を使う", async () => {
@@ -382,26 +411,7 @@ describe("export/exportActions", () => {
       "コランダム.stl",
       "model/stl",
     );
-    expect(triggerDownload).toHaveBeenNthCalledWith(
-      2,
-      expect.stringContaining(
-        '"selectedSource": "visible-crystal-plane-split"',
-      ),
-      "コランダム-stl-debug.json",
-      "application/json",
-    );
-    expect(triggerDownload).toHaveBeenNthCalledWith(
-      2,
-      expect.stringContaining('"visibleCrystalIndexes": [\n    0,\n    1\n  ]'),
-      "コランダム-stl-debug.json",
-      "application/json",
-    );
-    expect(triggerDownload).toHaveBeenNthCalledWith(
-      2,
-      expect.stringContaining('"splitInputSource": "union-final-geometry"'),
-      "コランダム-stl-debug.json",
-      "application/json",
-    );
+    expectNoAutomaticDebugDownload();
   });
 
   it("STL 分割でも通常 STL と同じ fallback source を選べる", async () => {
@@ -441,13 +451,11 @@ describe("export/exportActions", () => {
     await actions.exportTwinArtifact("stl", "save");
 
     expect(splitBufferGeometryByPlaneWithJscad).toHaveBeenCalledTimes(1);
-    expect(triggerDownload).toHaveBeenNthCalledWith(
-      2,
-      expect.stringContaining(
-        '"splitInputSource": "merged-crystal-preview-geometries"',
-      ),
-      "コランダム-stl-debug.json",
-      "application/json",
+    expect(triggerDownload).toHaveBeenCalledWith(
+      "fallback-stl",
+      "コランダム.stl",
+      "model/stl",
     );
+    expectNoAutomaticDebugDownload();
   });
 });

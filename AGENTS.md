@@ -32,6 +32,8 @@
 - 内部の仕様書、開発ログ、試行履歴は、この公開リポジトリには含めません。
 - この公開リポジトリに `tasks/` を復活させないでください。
 - `.agents/` はローカル運用用として Git 管理対象から外します。
+- ユーザーが認識できる挙動、UI、出力内容、既知の制約が変わる場合は、同じ作業で `docs/changelog.md` を更新します。
+- `docs/changelog.md` の最新項目を変えた場合は、README の更新履歴抜粋と `tests/unit/data/announcements.test.ts` の最新 version 期待値も追従します。
 - 公開 sample JSON は `docs/samples/` に置きます。
 - スクリーンショット付きマニュアルの画像は `docs/images/user-manual/` に置きます。
 - UI の配置、主要ラベル、基本操作の流れを変えた時は、`docs/user-manual.md` の説明とスクリーンショットを必要に応じて差し替えます。
