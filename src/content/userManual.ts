@@ -1,5 +1,20 @@
-import userManualMarkdown from "../../docs/user-manual.md?raw";
+import userManualEnMarkdown from "../../docs/user-manual.en.md?raw";
+import userManualJaMarkdown from "../../docs/user-manual.md?raw";
+import type { SupportedLocale } from "../i18n.js";
 import desktopOverviewImageUrl from "../../docs/images/user-manual/desktop-overview.png";
+import enDesktopOverviewImageUrl from "../../docs/images/user-manual/en/desktop-overview.png";
+import enFaceListAddFaceImageUrl from "../../docs/images/user-manual/en/face-list-add-face.png";
+import enFaceListCrystalTabsImageUrl from "../../docs/images/user-manual/en/face-list-crystal-tabs.png";
+import enFaceListExpandedRowImageUrl from "../../docs/images/user-manual/en/face-list-expanded-row.png";
+import enFaceListHiddenFaceImageUrl from "../../docs/images/user-manual/en/face-list-hidden-face.png";
+import enFaceListIndexCoefficientImageUrl from "../../docs/images/user-manual/en/face-list-index-coefficient.png";
+import enFaceListMobileCardImageUrl from "../../docs/images/user-manual/en/face-list-mobile-card.png";
+import enFaceListOverviewImageUrl from "../../docs/images/user-manual/en/face-list-overview.png";
+import enFaceListTableImageUrl from "../../docs/images/user-manual/en/face-list-table.png";
+import enFaceTextSettingsImageUrl from "../../docs/images/user-manual/en/face-text-settings.png";
+import enMobileBasicImageUrl from "../../docs/images/user-manual/en/mobile-basic.png";
+import enMobileOutputImageUrl from "../../docs/images/user-manual/en/mobile-output.png";
+import enPresetSearchImageUrl from "../../docs/images/user-manual/en/preset-search.png";
 import faceListAddFaceImageUrl from "../../docs/images/user-manual/face-list-add-face.png";
 import faceListCrystalTabsImageUrl from "../../docs/images/user-manual/face-list-crystal-tabs.png";
 import faceListExpandedRowImageUrl from "../../docs/images/user-manual/face-list-expanded-row.png";
@@ -37,46 +52,98 @@ export type UserManualBlock =
       }[];
     };
 
-const USER_MANUAL_IMAGE_URLS = new Map([
-  ["./images/user-manual/desktop-overview.png", desktopOverviewImageUrl],
-  ["./images/user-manual/mobile-basic.png", mobileBasicImageUrl],
-  ["./images/user-manual/preset-search.png", presetSearchImageUrl],
-  ["./images/user-manual/face-list-overview.png", faceListOverviewImageUrl],
-  ["./images/user-manual/face-list-table.png", faceListTableImageUrl],
-  [
-    "./images/user-manual/face-list-mobile-card.png",
-    faceListMobileCardImageUrl,
-  ],
-  [
-    "./images/user-manual/face-list-index-coefficient.png",
-    faceListIndexCoefficientImageUrl,
-  ],
-  [
-    "./images/user-manual/face-list-hidden-face.png",
-    faceListHiddenFaceImageUrl,
-  ],
-  [
-    "./images/user-manual/face-list-expanded-row.png",
-    faceListExpandedRowImageUrl,
-  ],
-  ["./images/user-manual/face-text-settings.png", faceTextSettingsImageUrl],
-  ["./images/user-manual/face-list-add-face.png", faceListAddFaceImageUrl],
-  [
-    "./images/user-manual/face-list-crystal-tabs.png",
-    faceListCrystalTabsImageUrl,
-  ],
-  ["./images/user-manual/mobile-output.png", mobileOutputImageUrl],
-]);
+const USER_MANUAL_MARKDOWN: Record<SupportedLocale, string> = {
+  ja: userManualJaMarkdown,
+  en: userManualEnMarkdown,
+};
+
+const USER_MANUAL_IMAGE_URLS: Record<SupportedLocale, Map<string, string>> = {
+  ja: new Map([
+    ["./images/user-manual/desktop-overview.png", desktopOverviewImageUrl],
+    ["./images/user-manual/mobile-basic.png", mobileBasicImageUrl],
+    ["./images/user-manual/preset-search.png", presetSearchImageUrl],
+    ["./images/user-manual/face-list-overview.png", faceListOverviewImageUrl],
+    ["./images/user-manual/face-list-table.png", faceListTableImageUrl],
+    [
+      "./images/user-manual/face-list-mobile-card.png",
+      faceListMobileCardImageUrl,
+    ],
+    [
+      "./images/user-manual/face-list-index-coefficient.png",
+      faceListIndexCoefficientImageUrl,
+    ],
+    [
+      "./images/user-manual/face-list-hidden-face.png",
+      faceListHiddenFaceImageUrl,
+    ],
+    [
+      "./images/user-manual/face-list-expanded-row.png",
+      faceListExpandedRowImageUrl,
+    ],
+    ["./images/user-manual/face-text-settings.png", faceTextSettingsImageUrl],
+    ["./images/user-manual/face-list-add-face.png", faceListAddFaceImageUrl],
+    [
+      "./images/user-manual/face-list-crystal-tabs.png",
+      faceListCrystalTabsImageUrl,
+    ],
+    ["./images/user-manual/mobile-output.png", mobileOutputImageUrl],
+  ]),
+  en: new Map([
+    ["./images/user-manual/en/desktop-overview.png", enDesktopOverviewImageUrl],
+    ["./images/user-manual/en/mobile-basic.png", enMobileBasicImageUrl],
+    ["./images/user-manual/en/preset-search.png", enPresetSearchImageUrl],
+    [
+      "./images/user-manual/en/face-list-overview.png",
+      enFaceListOverviewImageUrl,
+    ],
+    ["./images/user-manual/en/face-list-table.png", enFaceListTableImageUrl],
+    [
+      "./images/user-manual/en/face-list-mobile-card.png",
+      enFaceListMobileCardImageUrl,
+    ],
+    [
+      "./images/user-manual/en/face-list-index-coefficient.png",
+      enFaceListIndexCoefficientImageUrl,
+    ],
+    [
+      "./images/user-manual/en/face-list-hidden-face.png",
+      enFaceListHiddenFaceImageUrl,
+    ],
+    [
+      "./images/user-manual/en/face-list-expanded-row.png",
+      enFaceListExpandedRowImageUrl,
+    ],
+    [
+      "./images/user-manual/en/face-text-settings.png",
+      enFaceTextSettingsImageUrl,
+    ],
+    [
+      "./images/user-manual/en/face-list-add-face.png",
+      enFaceListAddFaceImageUrl,
+    ],
+    [
+      "./images/user-manual/en/face-list-crystal-tabs.png",
+      enFaceListCrystalTabsImageUrl,
+    ],
+    ["./images/user-manual/en/mobile-output.png", enMobileOutputImageUrl],
+  ]),
+};
 
 function normalizeMarkdown(markdown: string) {
   return markdown.replace(/^\uFEFF/, "").replace(/\r\n?/g, "\n");
 }
 
-function resolveManualImageUrl(markdownPath: string) {
-  return USER_MANUAL_IMAGE_URLS.get(markdownPath) ?? markdownPath;
+function resolveManualImageUrl(
+  markdownPath: string,
+  imageUrls: Map<string, string>,
+) {
+  return imageUrls.get(markdownPath) ?? markdownPath;
 }
 
-export function parseUserManualMarkdown(markdown: string) {
+export function parseUserManualMarkdown(
+  markdown: string,
+  imageUrls = USER_MANUAL_IMAGE_URLS.ja,
+) {
   const lines = normalizeMarkdown(markdown).split("\n");
   const blocks: UserManualBlock[] = [];
   let pendingParagraph: string[] = [];
@@ -127,7 +194,7 @@ export function parseUserManualMarkdown(markdown: string) {
       blocks.push({
         type: "image",
         alt: imageMatch[1],
-        src: resolveManualImageUrl(imageMatch[2]),
+        src: resolveManualImageUrl(imageMatch[2], imageUrls),
       });
       return;
     }
@@ -171,6 +238,9 @@ export function parseUserManualMarkdown(markdown: string) {
   return blocks;
 }
 
-export function getUserManualBlocks() {
-  return parseUserManualMarkdown(userManualMarkdown);
+export function getUserManualBlocks(locale: SupportedLocale = "ja") {
+  return parseUserManualMarkdown(
+    USER_MANUAL_MARKDOWN[locale],
+    USER_MANUAL_IMAGE_URLS[locale],
+  );
 }

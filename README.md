@@ -70,7 +70,7 @@ npm run preview
 
 公開向けの補助ドキュメントは [docs/README.md](./docs/README.md) から辿れます。
 
-- [User Manual](./docs/user-manual.md)
+- [User Manual](./docs/user-manual.md) / [English](./docs/user-manual.en.md)
   - スクリーンショット付きの基本操作
 - [Preview Controls](./docs/preview-controls.md)
   - プレビュー周辺の使い方
@@ -95,12 +95,9 @@ npm run preview
 
 詳細は [docs/changelog.md](./docs/changelog.md) を参照してください。
 
-> `2026-04-27 / v0.1.3`
+> `2026-04-28 / v0.1.4`
 >
-> - ツール内マニュアルに目次を追加し、目的別ガイドや各機能の説明へ移動しやすくしました。
-> - 面一覧の説明を拡充し、h/k/l、係数、表示切り替え、面や結晶の追加をスクリーンショット付きで確認できるようにしました。
-> - 面一覧の h/k/l 入力欄に常時表示の上下ボタンを追加し、係数と同じように増減できるようにしました。
-> - 各ボタンや入力欄にホバー説明を追加し、操作できない状態では理由を表示するようにしました。
+> - 英語 UI では英語版マニュアルと英語スクリーンショットを表示するようにしました。
 
 ## 既知の問題
 

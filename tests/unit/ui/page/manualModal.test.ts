@@ -85,4 +85,34 @@ describe("ui/page/manualModal", () => {
     expect(faceListLink).toHaveAttribute("aria-current", "true");
     expect(document.activeElement).toHaveTextContent("面一覧");
   });
+
+  it("英語 UI では英語版マニュアルと英語目次を描画する", () => {
+    const elements = mountManualModal();
+    const { initManualModal, openManual } = createManualModalActions({
+      elements,
+      getLocale: () => "en",
+    });
+
+    initManualModal();
+    openManual();
+
+    const toc = elements.manualBody?.querySelector(".manual-modal__toc");
+    const tocLinks = Array.from(
+      elements.manualBody?.querySelectorAll<HTMLButtonElement>(
+        ".manual-modal__toc-link",
+      ) ?? [],
+    );
+
+    expect(toc).toHaveAccessibleName("Contents");
+    expect(tocLinks[0]).toHaveTextContent("Getting Started");
+    expect(elements.manualBody).toHaveTextContent("What Sekiei Can Do");
+    expect(elements.manualBody).toHaveTextContent(
+      "Understanding h / k / l Face Indices",
+    );
+    expect(elements.manualBody).not.toHaveTextContent("できること");
+    expect(elements.manualBody?.querySelectorAll("img")).toHaveLength(13);
+    elements.manualBody?.querySelectorAll("img").forEach((image) => {
+      expect(image).toHaveAttribute("alt", expect.stringMatching(/[A-Za-z]/));
+    });
+  });
 });

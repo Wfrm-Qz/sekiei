@@ -221,7 +221,7 @@ export function createManualModalActions(context: ManualModalContext) {
       return;
     }
     const locale = getLocale();
-    const blocks = getUserManualBlocks();
+    const blocks = getUserManualBlocks(locale);
     const tocItems: ManualTocItem[] = [];
     const article = documentRef.createElement("article");
     article.className = "manual-modal__article";
