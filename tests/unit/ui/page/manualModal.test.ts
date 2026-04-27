@@ -34,7 +34,7 @@ describe("ui/page/manualModal", () => {
     expect(document.body).toHaveClass("manual-modal-open");
     expect(elements.manualBody).toHaveTextContent("できること");
     expect(elements.manualBody).not.toHaveTextContent("User Manual");
-    expect(elements.manualBody?.querySelectorAll("img")).toHaveLength(5);
+    expect(elements.manualBody?.querySelectorAll("img")).toHaveLength(13);
     expect(elements.manualDismissButton).toHaveFocus();
 
     elements.manualDismissButton?.click();
@@ -75,7 +75,7 @@ describe("ui/page/manualModal", () => {
 
     expect(toc).toHaveAccessibleName("目次");
     expect(tocLinks.length).toBeGreaterThan(8);
-    expect(tocLinks[0]).toHaveTextContent("できること");
+    expect(tocLinks[0]).toHaveTextContent("はじめに");
 
     const faceListLink = tocLinks.find((link) =>
       link.textContent?.includes("面一覧"),
