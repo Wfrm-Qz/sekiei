@@ -22,6 +22,12 @@ describe("ui/pageElements", () => {
       <a id="app-announcement-github-link"></a>
       <a id="app-announcement-author-x-link"></a>
       <button id="app-announcement-open-button"></button>
+      <div id="app-manual-modal"></div>
+      <div id="app-manual-backdrop"></div>
+      <div id="app-manual-body"></div>
+      <button id="app-manual-dismiss-button"></button>
+      <button id="app-manual-close-button"></button>
+      <button id="app-manual-open-button"></button>
       <button id="app-mobile-header-menu-button"></button>
       <div id="app-mobile-header-menu"></div>
       <button id="app-announcement-dismiss-button"></button>
@@ -63,6 +69,12 @@ describe("ui/pageElements", () => {
     expect(elements.announcementOpenButton?.id).toBe(
       "app-announcement-open-button",
     );
+    expect(elements.manualModal?.id).toBe("app-manual-modal");
+    expect(elements.manualBackdrop?.id).toBe("app-manual-backdrop");
+    expect(elements.manualBody?.id).toBe("app-manual-body");
+    expect(elements.manualDismissButton?.id).toBe("app-manual-dismiss-button");
+    expect(elements.manualCloseButton?.id).toBe("app-manual-close-button");
+    expect(elements.manualOpenButton?.id).toBe("app-manual-open-button");
     expect(elements.mobileHeaderMenuButton?.id).toBe(
       "app-mobile-header-menu-button",
     );

@@ -32,6 +32,7 @@ import {
 } from "./ui/faceTable/faceTable.js";
 import { queryAppPageElements } from "./ui/page/pageElements.js";
 import { createAnnouncementModalActions } from "./ui/page/announcementModal.js";
+import { createManualModalActions } from "./ui/page/manualModal.js";
 import { createMobileLayoutActions } from "./ui/page/mobileLayout.js";
 import { createPageUiHelpers } from "./ui/page/pageUi.js";
 import { applyPageStaticTranslations } from "./ui/page/pageTranslations.js";
@@ -488,6 +489,9 @@ const { initAnnouncementModal, openAnnouncement } =
     getLocale: getCurrentLocale,
     onLocaleChange,
   });
+const { initManualModal, openManual } = createManualModalActions({
+  elements,
+});
 const { initMobileLayout, setActiveMobileLayoutTab } =
   createMobileLayoutActions({
     root: elements.mainContent,
@@ -1429,6 +1433,7 @@ const { registerPresetAndMetadataHandlers, registerHeaderSaveHandlers } =
     closeHeaderSaveMenus,
     toggleHeaderSaveMenu,
     openAnnouncementModal: () => openAnnouncement(),
+    openManualModal: () => openManual(),
     setMobileLayoutTab: (tab) => {
       setActiveMobileLayoutTab(tab);
       elements.mobileLayoutTabs?.scrollIntoView({
@@ -1568,5 +1573,6 @@ const { animate, init } = createPageLifecycleActions({
 init();
 initMobileLayout();
 initAnnouncementModal();
+initManualModal();
 
 // @ts-nocheck

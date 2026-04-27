@@ -9,8 +9,8 @@
       content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; font-src 'self' data:; connect-src 'self' ws: wss:; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
     />
     <title data-i18n="app.pageTitle">Sekiei</title>
-    <link rel="stylesheet" href="./styles.css?v=20260426-mobilephase4" />
-    <link rel="stylesheet" href="./app-ui.css?v=20260426-mobilephase6" />
+    <link rel="stylesheet" href="./styles.css?v=20260427-manualmodal" />
+    <link rel="stylesheet" href="./app-ui.css?v=20260427-manualmodal" />
   </head>
   <body class="page-root">
     <!-- キーボード利用時にプレビュー領域を飛ばして main へ入るための導線。 -->
@@ -101,6 +101,14 @@
           >
             お知らせ
           </button>
+          <button
+            id="app-manual-open-button"
+            class="dads-button dads-button--secondary"
+            type="button"
+            data-i18n="manual.openButton"
+          >
+            マニュアル
+          </button>
           <div class="header-menu-wrap mobile-header-menu-wrap">
             <button
               id="app-mobile-header-menu-button"
@@ -126,6 +134,15 @@
                   data-i18n="announcement.openButton"
                 >
                   お知らせ
+                </button>
+                <button
+                  class="header-action-menu-item"
+                  type="button"
+                  role="menuitem"
+                  data-open-manual="true"
+                  data-i18n="manual.openButton"
+                >
+                  マニュアル
                 </button>
               </div>
               <div class="mobile-header-menu__group">
@@ -2129,6 +2146,49 @@
       hidden
     ></div>
     <div
+      id="app-manual-modal"
+      class="announcement-modal manual-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="app-manual-title"
+      aria-describedby="app-manual-body"
+      hidden
+    >
+      <div id="app-manual-backdrop" class="announcement-modal__backdrop"></div>
+      <section class="announcement-modal__card manual-modal__card">
+        <div class="announcement-modal__header">
+          <div class="announcement-modal__header-copy">
+            <h2 id="app-manual-title" class="announcement-modal__title">
+              <span data-i18n="manual.title">マニュアル</span>
+            </h2>
+          </div>
+          <button
+            id="app-manual-close-button"
+            class="announcement-modal__close dads-icon-button"
+            type="button"
+            aria-label="マニュアルを閉じる"
+            data-i18n-aria-label="manual.closeAria"
+          >
+            ×
+          </button>
+        </div>
+        <div
+          id="app-manual-body"
+          class="announcement-modal__content manual-modal__content"
+        ></div>
+        <div class="announcement-modal__actions">
+          <button
+            id="app-manual-dismiss-button"
+            class="dads-button dads-button--primary"
+            type="button"
+            data-i18n="manual.dismiss"
+          >
+            閉じる
+          </button>
+        </div>
+      </section>
+    </div>
+    <div
       id="app-announcement-modal"
       class="announcement-modal"
       role="dialog"
@@ -2262,6 +2322,6 @@
       </section>
     </div>
 
-    <script type="module" src="./src/main.ts?v=20260426-mobilephase6"></script>
+    <script type="module" src="./src/main.ts?v=20260427-manualmodal"></script>
   </body>
 </html>

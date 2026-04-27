@@ -35,6 +35,7 @@
 - 公開 sample JSON は `docs/samples/` に置きます。
 - スクリーンショット付きマニュアルの画像は `docs/images/user-manual/` に置きます。
 - UI の配置、主要ラベル、基本操作の流れを変えた時は、`docs/user-manual.md` の説明とスクリーンショットを必要に応じて差し替えます。
+- ツール内のマニュアル表示は `docs/user-manual.md` を `src/content/userManual.ts` から読むため、マニュアル画像リンクを変えた時は import map と画像リンク test も追従します。
 - integration test fixture は `tests/fixtures/` に置きます。
 - Playwright の E2E spec は `tests/e2e/` に置きます。
 - `docs/testing.md` が公開向けのテスト説明の正本です。旧 `docs/TEST-RUNNING.md` 前提では扱いません。
