@@ -45,6 +45,8 @@ interface TwinFaceTableCrystalLike {
   contact?: TwinFaceTableContactLike;
 }
 
+type EditableFaceIndexField = "h" | "k" | "l";
+
 interface TwinFaceTableMutableParametersLike {
   crystalSystem: string;
   twin: {
@@ -113,6 +115,12 @@ export interface TwinFaceTableHandlersContext {
 export function createTwinFaceTableHandlers(
   context: TwinFaceTableHandlersContext,
 ) {
+  function isEditableFaceIndexField(
+    fieldName: string | undefined,
+  ): fieldName is EditableFaceIndexField {
+    return fieldName === "h" || fieldName === "k" || fieldName === "l";
+  }
+
   function addFace() {
     context.commitParameters((next) => {
       const crystalIndex = context.getEditableCrystalIndex();
@@ -433,7 +441,8 @@ export function createTwinFaceTableHandlers(
         const target = event.target;
         if (
           target instanceof HTMLButtonElement &&
-          target.classList.contains("coefficient-spin-button")
+          (target.classList.contains("coefficient-spin-button") ||
+            target.classList.contains("face-index-spin-button"))
         ) {
           event.preventDefault();
         }
@@ -617,6 +626,42 @@ export function createTwinFaceTableHandlers(
               });
             context.setTwinCrystalFaces(next, crystalIndex, updatedFaces);
           });
+          return;
+        }
+
+        if (target.classList.contains("face-index-spin-button")) {
+          const fieldName = target.dataset.faceIndexField;
+          if (!isEditableFaceIndexField(fieldName)) {
+            return;
+          }
+          const indexInput = row.querySelector(
+            `input[data-face-field="${fieldName}"]`,
+          );
+          if (
+            !(indexInput instanceof HTMLInputElement) ||
+            indexInput.disabled ||
+            indexInput.readOnly
+          ) {
+            return;
+          }
+          const currentValue = Number(indexInput.value);
+          const editableFaces = context.getEditableFaces();
+          const sourceFace = editableFaces.find((face) => face.id === faceId);
+          const fallbackValue = groupCollapsed
+            ? editableFaces.find(
+                (face) =>
+                  context.getEquivalentFaceGroupKey(
+                    face,
+                    context.state.parameters.crystalSystem,
+                  ) === groupKey,
+              )?.[fieldName]
+            : sourceFace?.[fieldName];
+          const baseValue = Number.isFinite(currentValue)
+            ? currentValue
+            : Number(fallbackValue ?? 0);
+          const direction = target.dataset.spinDirection === "down" ? -1 : 1;
+          indexInput.value = String(baseValue + direction);
+          indexInput.dispatchEvent(new Event("change", { bubbles: true }));
           return;
         }
 

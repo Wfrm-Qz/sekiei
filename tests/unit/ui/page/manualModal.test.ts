@@ -34,7 +34,7 @@ describe("ui/page/manualModal", () => {
     expect(document.body).toHaveClass("manual-modal-open");
     expect(elements.manualBody).toHaveTextContent("できること");
     expect(elements.manualBody).not.toHaveTextContent("User Manual");
-    expect(elements.manualBody?.querySelectorAll("img")).toHaveLength(5);
+    expect(elements.manualBody?.querySelectorAll("img")).toHaveLength(13);
     expect(elements.manualDismissButton).toHaveFocus();
 
     elements.manualDismissButton?.click();
@@ -55,5 +55,34 @@ describe("ui/page/manualModal", () => {
     elements.manualBackdrop?.click();
 
     expect(elements.manualModal).toHaveAttribute("hidden");
+  });
+
+  it("見出しから目次を作り、項目クリックで本文見出しへ移動できる", () => {
+    const elements = mountManualModal();
+    const { initManualModal, openManual } = createManualModalActions({
+      elements,
+    });
+
+    initManualModal();
+    openManual();
+
+    const toc = elements.manualBody?.querySelector(".manual-modal__toc");
+    const tocLinks = Array.from(
+      elements.manualBody?.querySelectorAll<HTMLButtonElement>(
+        ".manual-modal__toc-link",
+      ) ?? [],
+    );
+
+    expect(toc).toHaveAccessibleName("目次");
+    expect(tocLinks.length).toBeGreaterThan(8);
+    expect(tocLinks[0]).toHaveTextContent("はじめに");
+
+    const faceListLink = tocLinks.find((link) =>
+      link.textContent?.includes("面一覧"),
+    );
+    faceListLink?.click();
+
+    expect(faceListLink).toHaveAttribute("aria-current", "true");
+    expect(document.activeElement).toHaveTextContent("面一覧");
   });
 });

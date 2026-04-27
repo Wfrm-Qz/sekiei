@@ -175,6 +175,10 @@ describe("ui/faceTableHandlers", () => {
         <td><input data-face-field="enabled" type="checkbox" /></td>
         <td><input data-face-field="accentColor" type="color" value="#3366cc" /></td>
         <td>
+          <input data-face-field="h" value="1" />
+          <button class="face-index-spin-button" data-face-index-field="h" data-spin-direction="down"></button>
+        </td>
+        <td>
           <input data-face-field="coefficient" value="1" />
           <button class="coefficient-spin-button" data-spin-direction="up"></button>
         </td>
@@ -240,6 +244,28 @@ describe("ui/faceTableHandlers", () => {
     ) as HTMLInputElement;
     textSizeInput.dispatchEvent(new Event("change", { bubbles: true }));
     expect(context.commitParameters).toHaveBeenCalled();
+
+    const indexSpinButton = context.elements.facesTableBody.querySelector(
+      ".face-index-spin-button",
+    ) as HTMLButtonElement;
+    const indexMouseDownEvent = new MouseEvent("mousedown", {
+      bubbles: true,
+      cancelable: true,
+    });
+    indexSpinButton.dispatchEvent(indexMouseDownEvent);
+    expect(indexMouseDownEvent.defaultPrevented).toBe(true);
+    indexSpinButton.click();
+    expect(
+      (
+        context.elements.facesTableBody.querySelector(
+          '[data-face-field="h"]',
+        ) as HTMLInputElement
+      ).value,
+    ).toBe("0");
+    expect(context.commitNumericInput).toHaveBeenCalledWith(
+      "0",
+      expect.any(Function),
+    );
 
     const spinButton = context.elements.facesTableBody.querySelector(
       ".coefficient-spin-button",

@@ -23,7 +23,7 @@ describe("user manual content", () => {
       (block) => block.type === "image",
     );
 
-    expect(imageBlocks).toHaveLength(5);
+    expect(imageBlocks).toHaveLength(13);
     imageBlocks.forEach((block) => {
       expect(block.src).not.toMatch(/^\.\/images\//);
       expect(block.alt).not.toBe("");
