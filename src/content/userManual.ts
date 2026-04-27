@@ -1,5 +1,13 @@
 import userManualMarkdown from "../../docs/user-manual.md?raw";
 import desktopOverviewImageUrl from "../../docs/images/user-manual/desktop-overview.png";
+import faceListAddFaceImageUrl from "../../docs/images/user-manual/face-list-add-face.png";
+import faceListCrystalTabsImageUrl from "../../docs/images/user-manual/face-list-crystal-tabs.png";
+import faceListExpandedRowImageUrl from "../../docs/images/user-manual/face-list-expanded-row.png";
+import faceListHiddenFaceImageUrl from "../../docs/images/user-manual/face-list-hidden-face.png";
+import faceListIndexCoefficientImageUrl from "../../docs/images/user-manual/face-list-index-coefficient.png";
+import faceListMobileCardImageUrl from "../../docs/images/user-manual/face-list-mobile-card.png";
+import faceListOverviewImageUrl from "../../docs/images/user-manual/face-list-overview.png";
+import faceListTableImageUrl from "../../docs/images/user-manual/face-list-table.png";
 import faceTextSettingsImageUrl from "../../docs/images/user-manual/face-text-settings.png";
 import mobileBasicImageUrl from "../../docs/images/user-manual/mobile-basic.png";
 import mobileOutputImageUrl from "../../docs/images/user-manual/mobile-output.png";
@@ -33,7 +41,30 @@ const USER_MANUAL_IMAGE_URLS = new Map([
   ["./images/user-manual/desktop-overview.png", desktopOverviewImageUrl],
   ["./images/user-manual/mobile-basic.png", mobileBasicImageUrl],
   ["./images/user-manual/preset-search.png", presetSearchImageUrl],
+  ["./images/user-manual/face-list-overview.png", faceListOverviewImageUrl],
+  ["./images/user-manual/face-list-table.png", faceListTableImageUrl],
+  [
+    "./images/user-manual/face-list-mobile-card.png",
+    faceListMobileCardImageUrl,
+  ],
+  [
+    "./images/user-manual/face-list-index-coefficient.png",
+    faceListIndexCoefficientImageUrl,
+  ],
+  [
+    "./images/user-manual/face-list-hidden-face.png",
+    faceListHiddenFaceImageUrl,
+  ],
+  [
+    "./images/user-manual/face-list-expanded-row.png",
+    faceListExpandedRowImageUrl,
+  ],
   ["./images/user-manual/face-text-settings.png", faceTextSettingsImageUrl],
+  ["./images/user-manual/face-list-add-face.png", faceListAddFaceImageUrl],
+  [
+    "./images/user-manual/face-list-crystal-tabs.png",
+    faceListCrystalTabsImageUrl,
+  ],
   ["./images/user-manual/mobile-output.png", mobileOutputImageUrl],
 ]);
 
