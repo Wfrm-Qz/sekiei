@@ -108,6 +108,8 @@ export function applyPageStaticTranslations(elements, locale, translate) {
   elements.rotationAngleInput
     .closest("label")
     .querySelector("span").textContent = translate("twin.rotationAngle");
+  elements.axisOffsetInput.closest("label").querySelector("span").textContent =
+    translate("twin.axisOffset");
   elements.contactReferenceAxisSelect
     .closest("label")
     .querySelector("span").textContent = translate("twin.referenceAxis");

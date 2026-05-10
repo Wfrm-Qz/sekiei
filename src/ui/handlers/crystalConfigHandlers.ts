@@ -9,6 +9,7 @@ import {
   getTwinCrystals,
   twinRuleTypeForTwinType,
 } from "../../state/stateHelpers.js";
+import { setTwinAxisOffsetAmount } from "../../domain/penetrationOffsets.js";
 import type { TwinStlSplitSettings } from "../../state/stlSplitSettings.js";
 
 /**
@@ -35,6 +36,12 @@ interface TwinCrystalConfigHandlersStateLike {
         plane?: Record<string, number>;
         axis?: Record<string, number>;
         rotationAngleDeg?: number;
+        offsets?: {
+          kind?: string;
+          basis?: string;
+          amount?: number;
+          unit?: string;
+        }[];
         from?: number;
         contact?: {
           baseFaceRef?: string | null;
@@ -47,6 +54,7 @@ interface TwinCrystalConfigHandlersStateLike {
   };
   stlSplit: TwinStlSplitSettings;
   activeFaceCrystalIndex: number;
+  pendingPreviewRefit?: boolean;
 }
 
 interface TwinCrystalConfigHandlersElementsLike {
@@ -64,6 +72,7 @@ interface TwinCrystalConfigHandlersElementsLike {
   twinTypeSelect: HTMLSelectElement;
   twinRuleInputs: Record<string, HTMLInputElement>;
   rotationAngleInput: HTMLInputElement;
+  axisOffsetInput: HTMLInputElement;
   fromCrystalSelect: HTMLSelectElement;
   baseFaceRefSelect: HTMLSelectElement;
   derivedFaceRefSelect: HTMLSelectElement;
@@ -250,6 +259,29 @@ export function createTwinCrystalConfigHandlers(
             }
             activeCrystal.rotationAngleDeg = value;
           });
+        },
+      );
+    });
+
+    context.elements.axisOffsetInput.addEventListener("change", () => {
+      context.commitNumericInput(
+        context.elements.axisOffsetInput.value,
+        (value) => {
+          context.commitParameters((next) => {
+            const activeCrystal = getTwinCrystal(
+              next,
+              context.getActiveCrystalIndex(),
+            );
+            if (
+              !activeCrystal ||
+              context.getActiveCrystalIndex() === 0 ||
+              activeCrystal.twinType !== "penetration"
+            ) {
+              return;
+            }
+            setTwinAxisOffsetAmount(activeCrystal, value);
+          });
+          context.state.pendingPreviewRefit = true;
         },
       );
     });

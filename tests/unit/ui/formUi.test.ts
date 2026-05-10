@@ -34,6 +34,7 @@ describe("ui/formUi", () => {
       <select id="derived-face"></select>
       <select id="contact-axis"></select>
       <input id="rotation" />
+      <input id="axis-offset" />
       <div id="head-row"></div>
       <div id="twin-settings-card"></div>
       <div id="twin-settings-note"></div>
@@ -108,6 +109,7 @@ describe("ui/formUi", () => {
       derivedFaceRefSelect: document.getElementById("derived-face"),
       contactReferenceAxisSelect: document.getElementById("contact-axis"),
       rotationAngleInput: document.getElementById("rotation"),
+      axisOffsetInput: document.getElementById("axis-offset"),
       facesTableHeadRow: document.getElementById("head-row"),
       twinSettingsCard: document.getElementById("twin-settings-card"),
       twinSettingsNote: document.getElementById("twin-settings-note"),

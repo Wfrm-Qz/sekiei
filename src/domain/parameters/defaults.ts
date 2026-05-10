@@ -8,6 +8,16 @@ import { normalizeFaceAccentColor } from "../../state/colorHelpers.js";
 
 export type TwinType = "penetration" | "contact";
 export type TwinRuleType = "axis" | "plane";
+export type TwinOffsetKind = "axis";
+export type TwinOffsetBasis = "twin-axis";
+export type TwinOffsetUnit = "axis-plane-intercept";
+
+export interface TwinOffsetParameters {
+  kind: TwinOffsetKind;
+  basis: TwinOffsetBasis;
+  amount: number;
+  unit: TwinOffsetUnit;
+}
 
 export interface TwinCrystalParameters {
   id: string;
@@ -20,6 +30,7 @@ export interface TwinCrystalParameters {
   plane: ReturnType<typeof normalizeRuleIndexes>;
   axis: ReturnType<typeof normalizeRuleIndexes>;
   rotationAngleDeg: number;
+  offsets: TwinOffsetParameters[];
   contact: {
     baseFaceRef: string | null;
     derivedFaceRef: string | null;
@@ -172,6 +183,7 @@ function buildDefaultTwinCrystals(
         crystalSystem,
       ),
       rotationAngleDeg: 60,
+      offsets: [],
       contact: {
         baseFaceRef: fallbackFaceRef(baseCrystalFaces, 0),
         derivedFaceRef: fallbackFaceRef(baseCrystalFaces, 0),
@@ -193,6 +205,7 @@ function buildDefaultTwinCrystals(
         crystalSystem,
       ),
       rotationAngleDeg: 60,
+      offsets: [],
       contact: {
         baseFaceRef: fallbackFaceRef(baseCrystalFaces, 0),
         derivedFaceRef: fallbackFaceRef(derivedCrystalFaces, 1),

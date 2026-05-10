@@ -96,6 +96,25 @@ export function serializeTwinParameters(
       return serializedFace;
     });
 
+  const serializeOffsets = (rawOffsets: unknown) =>
+    (Array.isArray(rawOffsets) ? rawOffsets : [])
+      .filter(
+        (offset): offset is Record<string, unknown> =>
+          Boolean(offset) &&
+          typeof offset === "object" &&
+          !Array.isArray(offset),
+      )
+      .map((offset) => ({
+        kind: "axis",
+        basis: "twin-axis",
+        amount: Number(offset.amount ?? 0),
+        unit: "axis-plane-intercept",
+      }))
+      .filter(
+        (offset) =>
+          Number.isFinite(offset.amount) && Math.abs(offset.amount) > 1e-12,
+      );
+
   const serializedCrystals = Array.isArray(parameters.twin?.crystals)
     ? parameters.twin.crystals.map((rawCrystal, index, crystals) => {
         const crystal =
@@ -140,6 +159,10 @@ export function serializeTwinParameters(
             : crystal?.ruleType === "plane" || crystal?.twinType === "contact"
               ? "plane"
               : "axis";
+        const offsets =
+          placementType === "penetration"
+            ? serializeOffsets(crystal.offsets)
+            : [];
         return {
           id:
             typeof crystal?.id === "string"
@@ -173,6 +196,7 @@ export function serializeTwinParameters(
                           plane: serializeRule(crystalPlane),
                         }),
                   },
+                  ...(offsets.length > 0 ? { offsets } : {}),
                 },
                 contact: {
                   baseFaceRef: crystalContact.baseFaceRef ?? null,

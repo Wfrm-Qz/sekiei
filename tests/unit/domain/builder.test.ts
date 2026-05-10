@@ -183,6 +183,43 @@ describe("domain/builder", () => {
       2,
     );
   });
+
+  it("貫入双晶の軸方向 offset は係数1面までの距離を 1 として線形に移動する", () => {
+    const parameters = normalizeTwinParameters({
+      ...createDefaultTwinParameters(),
+      twin: {
+        ...createDefaultTwinParameters().twin,
+        enabled: true,
+      },
+    });
+    parameters.twin.crystals[1].axis = {
+      ...parameters.twin.crystals[1].axis,
+      h: 1,
+      k: 0,
+      l: 0,
+    };
+    parameters.twin.crystals[1].rotationAngleDeg = 0;
+    parameters.twin.crystals[1].offsets = [
+      {
+        kind: "axis",
+        basis: "twin-axis",
+        amount: 0.5,
+        unit: "axis-plane-intercept",
+      },
+      {
+        kind: "axis",
+        basis: "twin-axis",
+        amount: 0.5,
+        unit: "axis-plane-intercept",
+      },
+    ];
+
+    const result = buildTwinMeshData(parameters);
+    const baseX = result.crystalPreviewMeshData?.[0]?.vertices?.[0]?.x ?? 0;
+    const derivedX = result.crystalPreviewMeshData?.[1]?.vertices?.[0]?.x ?? 0;
+
+    expect(derivedX - baseX).toBeCloseTo(1);
+  });
 });
 
 function resultFaceVertexCount(

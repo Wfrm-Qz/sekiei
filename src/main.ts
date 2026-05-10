@@ -144,6 +144,8 @@ const AXIS_LABEL_INITIAL_OUTER_OFFSET = 36;
 const AXIS_LABEL_SIDE_GAP = 8;
 const FACE_GROUP_STATE_SEPARATOR = "|||";
 const FACE_SECTION_CARD_FALLBACK_HEIGHT_PX = 220;
+const SHOW_ROTATION_CENTER_DEBUG_MARKER = false;
+const ROTATION_CENTER_DEBUG_MARKER_SIZE_PX = 22;
 const PREVIEW_HELPER_NAMES = new Set([
   "axis-guides",
   "face-normal-guides",
@@ -548,10 +550,125 @@ controls.dynamicDampingFactor = 0.12;
 controls.staticMoving = true;
 controls.target.set(0, 0, 0);
 
+const rotationCenterDebugMarker = createRotationCenterDebugMarker(
+  elements.previewStage,
+);
+const rotationCenterDebugProjection = new THREE.Vector3();
+
 // TrackballControls の damping 中は change 発火が疎になることがあるため、
 // ここを短くしすぎると慣性が視覚上ほぼ消える。操作感維持のため猶予を持たせる。
 const PREVIEW_INERTIA_IDLE_TIMEOUT_MS = 800;
 const PREVIEW_INERTIA_MAX_DURATION_MS = 5000;
+
+/** 回転中心ずれ調査用 marker。通常は非表示、必要時は定数を true にする。 */
+function createRotationCenterDebugMarker(previewStage) {
+  if (
+    !SHOW_ROTATION_CENTER_DEBUG_MARKER ||
+    !(previewStage instanceof HTMLElement)
+  ) {
+    return null;
+  }
+  const marker = document.createElement("div");
+  marker.setAttribute("aria-hidden", "true");
+  marker.dataset.debugPreviewRotationCenter = "true";
+  marker.title = "debug: preview rotation center";
+  Object.assign(marker.style, {
+    position: "absolute",
+    left: "0",
+    top: "0",
+    width: `${ROTATION_CENTER_DEBUG_MARKER_SIZE_PX}px`,
+    height: `${ROTATION_CENTER_DEBUG_MARKER_SIZE_PX}px`,
+    transform: "translate(-50%, -50%)",
+    pointerEvents: "none",
+    zIndex: "5",
+    display: "none",
+    boxSizing: "border-box",
+    border: "2px solid #ff2bd6",
+    borderRadius: "999px",
+    background: "rgba(255, 255, 255, 0.08)",
+    boxShadow:
+      "0 0 0 1px rgba(255, 255, 255, 0.95), 0 0 10px rgba(255, 43, 214, 0.8)",
+  });
+
+  const lineStyle = {
+    position: "absolute",
+    left: "50%",
+    top: "50%",
+    background: "#18bfff",
+    transform: "translate(-50%, -50%)",
+    boxShadow: "0 0 4px rgba(24, 191, 255, 0.8)",
+  };
+  const horizontalLine = document.createElement("span");
+  Object.assign(horizontalLine.style, {
+    ...lineStyle,
+    width: `${ROTATION_CENTER_DEBUG_MARKER_SIZE_PX + 8}px`,
+    height: "2px",
+  });
+  const verticalLine = document.createElement("span");
+  Object.assign(verticalLine.style, {
+    ...lineStyle,
+    width: "2px",
+    height: `${ROTATION_CENTER_DEBUG_MARKER_SIZE_PX + 8}px`,
+  });
+  const centerDot = document.createElement("span");
+  Object.assign(centerDot.style, {
+    ...lineStyle,
+    width: "5px",
+    height: "5px",
+    borderRadius: "999px",
+    background: "#ffffff",
+  });
+  marker.append(horizontalLine, verticalLine, centerDot);
+  previewStage.append(marker);
+  return marker;
+}
+
+/** Three.js の回転中心を screen-space debug marker へ反映する。 */
+function updateRotationCenterDebugMarker() {
+  const marker = rotationCenterDebugMarker;
+  const previewStage = elements.previewStage;
+  if (!marker || !(previewStage instanceof HTMLElement)) {
+    return;
+  }
+  if (!state.previewRoot) {
+    marker.style.display = "none";
+    return;
+  }
+  const rect = previewStage.getBoundingClientRect();
+  if (rect.width <= 0 || rect.height <= 0) {
+    marker.style.display = "none";
+    return;
+  }
+
+  camera.updateMatrixWorld(true);
+  rotationCenterDebugProjection.copy(controls.target).project(camera);
+  if (
+    !Number.isFinite(rotationCenterDebugProjection.x) ||
+    !Number.isFinite(rotationCenterDebugProjection.y) ||
+    !Number.isFinite(rotationCenterDebugProjection.z)
+  ) {
+    marker.style.display = "none";
+    return;
+  }
+
+  marker.style.display = "block";
+  marker.style.left = `${
+    ((rotationCenterDebugProjection.x + 1) * rect.width) / 2
+  }px`;
+  marker.style.top = `${
+    ((1 - rotationCenterDebugProjection.y) * rect.height) / 2
+  }px`;
+  marker.style.opacity =
+    rotationCenterDebugProjection.z >= -1 &&
+    rotationCenterDebugProjection.z <= 1
+      ? "1"
+      : "0.45";
+  marker.dataset.rotationCenter = [
+    controls.target.x.toFixed(4),
+    controls.target.y.toFixed(4),
+    controls.target.z.toFixed(4),
+  ].join(",");
+}
 
 /** preview overlay 再描画要求フラグを立てる。 */
 function requestPreviewOverlayUpdate() {
@@ -572,6 +689,7 @@ function shouldUseScreenSpacePreviewOverlay() {
 
 /** preview 本体再描画要求フラグを立てる。 */
 function requestPreviewRender() {
+  updateRotationCenterDebugMarker();
   state.previewRenderDirty = true;
 }
 
@@ -1572,7 +1690,10 @@ const { animate, init } = createPageLifecycleActions({
   updateXrayTransparentFaceRenderOrder,
   shouldUseScreenSpacePreviewOverlay,
   applyXrayOverlaySceneVisibility,
-  renderScene: () => renderer.render(scene, camera),
+  renderScene: () => {
+    updateRotationCenterDebugMarker();
+    renderer.render(scene, camera);
+  },
   renderScreenSpaceXrayFaceOverlay,
   updateFaceLabelOverlay,
 });

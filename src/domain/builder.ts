@@ -11,9 +11,11 @@ import {
   createReflectionMatrix,
   createRotationMatrix,
   twinAxisDirection,
+  twinAxisPlaneInterceptLength,
   twinPlaneNormal,
 } from "./crystalFrame.js";
 import { resolveContactReferenceAxisDirection } from "./contactReferenceAxis.js";
+import { getTwinAxisOffsetAmount } from "./penetrationOffsets.js";
 
 /**
  * 双晶の複数結晶を配置し、必要なら CSG 和集合して preview / export 用 meshData を返す。
@@ -352,6 +354,34 @@ function buildRuleMatrixForCrystal(parameters, crystal, validation) {
     );
     return new THREE.Matrix4().identity();
   }
+}
+
+/**
+ * 貫入双晶の軸方向 offset を平行移動ベクトルに変換する。
+ *
+ * `amount = 1` は、双晶軸と同じ指数で coefficient 1 の面が双晶軸正方向と
+ * 交わる点までの距離。amount はこの基準長に対して線形に効く。
+ */
+function buildPenetrationAxisOffsetVector(parameters, crystal, validation) {
+  const amount = getTwinAxisOffsetAmount(crystal);
+  if (Math.abs(amount) < 1e-12) {
+    return new THREE.Vector3();
+  }
+
+  const axisRule = crystal?.axis ?? parameters.twin.axis;
+  const direction = twinAxisDirection(axisRule, parameters);
+  const basisLength = twinAxisPlaneInterceptLength(axisRule, parameters);
+  if (
+    !Number.isFinite(direction.lengthSq()) ||
+    direction.lengthSq() === 0 ||
+    !Number.isFinite(basisLength) ||
+    basisLength === 0
+  ) {
+    validation.errors.push(t("builder.error.invalidAxisVector"));
+    return new THREE.Vector3();
+  }
+
+  return direction.normalize().multiplyScalar(basisLength * amount);
 }
 
 /**
@@ -942,6 +972,25 @@ export function buildTwinMeshData(parameters, options = {}) {
           validation,
           index,
         );
+      }
+    } else {
+      const offset = buildPenetrationAxisOffsetVector(
+        parameters,
+        build.crystal,
+        validation,
+      );
+      if (offset.lengthSq() > 0) {
+        placedMeshData = translateMeshData(placedMeshData, offset);
+        previewPlacedMeshData = translateMeshData(
+          previewPlacedMeshData,
+          offset,
+        );
+        if (stlCompositePlacedMeshData) {
+          stlCompositePlacedMeshData = translateMeshData(
+            stlCompositePlacedMeshData,
+            offset,
+          );
+        }
       }
     }
 

@@ -218,11 +218,15 @@
 }
 
 .twin-axis-angle-block {
-  flex: 0 0 92px;
-  width: 92px;
+  display: grid;
+  flex: 0 0 200px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  width: 200px;
 }
 
 .twin-axis-angle-block .field {
+  justify-content: flex-end;
   min-width: 92px;
 }
 
@@ -1208,6 +1212,10 @@
   }
 
   .twin-compact-rule-fields {
+    width: 100%;
+  }
+
+  .twin-axis-angle-block {
     width: 100%;
   }
 }

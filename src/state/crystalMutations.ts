@@ -23,6 +23,7 @@ interface TwinCrystalLike {
   plane?: unknown;
   axis?: unknown;
   rotationAngleDeg?: number;
+  offsets?: unknown[];
   faces?: unknown[];
   contact?: {
     baseFaceRef?: string | null;
@@ -56,6 +57,7 @@ export function appendDerivedCrystal(
     plane: createFace({ h: 1, k: 1, l: 1, coefficient: 1 }),
     axis: createDefaultTwinAxisRule(next.crystalSystem),
     rotationAngleDeg: 60,
+    offsets: [],
     contact: {
       baseFaceRef: sourceFaces[0]?.id ?? null,
       derivedFaceRef: sourceFaces[0]?.id ?? null,

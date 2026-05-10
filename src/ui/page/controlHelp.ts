@@ -124,6 +124,7 @@ const fieldHelpTargets: FieldHelpTarget[] = [
     label: "l",
   },
   { selector: "#twin-rotation-angle-input", helpKey: "help.twin.rotation" },
+  { selector: "#twin-axis-offset-input", helpKey: "help.twin.axisOffset" },
   {
     selector: "#twin-base-face-ref-select",
     helpKey: "help.twin.baseContactFace",
