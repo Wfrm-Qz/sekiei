@@ -49,6 +49,12 @@
 - gahnite-00001
   - Face
     - Charles Palache, The minerals of Franklin and Sterling Hill, Sussex County, New Jersey (USGS Professional Paper 180, 1935)
+- garnet-00001
+  - Face
+    - 外部出典なし（指数指定プリセット）
+- garnet-00002
+  - Face
+    - 外部出典なし（指数指定プリセット）
 - hematite-00001
   - Face
     - Charles Palache, The minerals of Franklin and Sterling Hill, Sussex County, New Jersey (USGS Professional Paper 180, 1935)
@@ -104,6 +110,9 @@
 - sphalerite-00003
   - Face
     - Charles Palache, The minerals of Franklin and Sterling Hill, Sussex County, New Jersey (USGS Professional Paper 180, 1935)
+- spinel-00001
+  - Face
+    - 外部出典なし（指数指定プリセット）
 - titanite-00001
   - Face
     - Charles Palache, The minerals of Franklin and Sterling Hill, Sussex County, New Jersey (USGS Professional Paper 180, 1935)
