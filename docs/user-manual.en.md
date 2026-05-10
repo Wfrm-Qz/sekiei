@@ -399,9 +399,10 @@ Save JSON when you want to continue editing later in Sekiei.
 
 ### STL Split (beta)
 
-At the bottom of the Crystal Parameters card, `STL Split (beta)` is used only for STL export.
+At the bottom of the Crystal Parameters card, `Enable STL Split (beta)` is used only for STL export.
 
-- Turn on `Enable Split` to split the model during normal STL export
+- Turn on `Enable STL Split (beta)` to split the model during normal STL export
+- The split-plane index inputs are shown only while this setting is on
 - The split plane is the plane with the specified face indices passing through the center of Crystal 1
 - You can save STL split by the specified plane
 - STL split settings are not included in JSON save data

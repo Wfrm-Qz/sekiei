@@ -241,8 +241,7 @@ const translations = {
     "editor.modelSize": "モデルサイズ (mm)",
     "editor.axisLengths": "軸比",
     "editor.axisAngles": "軸間角 (deg)",
-    "editor.stlSplitTitle": "STL分割（β版）",
-    "editor.stlSplitEnabled": "分割を有効にする",
+    "editor.stlSplitEnabled": "STL分割を有効にする（β版）",
     "twin.settingsTitle": "双晶パラメーター",
     "twin.settingsDescription":
       "選択中の派生結晶について、生成元結晶、双晶タイプ、双晶則、接触面指定を設定します。",
@@ -736,8 +735,7 @@ const translations = {
     "editor.modelSize": "Model Size (mm)",
     "editor.axisLengths": "Axis Ratios",
     "editor.axisAngles": "Interaxial Angles (deg)",
-    "editor.stlSplitTitle": "STL Split (beta)",
-    "editor.stlSplitEnabled": "Enable Split",
+    "editor.stlSplitEnabled": "Enable STL Split (beta)",
     "twin.settingsTitle": "Twin Parameters",
     "twin.settingsDescription":
       "Set the source crystal, twin type, twin law, and contact-face assignment for the selected derived crystal.",

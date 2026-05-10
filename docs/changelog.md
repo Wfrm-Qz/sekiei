@@ -10,12 +10,14 @@ This file is also used as the source for the in-app announcement modal.
 - 柘榴石の形状プリセット 2 件とスピネル式双晶プリセットを追加しました。
 - 双晶を編集中に単結晶プリセットを読み込んだ場合、既存の双晶状態を引き継がず単結晶として読み込むようにしました。
 - 貫入双晶で、派生結晶を双晶軸方向へずらす `軸方向オフセット` を指定できるようにしました。
+- UIを調整しました。
 
 ### en
 
 - Added two garnet shape presets and a spinel-law twin preset.
 - When loading a single-crystal preset while editing a twin, the preset now loads as a single crystal instead of inheriting the current twin state.
 - Added `Axis Offset` for penetration twins so the derived crystal can be moved along the twin axis.
+- Adjusted the UI.
 
 ## 2026-04-27 / v0.1.3
 

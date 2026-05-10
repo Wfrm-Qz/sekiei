@@ -417,7 +417,7 @@ textarea:focus-visible {
 }
 
 .parameter-inline-grid--primary {
-  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.3fr);
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1.45fr);
 }
 
 .parameter-inline-grid--primary > .field {

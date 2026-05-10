@@ -87,6 +87,7 @@ export function queryAppPageElements() {
     stlSplitEnabledInput: document.querySelector(
       "#app-stl-split-enabled-input",
     ),
+    stlSplitPlaneFields: document.querySelector("#app-stl-split-plane-fields"),
     stlSplitPlaneInputs: {
       h: document.querySelector("#app-stl-split-plane-h-input"),
       k: document.querySelector("#app-stl-split-plane-k-input"),

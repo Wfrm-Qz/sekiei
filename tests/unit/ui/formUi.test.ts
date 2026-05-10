@@ -23,6 +23,7 @@ describe("ui/formUi", () => {
       <textarea id="metadata-full-reference"></textarea>
       <input id="size" />
       <input id="stl-split-enabled" type="checkbox" />
+      <div id="stl-split-fields"></div>
       <input id="stl-split-h" />
       <input id="stl-split-k" />
       <input id="stl-split-i" />
@@ -80,6 +81,7 @@ describe("ui/formUi", () => {
       },
       sizeInput: document.getElementById("size"),
       stlSplitEnabledInput: document.getElementById("stl-split-enabled"),
+      stlSplitPlaneFields: document.getElementById("stl-split-fields"),
       stlSplitPlaneInputs: {
         h: document.getElementById("stl-split-h"),
         k: document.getElementById("stl-split-k"),
@@ -229,6 +231,23 @@ describe("ui/formUi", () => {
     actions.applyCustomPresetSelection("Custom");
     expect(context.state.parameters.presetId).toBe("custom");
     expect(context.state.presetQuery).toBe("Custom");
+  });
+
+  it("renderFormValues は STL 分割が有効な時だけ指数入力欄を表示する", () => {
+    const context = createContext();
+    const actions = createPageUiActions(context);
+    const fields = context.elements.stlSplitPlaneFields as HTMLElement;
+
+    actions.renderFormValues();
+
+    expect(fields.hidden).toBe(true);
+    expect(fields.style.display).toBe("none");
+
+    context.state.stlSplit.enabled = true;
+    actions.renderFormValues();
+
+    expect(fields.hidden).toBe(false);
+    expect(fields.style.display).toBe("");
   });
 
   it("applyTwinPreset は単結晶 preset 適用時に既存の双晶状態を引き継がない", () => {

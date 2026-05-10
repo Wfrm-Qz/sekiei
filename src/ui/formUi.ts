@@ -143,6 +143,7 @@ export function createPageUiActions(context: PageUiActionContext) {
       sizeInput: context.elements.sizeInput as HTMLInputElement,
       stlSplitEnabledInput: context.elements
         .stlSplitEnabledInput as HTMLInputElement,
+      stlSplitPlaneFields: context.elements.stlSplitPlaneFields as HTMLElement,
       stlSplitPlaneInputs: {
         h: context.elements.stlSplitPlaneInputs.h as HTMLInputElement,
         k: context.elements.stlSplitPlaneInputs.k as HTMLInputElement,
@@ -516,8 +517,12 @@ export function createPageUiActions(context: PageUiActionContext) {
     typedElements.crystalSystemSelect.value =
       context.state.parameters.crystalSystem;
     typedElements.sizeInput.value = String(context.state.parameters.sizeMm);
-    typedElements.stlSplitEnabledInput.checked =
-      context.state.stlSplit.enabled === true;
+    const stlSplitEnabled = context.state.stlSplit.enabled === true;
+    typedElements.stlSplitEnabledInput.checked = stlSplitEnabled;
+    typedElements.stlSplitPlaneFields.hidden = !stlSplitEnabled;
+    typedElements.stlSplitPlaneFields.style.display = stlSplitEnabled
+      ? ""
+      : "none";
     typedElements.stlSplitPlaneInputs.h.value = String(
       context.state.stlSplit.plane?.h ?? 1,
     );

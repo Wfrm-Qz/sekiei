@@ -40,6 +40,7 @@
 - この公開リポジトリに `tasks/` を復活させないでください。
 - `.agents/` はローカル運用用として Git 管理対象から外します。
 - ユーザーが認識できる挙動、UI、出力内容、既知の制約が変わる場合は、同じ作業で `docs/changelog.md` を更新します。
+- お知らせに書く内容のうち、できることが変わっていない UI 調整は、不具合修正でない限り `UIを調整しました。` 程度の簡潔な表現にします。
 - `docs/changelog.md` の最新項目を変えた場合は、README の更新履歴抜粋と `tests/unit/data/announcements.test.ts` の最新 version 期待値も追従します。
 - リリースと version 変更は一致させます。実際に release version を上げる指示や公開反映がない限り、新しい version section は作らず、未リリースの変更は現在の release 範囲の最新 changelog entry に合流します。
 - 未リリース変更を最新 changelog entry に合流するときは、その entry の日付も今回の更新日へ揃え、README の更新履歴抜粋と announcement test も同じ日付・version にします。
