@@ -1,0 +1,428 @@
+{
+  "schema": "sekiei-twin-preview-document-v1",
+  "parameters": {
+    "version": 2,
+    "schema": "sekiei-document",
+    "presetId": "spinel-00001",
+    "name": {
+      "en": "Spinel",
+      "jp": "スピネル（尖晶石）"
+    },
+    "metadata": {
+      "shortDescription": "Spinel Law Twin",
+      "description": "",
+      "reference": "",
+      "fullReference": "外部出典なし（指数指定プリセット）"
+    },
+    "crystalSystem": "cubic",
+    "axes": {
+      "a": 1,
+      "b": 1,
+      "c": 1
+    },
+    "angles": {
+      "alpha": 90,
+      "beta": 90,
+      "gamma": 90
+    },
+    "sizeMm": 50,
+    "crystals": [
+      {
+        "id": "base",
+        "enabled": true,
+        "faces": [
+          {
+            "id": "efda448c-daab-4423-b157-d905efe3ab18",
+            "h": 1,
+            "k": 1,
+            "l": 1,
+            "coefficient": 2.5,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          },
+          {
+            "id": "b454d39e-534e-4f35-ade9-6597c6d5b72d",
+            "h": -1,
+            "k": -1,
+            "l": 1,
+            "coefficient": 1,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          },
+          {
+            "id": "74a37c25-b862-453d-b84b-154abc972432",
+            "h": -1,
+            "k": 1,
+            "l": -1,
+            "coefficient": 1,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          },
+          {
+            "id": "d974c6f4-23a5-4c4f-a3b4-2d2d470cf607",
+            "h": 1,
+            "k": -1,
+            "l": -1,
+            "coefficient": 1,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          },
+          {
+            "id": "0831d4b4-9e6b-4cbc-a917-2da2f67636df",
+            "h": -1,
+            "k": -1,
+            "l": -1,
+            "coefficient": 2.5,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          },
+          {
+            "id": "f65560ff-6f41-4609-8ce8-eb5108e13620",
+            "h": -1,
+            "k": 1,
+            "l": 1,
+            "coefficient": 0.8,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          },
+          {
+            "id": "17c0e4bb-4709-41be-b4ff-3518cda22055",
+            "h": 1,
+            "k": -1,
+            "l": 1,
+            "coefficient": 0.8,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          },
+          {
+            "id": "d7ba985a-26ad-485d-b7e9-c0f5dfc116fb",
+            "h": 1,
+            "k": 1,
+            "l": -1,
+            "coefficient": 0.8,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          }
+        ]
+      },
+      {
+        "id": "a9b3ff4b-3cb0-419f-a614-2fcc56bb41ef",
+        "enabled": true,
+        "from": "base",
+        "placement": {
+          "type": "contact",
+          "rule": {
+            "kind": "plane",
+            "plane": {
+              "h": 1,
+              "k": 1,
+              "l": 1
+            }
+          }
+        },
+        "contact": {
+          "baseFaceRef": "efda448c-daab-4423-b157-d905efe3ab18",
+          "derivedFaceRef": "efda448c-daab-4423-b157-d905efe3ab18",
+          "referenceAxisLabel": null
+        },
+        "faces": [
+          {
+            "id": "efda448c-daab-4423-b157-d905efe3ab18",
+            "h": 1,
+            "k": 1,
+            "l": 1,
+            "coefficient": 2.5,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          },
+          {
+            "id": "b454d39e-534e-4f35-ade9-6597c6d5b72d",
+            "h": -1,
+            "k": -1,
+            "l": 1,
+            "coefficient": 1,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          },
+          {
+            "id": "74a37c25-b862-453d-b84b-154abc972432",
+            "h": -1,
+            "k": 1,
+            "l": -1,
+            "coefficient": 1,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          },
+          {
+            "id": "d974c6f4-23a5-4c4f-a3b4-2d2d470cf607",
+            "h": 1,
+            "k": -1,
+            "l": -1,
+            "coefficient": 1,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          },
+          {
+            "id": "0831d4b4-9e6b-4cbc-a917-2da2f67636df",
+            "h": -1,
+            "k": -1,
+            "l": -1,
+            "coefficient": 2.5,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          },
+          {
+            "id": "f65560ff-6f41-4609-8ce8-eb5108e13620",
+            "h": -1,
+            "k": 1,
+            "l": 1,
+            "coefficient": 0.8,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          },
+          {
+            "id": "17c0e4bb-4709-41be-b4ff-3518cda22055",
+            "h": 1,
+            "k": -1,
+            "l": 1,
+            "coefficient": 0.8,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          },
+          {
+            "id": "d7ba985a-26ad-485d-b7e9-c0f5dfc116fb",
+            "h": 1,
+            "k": 1,
+            "l": -1,
+            "coefficient": 0.8,
+            "enabled": true,
+            "text": {
+              "content": "",
+              "fontId": "helvetiker",
+              "fontSize": 5,
+              "depth": 1,
+              "offsetU": 0,
+              "offsetV": 0,
+              "rotationDeg": 0
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "preview": {
+    "faceDisplayMode": "grouped",
+    "previewStyleSettings": {
+      "faceLabel": {
+        "color": "#1f2a37",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 14,
+        "offset": 0.05
+      },
+      "axisLabel": {
+        "colors": {
+          "a": "#cc3d3d",
+          "b": "#2f8f46",
+          "a3": "#c08a2d",
+          "c": "#005bac"
+        },
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 48
+      },
+      "twinRuleLabel": {
+        "color": "#8b5fd1",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 24
+      },
+      "presetMetadataName": {
+        "color": "#1f2a37",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 48
+      },
+      "presetMetadataDescription": {
+        "color": "#516171",
+        "fontFamily": "\"Segoe UI\", \"BIZ UDPGothic\", sans-serif",
+        "fontSizePx": 24
+      },
+      "axisLines": {
+        "colors": {
+          "a": "#cc3d3d",
+          "b": "#2f8f46",
+          "a3": "#c08a2d",
+          "c": "#005bac"
+        },
+        "innerWidth": 2,
+        "outerWidth": 2
+      },
+      "ridgeLines": {
+        "color": "#181818",
+        "width": 2,
+        "opacity": 1
+      },
+      "intersectionLines": {
+        "color": "#181818",
+        "width": 1,
+        "opacity": 1
+      },
+      "customLineProfile": {
+        "useLayeredLines": false,
+        "useDepthMask": false,
+        "useScreenSpaceLineOverlay": false,
+        "showFrontLines": true,
+        "showHiddenSurfaceLines": false,
+        "showOccludedInteriorLines": false,
+        "hiddenSurfaceLineColorMode": "same-as-front",
+        "hiddenSurfaceLineCustomColor": "#7a7a7a",
+        "hiddenSurfaceLineOpacityScale": 0.5,
+        "hiddenSurfaceLineWidthScale": 2,
+        "occludedInteriorLineColorMode": "same-as-front",
+        "occludedInteriorLineCustomColor": "#9a9a9a",
+        "occludedInteriorLineOpacityScale": 0.5,
+        "occludedInteriorLineWidthScale": 2,
+        "resolutionMode": "canvas-device-pixel",
+        "depthMaskOffsetFactor": 1,
+        "depthMaskOffsetUnits": 2
+      },
+      "customFaceProfile": {
+        "surfaceStyle": "grouped",
+        "componentBuildMode": "grouped-face-group",
+        "baseColorMode": "white",
+        "usesFaceGroupPalette": true,
+        "materialKind": "physical",
+        "usesLighting": true,
+        "usesScreenSpaceFaceOverlay": false,
+        "opacityWhenHasFinal": 1,
+        "opacityWhenNoFinal": 1,
+        "depthWrite": true,
+        "usePolygonOffset": true,
+        "polygonOffsetFactor": 1,
+        "polygonOffsetUnits": 1,
+        "useVertexColorsOnMergedGeometry": true,
+        "preferFinalMergedGeometry": false,
+        "allowSharedSolidFaceColorMap": false,
+        "allowSharedSolidFaceOverlay": false,
+        "groupedFaceComponentOpacity": null
+      }
+    }
+  }
+}

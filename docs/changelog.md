@@ -3,6 +3,16 @@
 Sekiei のお知らせモーダルで表示する更新履歴です。  
 This file is also used as the source for the in-app announcement modal.
 
+## 2026-05-10 / v0.1.4
+
+### ja
+
+- 柘榴石の形状プリセット 2 件とスピネル式双晶プリセットを追加しました。
+
+### en
+
+- Added two garnet shape presets and a spinel-law twin preset.
+
 ## 2026-04-27 / v0.1.3
 
 ### ja
