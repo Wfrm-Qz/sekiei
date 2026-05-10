@@ -28,6 +28,12 @@ const PRESET_JSON_PATHS = readdirSync(
 const PRESET_FILE_NAME_PATTERN =
   /^([a-z0-9]+(?:-[a-z0-9]+)*-\d{5})(?:-[A-Za-z0-9][A-Za-z0-9-]*)?\.json$/;
 
+const BASIC_SHAPE_PRESET_IDS = new Set([
+  "cube-00001",
+  "hexagonal-prism-00001",
+  "octahedron-00001",
+]);
+
 const SAMPLE_JSON_PATHS = [
   "docs/samples/cube.json",
   "docs/samples/cube-text.json",
@@ -97,6 +103,30 @@ describe("data/json schema documents", () => {
     "built-in preset %s は現行 wrapper schema に一致する",
     (relativePath) => {
       expectValidWrapperDocument(relativePath);
+    },
+  );
+
+  it.each(PRESET_JSON_PATHS)(
+    "built-in preset %s は非立方晶系・基本立体以外で Crystallography 出典を持つ",
+    (relativePath) => {
+      const document = loadJsonDocument(relativePath);
+
+      if (!isTwinPreviewSettingsDocument(document)) {
+        return;
+      }
+
+      const parameters = document.parameters;
+      if (
+        parameters.crystalSystem === "cubic" ||
+        BASIC_SHAPE_PRESET_IDS.has(parameters.presetId)
+      ) {
+        return;
+      }
+
+      expect(
+        String(parameters.metadata?.fullReference ?? ""),
+        `${relativePath} should include a Crystallography source in metadata.fullReference`,
+      ).toMatch(/\bCrystallography\b/);
     },
   );
 
