@@ -3,16 +3,6 @@
 Sekiei のお知らせモーダルで表示する更新履歴です。  
 This file is also used as the source for the in-app announcement modal.
 
-## 2026-04-28 / v0.1.4
-
-### ja
-
-- 英語 UI では英語版マニュアルと英語スクリーンショットを表示するようにしました。
-
-### en
-
-- Added an English user manual and English screenshots for the English UI.
-
 ## 2026-04-27 / v0.1.3
 
 ### ja
@@ -21,6 +11,7 @@ This file is also used as the source for the in-app announcement modal.
 - 面一覧の説明を拡充し、h/k/l、係数、表示切り替え、面や結晶の追加をスクリーンショット付きで確認できるようにしました。
 - 面一覧の h/k/l 入力欄に常時表示の上下ボタンを追加し、係数と同じように増減できるようにしました。
 - 各ボタンや入力欄にホバー説明を追加し、操作できない状態では理由を表示するようにしました。
+- 英語 UI では英語版マニュアルと英語スクリーンショットを表示するようにしました。
 
 ### en
 
@@ -28,6 +19,7 @@ This file is also used as the source for the in-app announcement modal.
 - Expanded the face list documentation with screenshots for h/k/l, coefficients, visibility toggles, and adding faces or crystals.
 - Added always-visible up/down controls to the face list h/k/l fields so they can be adjusted like the coefficient field.
 - Added hover help for buttons and input fields, including reasons when an operation is unavailable.
+- Added an English user manual and English screenshots for the English UI.
 
 ## 2026-04-27 / v0.1.2
 
