@@ -33,6 +33,7 @@ import {
   createDefaultTwinAxisRule,
   createDefaultTwinParameters,
 } from "../domain/parameters.js";
+import { getTwinAxisOffsetAmount } from "../domain/penetrationOffsets.js";
 import type { TwinStlSplitSettings } from "../state/stlSplitSettings.js";
 import { applySettingsPanelViewModel } from "./settingsPanel.js";
 import {
@@ -159,6 +160,7 @@ export function createPageUiActions(context: PageUiActionContext) {
         .contactReferenceAxisSelect as HTMLSelectElement,
       rotationAngleInput: context.elements
         .rotationAngleInput as HTMLInputElement,
+      axisOffsetInput: context.elements.axisOffsetInput as HTMLInputElement,
     };
   }
 
@@ -569,6 +571,8 @@ export function createPageUiActions(context: PageUiActionContext) {
       rule,
       typedElements.rotationAngleInput,
       activeCrystal?.rotationAngleDeg ?? 60,
+      typedElements.axisOffsetInput,
+      getTwinAxisOffsetAmount(activeCrystal),
     );
     applyTwinPreviewToggleValues(context.elements, {
       faceDisplayMode: context.state.faceDisplayMode,

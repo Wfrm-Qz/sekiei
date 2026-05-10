@@ -84,6 +84,17 @@ function resolveCrystalSourceIndex(
   return fallbackIndex;
 }
 
+/** 保存案の揺れを吸収し、正式な `offsets` 配列を優先して読む。 */
+function readRawTwinOffsets(raw: Record<string, unknown> | null | undefined) {
+  if (Array.isArray(raw?.offsets)) {
+    return raw.offsets;
+  }
+  if (Array.isArray(raw?.offset)) {
+    return raw.offset;
+  }
+  return undefined;
+}
+
 /** 新 schema document を旧互換 shape へ落とす。 */
 export function convertTwinDocumentV2ToLegacyShape(
   raw: Record<string, unknown>,
@@ -96,6 +107,8 @@ export function convertTwinDocumentV2ToLegacyShape(
       ? crystalRecord.placement
       : null;
     const rule = isPlainRecord(placement?.rule) ? placement.rule : null;
+    const offsets =
+      readRawTwinOffsets(placement) ?? readRawTwinOffsets(crystalRecord) ?? [];
     const resolvedTwinType =
       placement?.type === "contact" || placement?.type === "penetration"
         ? placement.type
@@ -125,6 +138,7 @@ export function convertTwinDocumentV2ToLegacyShape(
       axis: rule?.axis ?? crystalRecord.axis,
       rotationAngleDeg:
         rule?.rotationAngleDeg ?? crystalRecord.rotationAngleDeg ?? 60,
+      offsets,
       contact: crystalRecord.contact,
       faces: crystalRecord.faces,
     };
@@ -155,6 +169,42 @@ export function convertTwinDocumentV2ToLegacyShape(
       crystals: normalizedCrystals,
     },
   };
+}
+
+/** 貫入双晶の offset 配列を検証する。MVP では axis offset だけを許可する。 */
+function validateTwinOffsetShape(rawOffsets: unknown, path: string) {
+  if (rawOffsets == null) {
+    return;
+  }
+  if (!Array.isArray(rawOffsets)) {
+    throw createTwinImportError(`${path} は配列である必要があります。`);
+  }
+  rawOffsets.forEach((rawOffset, index) => {
+    const offsetPath = `${path}[${index}]`;
+    if (!isPlainRecord(rawOffset)) {
+      throw createTwinImportError(
+        `${offsetPath} は object である必要があります。`,
+      );
+    }
+    if (rawOffset.kind != null && rawOffset.kind !== "axis") {
+      throw createTwinImportError(`${offsetPath}.kind が不正です。`);
+    }
+    if (rawOffset.basis != null && rawOffset.basis !== "twin-axis") {
+      throw createTwinImportError(`${offsetPath}.basis が不正です。`);
+    }
+    if (rawOffset.unit != null && rawOffset.unit !== "axis-plane-intercept") {
+      throw createTwinImportError(`${offsetPath}.unit が不正です。`);
+    }
+    if (
+      rawOffset.amount != null &&
+      (typeof rawOffset.amount !== "number" ||
+        !Number.isFinite(rawOffset.amount))
+    ) {
+      throw createTwinImportError(
+        `${offsetPath}.amount は有限な数値である必要があります。`,
+      );
+    }
+  });
 }
 
 /** 結晶 1 件分の twin 設定 JSON を検証する。 */
@@ -217,6 +267,8 @@ function validateTwinCrystalShape(
       );
     }
   }
+  validateTwinOffsetShape(rawCrystal.offsets, `${path}.offsets`);
+  validateTwinOffsetShape(rawCrystal.offset, `${path}.offset`);
   if (rawCrystal.contact != null) {
     if (!isPlainRecord(rawCrystal.contact)) {
       throw createTwinImportError(
@@ -284,6 +336,14 @@ function validateTwinCrystalShape(
         }
       }
     }
+    validateTwinOffsetShape(
+      rawCrystal.placement.offsets,
+      `${path}.placement.offsets`,
+    );
+    validateTwinOffsetShape(
+      rawCrystal.placement.offset,
+      `${path}.placement.offset`,
+    );
   }
   if (rawCrystal.faces != null) {
     validateParameterImportShape({

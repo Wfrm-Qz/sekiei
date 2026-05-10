@@ -9,8 +9,8 @@
       content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; font-src 'self' data:; connect-src 'self' ws: wss:; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
     />
     <title data-i18n="app.pageTitle">Sekiei</title>
-    <link rel="stylesheet" href="./styles.css?v=20260427-manualmodal" />
-    <link rel="stylesheet" href="./app-ui.css?v=20260427-manualmodal" />
+    <link rel="stylesheet" href="./styles.css?v=20260510-axisoffset" />
+    <link rel="stylesheet" href="./app-ui.css?v=20260510-axisoffset" />
   </head>
   <body class="page-root">
     <!-- キーボード利用時にプレビュー領域を飛ばして main へ入るための導線。 -->
@@ -658,7 +658,7 @@
             </div>
           </div>
 
-          <!-- 双晶パラメーター: 生成元結晶 / 双晶タイプ / 双晶面指数 / 回転角 / 基準方向 -->
+          <!-- 双晶パラメーター: 生成元結晶 / 双晶タイプ / 双晶面指数 / 回転角 / 軸方向オフセット / 基準方向 -->
           <div
             id="twin-settings-card"
             class="section-card"
@@ -736,6 +736,14 @@
                     id="twin-rotation-angle-input"
                     type="number"
                     step="0.1"
+                  />
+                </label>
+                <label class="field">
+                  <span data-i18n="twin.axisOffset">軸方向オフセット</span>
+                  <input
+                    id="twin-axis-offset-input"
+                    type="number"
+                    step="0.01"
                   />
                 </label>
               </div>
@@ -2322,6 +2330,6 @@
       </section>
     </div>
 
-    <script type="module" src="./src/main.ts?v=20260427-manualmodal"></script>
+    <script type="module" src="./src/main.ts?v=20260510-axisoffset"></script>
   </body>
 </html>
