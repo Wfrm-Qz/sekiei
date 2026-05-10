@@ -229,7 +229,7 @@ describe("ui/formUi", () => {
     expect(context.state.presetQuery).toBe("Custom");
   });
 
-  it("applyTwinPreset は text preset 適用時も現 crystal 数を維持しつつ preset face text を各 crystal へ配る", () => {
+  it("applyTwinPreset は単結晶 preset 適用時に既存の双晶状態を引き継がない", () => {
     const context = createContext();
     const actions = createPageUiActions(context);
     const preset = {
@@ -286,14 +286,11 @@ describe("ui/formUi", () => {
       id: "derived-2",
       from: 1,
     });
-    const crystalCountBeforeApply =
-      context.state.parameters.twin.crystals.length;
 
     actions.applyTwinPreset(preset);
 
-    expect(context.state.parameters.twin.crystals).toHaveLength(
-      crystalCountBeforeApply,
-    );
+    expect(context.state.parameters.twin.enabled).toBe(false);
+    expect(context.state.parameters.twin.crystals).toHaveLength(1);
     expect(context.state.parameters.presetId).toBe("text-preset");
     expect(context.state.activeFaceCrystalIndex).toBe(0);
     expect(context.state.pendingPreviewRefit).toBe(true);
@@ -303,8 +300,8 @@ describe("ui/formUi", () => {
       plane: { h: 3, k: 2, l: 1 },
     });
     expect(
-      context.state.parameters.twin.crystals.every((crystal) =>
-        crystal.faces.some((face) => String(face.text?.content ?? "") === "A"),
+      context.state.parameters.twin.crystals[0]?.faces.some(
+        (face) => String(face.text?.content ?? "") === "A",
       ),
     ).toBe(true);
   });
