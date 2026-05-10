@@ -277,8 +277,8 @@ export function createPageUiActions(context: PageUiActionContext) {
   /**
    * preset を state へ反映し、フォームと preview を同期する。
    *
-   * twin block を持つ preset は定義をそのまま使い、持たない preset は現在の twin 状態を
-   * 温存したまま結晶データだけを取り込む。
+   * preset の結晶構成をそのまま使う。単結晶 preset は既存の双晶状態を解除し、
+   * twin 定義を持つ preset だけが双晶として反映される。
    */
   function applyTwinPreset(
     preset: NonNullable<ReturnType<typeof getPresetById>>,

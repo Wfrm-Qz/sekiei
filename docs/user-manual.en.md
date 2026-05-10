@@ -148,6 +148,7 @@ Presets are starting values. You can freely edit them after selection.
 Use the preset search field near the top of the screen to choose common shapes.
 
 - Selecting a preset fills in the crystal system, axis ratios, interaxial angles, face list, and related values
+- A single-crystal preset resets the model to one crystal, while a twin preset loads its twin structure
 - Display mode and visibility toggles keep their current settings after selecting a preset
 - You can edit every value after selecting a preset
 

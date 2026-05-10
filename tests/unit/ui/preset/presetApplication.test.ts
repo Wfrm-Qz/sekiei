@@ -33,7 +33,7 @@ describe("ui/preset/presetApplication", () => {
     expect(shouldApplyPresetPreviewSettings()).toBe(false);
   });
 
-  it("twin block を持たない preset は現在の crystal 数を保ったまま face を配る", () => {
+  it("単結晶 preset は現在の双晶状態を引き継がず、preset の結晶構成へ戻す", () => {
     const state = createState();
     const onAfterApply = vi.fn();
     const onAfterSync = vi.fn();
@@ -73,17 +73,44 @@ describe("ui/preset/presetApplication", () => {
       onAfterSync,
     });
 
-    expect(state.parameters.twin.crystals).toHaveLength(3);
+    expect(state.parameters.twin.enabled).toBe(false);
+    expect(state.parameters.twin.crystals).toHaveLength(1);
     expect(state.parameters.presetId).toBe("text-preset");
     expect(
-      state.parameters.twin.crystals.every((crystal) =>
-        crystal.faces.some((face) => String(face.text?.content ?? "") === "A"),
+      state.parameters.twin.crystals[0]?.faces.some(
+        (face) => String(face.text?.content ?? "") === "A",
       ),
     ).toBe(true);
     expect(state.activeFaceCrystalIndex).toBe(0);
     expect(state.pendingPreviewRefit).toBe(true);
     expect(onAfterApply).toHaveBeenCalledTimes(1);
     expect(onAfterSync).toHaveBeenCalledTimes(1);
+  });
+
+  it("twin 定義を持つ preset は双晶として適用する", () => {
+    const state = createState();
+    const twinPresetParameters = createDefaultTwinParameters();
+    twinPresetParameters.twin.enabled = true;
+    twinPresetParameters.twin.crystals.push({
+      ...structuredClone(twinPresetParameters.twin.crystals[0]),
+      id: "preset-derived",
+      from: 0,
+    });
+
+    applyTwinPresetToState({
+      state,
+      preset: {
+        id: "twin-preset",
+        parameters: twinPresetParameters,
+      },
+      onAfterApply: vi.fn(),
+      onAfterSync: vi.fn(),
+    });
+
+    expect(state.parameters.twin.enabled).toBe(true);
+    expect(state.parameters.twin.crystals).toHaveLength(2);
+    expect(state.parameters.twin.crystals[1]?.id).toBe("preset-derived");
+    expect(state.parameters.presetId).toBe("twin-preset");
   });
 
   it("preview 付き preset も、明示的に許可した時だけ preview 設定を適用する", () => {
