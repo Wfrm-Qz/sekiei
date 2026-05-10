@@ -83,13 +83,18 @@ describe("ui/page/announcementModal", () => {
 
   it("旧形式の id 保存でも未更新なら既読扱いにする", () => {
     const latestAnnouncement = getLatestAnnouncement();
+    if (!latestAnnouncement) {
+      throw new Error("latest announcement is required for this test");
+    }
+    const unchangedAnnouncement = {
+      ...latestAnnouncement,
+      updatedAt:
+        latestAnnouncement.history[0]?.date ?? latestAnnouncement.updatedAt,
+    };
 
-    localStorage.setItem(
-      ANNOUNCEMENT_STORAGE_KEY,
-      latestAnnouncement?.id ?? "missing",
-    );
+    localStorage.setItem(ANNOUNCEMENT_STORAGE_KEY, unchangedAnnouncement.id);
 
-    expect(shouldShowAnnouncement(latestAnnouncement, localStorage)).toBe(
+    expect(shouldShowAnnouncement(unchangedAnnouncement, localStorage)).toBe(
       false,
     );
   });
