@@ -187,6 +187,7 @@ describe("domain/builder", () => {
   it("貫入双晶の軸方向 offset は距離1面までの距離を 1 として線形に移動する", () => {
     const parameters = normalizeTwinParameters({
       ...createDefaultTwinParameters(),
+      sizeMm: 1,
       twin: {
         ...createDefaultTwinParameters().twin,
         enabled: true,
