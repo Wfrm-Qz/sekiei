@@ -8,7 +8,10 @@ import { createDefaultTwinStlSplitSettings } from "../../../src/state/stlSplitSe
  * preview/previewScene の scene graph 構築入口を確認する unit test。
  */
 describe("preview/previewScene", () => {
-  function createContext(overrides: Record<string, unknown> = {}) {
+  function createContext(
+    overrides: Record<string, unknown> = {},
+    contextOverrides: Record<string, unknown> = {},
+  ) {
     const state = {
       parameters: {
         crystalSystem: "cubic",
@@ -73,6 +76,7 @@ describe("preview/previewScene", () => {
       buildFaceCenter: () => new THREE.Vector3(),
       buildAxisInnerSegment: () => null,
       buildAxisOuterSegments: () => [],
+      ...contextOverrides,
     });
   }
 
@@ -139,6 +143,95 @@ describe("preview/previewScene", () => {
 
     expect(actions.buildPreviewGroup()).toBeInstanceOf(THREE.Group);
     expect(createContext().buildPreviewGroup()).toBeNull();
+  });
+
+  it("貫入双晶の双晶軸ガイドは結晶1の軸ガイド中心を通る", () => {
+    const createWideLineFromPoints = vi.fn(() => new THREE.Group());
+    const actions = createContext(
+      {
+        parameters: {
+          crystalSystem: "cubic",
+          axes: { a: 1, b: 1, c: 1 },
+          angles: { alpha: 90, beta: 90, gamma: 90 },
+          twin: {
+            enabled: true,
+            crystals: [
+              { enabled: true },
+              {
+                enabled: true,
+                twinType: "penetration",
+                axis: { h: 1, k: 0, l: 0 },
+              },
+            ],
+          },
+        },
+        activeFaceCrystalIndex: 1,
+        buildResult: {
+          crystalPreviewMeshData: [
+            {
+              vertices: [
+                { x: 0, y: 0, z: 0 },
+                { x: 2, y: 4, z: 6 },
+              ],
+              faces: [
+                {
+                  id: "face-1",
+                  normal: { x: 0, y: 0, z: 1 },
+                  vertices: [
+                    { x: 0, y: 0, z: 0 },
+                    { x: 2, y: 0, z: 0 },
+                    { x: 0, y: 4, z: 0 },
+                  ],
+                },
+              ],
+              axisGuides: [
+                {
+                  label: "a",
+                  start: { x: -5, y: 2, z: 3 },
+                  end: { x: 7, y: 2, z: 3 },
+                },
+                {
+                  label: "b",
+                  start: { x: 1, y: -4, z: 3 },
+                  end: { x: 1, y: 8, z: 3 },
+                },
+                {
+                  label: "c",
+                  start: { x: 1, y: 2, z: -3 },
+                  end: { x: 1, y: 2, z: 9 },
+                },
+              ],
+            },
+            {
+              vertices: [
+                { x: 20, y: 0, z: 0 },
+                { x: 22, y: 4, z: 6 },
+              ],
+              faces: [
+                {
+                  id: "face-2",
+                  normal: { x: 0, y: 0, z: 1 },
+                  vertices: [
+                    { x: 20, y: 0, z: 0 },
+                    { x: 22, y: 0, z: 0 },
+                    { x: 20, y: 4, z: 0 },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      },
+      { createWideLineFromPoints },
+    );
+    actions.buildPreviewGroup();
+
+    const [points] = createWideLineFromPoints.mock.calls[0];
+    const midpoint = points[0].clone().add(points[1]).multiplyScalar(0.5);
+
+    expect(midpoint.x).toBeCloseTo(1);
+    expect(midpoint.y).toBeCloseTo(2);
+    expect(midpoint.z).toBeCloseTo(3);
   });
 
   it("transparent では line depth mask を scene graph に積む", () => {

@@ -221,7 +221,116 @@ describe("domain/builder", () => {
 
     expect(derivedX - baseX).toBeCloseTo(1);
   });
+
+  it("貫入双晶の派生結晶軸中心は生成元結晶の双晶軸上へ補正する", () => {
+    const parameters = normalizeTwinParameters({
+      ...createDefaultTwinParameters(),
+      sizeMm: 1,
+      twin: {
+        ...createDefaultTwinParameters().twin,
+        enabled: true,
+      },
+    });
+    parameters.twin.crystals[1].axis = {
+      ...parameters.twin.crystals[1].axis,
+      h: 1,
+      k: 0,
+      l: 0,
+    };
+    parameters.twin.crystals[1].rotationAngleDeg = 0;
+    parameters.twin.crystals[1].offsets = [];
+
+    buildCrystalMeshDataMock
+      .mockImplementationOnce(() => ({
+        geometry: createMockMeshDataWithAxisCenter(new THREE.Vector3(0, 0, 0)),
+        validation: { errors: [], warnings: [] },
+        metrics: { vertexCount: 3, faceCount: 1, maxDimensionMm: 1 },
+      }))
+      .mockImplementationOnce(() => ({
+        geometry: createMockMeshDataWithAxisCenter(new THREE.Vector3(0, 2, 3)),
+        validation: { errors: [], warnings: [] },
+        metrics: { vertexCount: 3, faceCount: 1, maxDimensionMm: 1 },
+      }));
+
+    const result = buildTwinMeshData(parameters);
+    const baseCenter = resultAxisGuideCenter(
+      result.crystalPreviewMeshData?.[0],
+    );
+    const derivedCenter = resultAxisGuideCenter(
+      result.crystalPreviewMeshData?.[1],
+    );
+
+    expect(baseCenter).not.toBeNull();
+    expect(derivedCenter).not.toBeNull();
+    expect(derivedCenter!.y - baseCenter!.y).toBeCloseTo(0);
+    expect(derivedCenter!.z - baseCenter!.z).toBeCloseTo(0);
+  });
 });
+
+function createMockMeshDataWithAxisCenter(center: THREE.Vector3) {
+  return {
+    positions: [0, 0, 0, 1, 0, 0, 0, 1, 0],
+    vertices: [
+      { x: 0, y: 0, z: 0 },
+      { x: 1, y: 0, z: 0 },
+      { x: 0, y: 1, z: 0 },
+    ],
+    faces: [
+      {
+        id: "face-1",
+        normal: { x: 0, y: 0, z: 1 },
+        vertices: [
+          { x: 0, y: 0, z: 0 },
+          { x: 1, y: 0, z: 0 },
+          { x: 0, y: 1, z: 0 },
+        ],
+      },
+    ],
+    axisGuides: [
+      {
+        label: "a",
+        start: { x: center.x - 1, y: center.y, z: center.z },
+        end: { x: center.x + 1, y: center.y, z: center.z },
+      },
+      {
+        label: "b",
+        start: { x: center.x, y: center.y - 1, z: center.z },
+        end: { x: center.x, y: center.y + 1, z: center.z },
+      },
+      {
+        label: "c",
+        start: { x: center.x, y: center.y, z: center.z - 1 },
+        end: { x: center.x, y: center.y, z: center.z + 1 },
+      },
+    ],
+    faceVertexCounts: [{ id: "face-1", vertexCount: 3 }],
+  };
+}
+
+function resultAxisGuideCenter(
+  meshData:
+    | {
+        axisGuides?: {
+          start: { x: number; y: number; z: number };
+          end: { x: number; y: number; z: number };
+        }[];
+      }
+    | null
+    | undefined,
+) {
+  const axisGuides = meshData?.axisGuides ?? [];
+  if (axisGuides.length === 0) {
+    return null;
+  }
+  const sum = axisGuides.reduce((accumulator, axis) => {
+    return accumulator.add(
+      new THREE.Vector3(axis.start.x, axis.start.y, axis.start.z)
+        .add(new THREE.Vector3(axis.end.x, axis.end.y, axis.end.z))
+        .multiplyScalar(0.5),
+    );
+  }, new THREE.Vector3());
+  return sum.divideScalar(axisGuides.length);
+}
 
 function resultFaceVertexCount(
   crystalPreviewMeshData:

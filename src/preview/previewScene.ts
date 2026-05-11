@@ -60,6 +60,8 @@ interface PreviewFaceLike {
 interface PreviewAxisGuideLike {
   label?: string;
   color?: number | string;
+  start?: PreviewVertexLike;
+  end?: PreviewVertexLike;
 }
 
 interface PreviewMeshDataLike {
@@ -101,6 +103,40 @@ interface PreviewParametersLike {
 interface PreviewDomAnchorLike {
   element: HTMLElement;
   [key: string]: unknown;
+}
+
+function vectorFromPreviewVertex(vertex: PreviewVertexLike): THREE.Vector3 {
+  return new THREE.Vector3(vertex.x, vertex.y, vertex.z);
+}
+
+/**
+ * 軸ガイドの中点群から、結晶軸が交わる中心を推定する。
+ *
+ * 貫入双晶の双晶軸表示は geometry 全体の原点ではなく、結晶1の軸中心を
+ * 通す必要がある。offset や和集合後の centering が入ると両者はズレる。
+ */
+function buildAxisGuideCenter(
+  axisGuides: PreviewAxisGuideLike[] | undefined,
+): THREE.Vector3 | null {
+  if (!Array.isArray(axisGuides) || axisGuides.length === 0) {
+    return null;
+  }
+
+  const midpointSum = new THREE.Vector3();
+  let midpointCount = 0;
+  for (const axis of axisGuides) {
+    if (!axis.start || !axis.end) {
+      continue;
+    }
+    midpointSum.add(
+      vectorFromPreviewVertex(axis.start)
+        .add(vectorFromPreviewVertex(axis.end))
+        .multiplyScalar(0.5),
+    );
+    midpointCount += 1;
+  }
+
+  return midpointCount > 0 ? midpointSum.divideScalar(midpointCount) : null;
 }
 
 /** preview scene builder が参照する最小限の state。 */
@@ -421,14 +457,23 @@ export function createTwinPreviewSceneActions(
       return { group, labelAnchors };
     }
     const ruleType = twinRuleTypeForTwinType(guideCrystal.twinType);
+    const parentIndex = Math.max(
+      0,
+      Math.min(Number(guideCrystal.from ?? 0), guideCrystalIndex - 1),
+    );
 
     if (ruleType === "axis") {
       const axis = twinAxisDirection(guideCrystal.axis, parameters);
       if (Number.isFinite(axis.lengthSq()) && axis.lengthSq() > 0) {
         const direction = axis.clone().normalize();
         const length = radius * 2.0;
-        const start = direction.clone().multiplyScalar(-length * 0.5);
-        const end = direction.clone().multiplyScalar(length * 0.5);
+        const center =
+          buildAxisGuideCenter(
+            context.state.buildResult?.crystalPreviewMeshData?.[parentIndex]
+              ?.axisGuides,
+          ) ?? new THREE.Vector3();
+        const start = center.clone().addScaledVector(direction, -length * 0.5);
+        const end = center.clone().addScaledVector(direction, length * 0.5);
         const line = context.createWideLineFromPoints(
           [start, end],
           context.state.previewStyleSettings.twinRuleLabel.color,
@@ -468,10 +513,6 @@ export function createTwinPreviewSceneActions(
       return { group, labelAnchors };
     }
 
-    const parentIndex = Math.max(
-      0,
-      Math.min(Number(guideCrystal.from ?? 0), guideCrystalIndex - 1),
-    );
     const parentContactFace =
       context.state.buildResult?.crystalPreviewMeshData?.[
         parentIndex
