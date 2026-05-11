@@ -11,6 +11,7 @@ This file is also used as the source for the in-app announcement modal.
 - 双晶を編集中に単結晶プリセットを読み込んだ場合、既存の双晶状態を引き継がず単結晶として読み込むようにしました。
 - 貫入双晶で、派生結晶を双晶軸方向へずらす `軸方向オフセット` を指定できるようにしました。
 - 面位置の入力を `係数` から `距離` に変更し、旧 `coefficient` JSON は読み込み時に互換変換するようにしました。
+- 貫入双晶の双晶軸ガイドが、結晶軸の中心を通るように修正しました。
 - UIを調整しました。
 
 ### en
@@ -19,6 +20,7 @@ This file is also used as the source for the in-app announcement modal.
 - When loading a single-crystal preset while editing a twin, the preset now loads as a single crystal instead of inheriting the current twin state.
 - Added `Axis Offset` for penetration twins so the derived crystal can be moved along the twin axis.
 - Changed face position input from `Coefficient` to `Distance`, while still converting legacy `coefficient` JSON on import.
+- Fixed the penetration-twin axis guide so it passes through the center of the crystal axes.
 - Adjusted the UI.
 
 ## 2026-04-27 / v0.1.3
