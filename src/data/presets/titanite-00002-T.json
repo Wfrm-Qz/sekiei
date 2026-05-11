@@ -36,7 +36,7 @@
             "h": 0,
             "k": 0,
             "l": 1,
-            "distance": 0.833333333333,
+            "distance": 0.833,
             "enabled": true,
             "text": {
               "content": "",
@@ -53,7 +53,7 @@
             "h": 0,
             "k": 0,
             "l": -1,
-            "distance": 0.833333333333,
+            "distance": 0.833,
             "enabled": false,
             "text": {
               "content": "",
@@ -70,7 +70,7 @@
             "h": 0,
             "k": 1,
             "l": 0,
-            "distance": 0.769230769231,
+            "distance": 0.769,
             "enabled": true,
             "text": {
               "content": "",
@@ -87,7 +87,7 @@
             "h": 0,
             "k": -1,
             "l": 0,
-            "distance": 0.769230769231,
+            "distance": 0.769,
             "enabled": true,
             "text": {
               "content": "",
@@ -104,7 +104,7 @@
             "h": 1,
             "k": 1,
             "l": 0,
-            "distance": 0.769230769231,
+            "distance": 0.769,
             "enabled": true,
             "text": {
               "content": "",
@@ -138,7 +138,7 @@
             "h": 1,
             "k": -1,
             "l": 0,
-            "distance": 0.769230769231,
+            "distance": 0.769,
             "enabled": true,
             "text": {
               "content": "",
@@ -240,7 +240,7 @@
             "h": -1,
             "k": 1,
             "l": 2,
-            "distance": 2.272727272727,
+            "distance": 2.273,
             "enabled": false,
             "text": {
               "content": "",
@@ -257,7 +257,7 @@
             "h": 1,
             "k": 1,
             "l": -2,
-            "distance": 2.272727272727,
+            "distance": 2.273,
             "enabled": true,
             "text": {
               "content": "",
@@ -274,7 +274,7 @@
             "h": -1,
             "k": -1,
             "l": 2,
-            "distance": 2.272727272727,
+            "distance": 2.273,
             "enabled": false,
             "text": {
               "content": "",
@@ -291,7 +291,7 @@
             "h": 1,
             "k": -1,
             "l": -2,
-            "distance": 2.272727272727,
+            "distance": 2.273,
             "enabled": true,
             "text": {
               "content": "",
@@ -308,7 +308,7 @@
             "h": -1,
             "k": 1,
             "l": 1,
-            "distance": 1.408450704225,
+            "distance": 1.408,
             "enabled": false,
             "text": {
               "content": "",
@@ -325,7 +325,7 @@
             "h": 1,
             "k": 1,
             "l": -1,
-            "distance": 1.369863013699,
+            "distance": 1.37,
             "enabled": true,
             "text": {
               "content": "",
@@ -342,7 +342,7 @@
             "h": -1,
             "k": -1,
             "l": 1,
-            "distance": 1.408450704225,
+            "distance": 1.408,
             "enabled": false,
             "text": {
               "content": "",
@@ -359,7 +359,7 @@
             "h": 1,
             "k": -1,
             "l": -1,
-            "distance": 1.369863013699,
+            "distance": 1.37,
             "enabled": true,
             "text": {
               "content": "",
@@ -376,7 +376,7 @@
             "h": -2,
             "k": 2,
             "l": 1,
-            "distance": 2.083333333333,
+            "distance": 2.083,
             "enabled": false,
             "text": {
               "content": "",
@@ -393,7 +393,7 @@
             "h": 2,
             "k": 2,
             "l": -1,
-            "distance": 2.083333333333,
+            "distance": 2.083,
             "enabled": true,
             "text": {
               "content": "",
@@ -410,7 +410,7 @@
             "h": -2,
             "k": -2,
             "l": 1,
-            "distance": 2.083333333333,
+            "distance": 2.083,
             "enabled": false,
             "text": {
               "content": "",
@@ -427,7 +427,7 @@
             "h": 2,
             "k": -2,
             "l": -1,
-            "distance": 2.083333333333,
+            "distance": 2.083,
             "enabled": true,
             "text": {
               "content": "",
@@ -444,7 +444,7 @@
             "h": 1,
             "k": 0,
             "l": 0,
-            "distance": 0.416666666667,
+            "distance": 0.417,
             "enabled": false,
             "text": {
               "content": "",
@@ -501,7 +501,7 @@
             "h": 0,
             "k": 0,
             "l": 1,
-            "distance": 0.833333333333,
+            "distance": 0.833,
             "enabled": true,
             "text": {
               "content": "",
@@ -518,7 +518,7 @@
             "h": 0,
             "k": 0,
             "l": -1,
-            "distance": 0.833333333333,
+            "distance": 0.833,
             "enabled": false,
             "text": {
               "content": "",
@@ -535,7 +535,7 @@
             "h": 0,
             "k": 1,
             "l": 0,
-            "distance": 0.769230769231,
+            "distance": 0.769,
             "enabled": true,
             "text": {
               "content": "",
@@ -552,7 +552,7 @@
             "h": 0,
             "k": -1,
             "l": 0,
-            "distance": 0.769230769231,
+            "distance": 0.769,
             "enabled": true,
             "text": {
               "content": "",
@@ -569,7 +569,7 @@
             "h": 1,
             "k": 1,
             "l": 0,
-            "distance": 0.769230769231,
+            "distance": 0.769,
             "enabled": true,
             "text": {
               "content": "",
@@ -603,7 +603,7 @@
             "h": 1,
             "k": -1,
             "l": 0,
-            "distance": 0.769230769231,
+            "distance": 0.769,
             "enabled": true,
             "text": {
               "content": "",
@@ -705,7 +705,7 @@
             "h": -1,
             "k": 1,
             "l": 2,
-            "distance": 2.272727272727,
+            "distance": 2.273,
             "enabled": false,
             "text": {
               "content": "",
@@ -722,7 +722,7 @@
             "h": 1,
             "k": 1,
             "l": -2,
-            "distance": 2.272727272727,
+            "distance": 2.273,
             "enabled": true,
             "text": {
               "content": "",
@@ -739,7 +739,7 @@
             "h": -1,
             "k": -1,
             "l": 2,
-            "distance": 2.272727272727,
+            "distance": 2.273,
             "enabled": false,
             "text": {
               "content": "",
@@ -756,7 +756,7 @@
             "h": 1,
             "k": -1,
             "l": -2,
-            "distance": 2.272727272727,
+            "distance": 2.273,
             "enabled": true,
             "text": {
               "content": "",
@@ -773,7 +773,7 @@
             "h": -1,
             "k": 1,
             "l": 1,
-            "distance": 1.408450704225,
+            "distance": 1.408,
             "enabled": false,
             "text": {
               "content": "",
@@ -790,7 +790,7 @@
             "h": 1,
             "k": 1,
             "l": -1,
-            "distance": 1.369863013699,
+            "distance": 1.37,
             "enabled": true,
             "text": {
               "content": "",
@@ -807,7 +807,7 @@
             "h": -1,
             "k": -1,
             "l": 1,
-            "distance": 1.408450704225,
+            "distance": 1.408,
             "enabled": false,
             "text": {
               "content": "",
@@ -824,7 +824,7 @@
             "h": 1,
             "k": -1,
             "l": -1,
-            "distance": 1.369863013699,
+            "distance": 1.37,
             "enabled": true,
             "text": {
               "content": "",
@@ -841,7 +841,7 @@
             "h": -2,
             "k": 2,
             "l": 1,
-            "distance": 2.083333333333,
+            "distance": 2.083,
             "enabled": false,
             "text": {
               "content": "",
@@ -858,7 +858,7 @@
             "h": 2,
             "k": 2,
             "l": -1,
-            "distance": 2.083333333333,
+            "distance": 2.083,
             "enabled": true,
             "text": {
               "content": "",
@@ -875,7 +875,7 @@
             "h": -2,
             "k": -2,
             "l": 1,
-            "distance": 2.083333333333,
+            "distance": 2.083,
             "enabled": false,
             "text": {
               "content": "",
@@ -892,7 +892,7 @@
             "h": 2,
             "k": -2,
             "l": -1,
-            "distance": 2.083333333333,
+            "distance": 2.083,
             "enabled": true,
             "text": {
               "content": "",
@@ -909,7 +909,7 @@
             "h": 1,
             "k": 0,
             "l": 0,
-            "distance": 0.416666666667,
+            "distance": 0.417,
             "enabled": false,
             "text": {
               "content": "",

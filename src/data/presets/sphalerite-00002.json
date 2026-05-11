@@ -100,7 +100,7 @@
             "h": 1,
             "k": 0,
             "l": 0,
-            "distance": 0.540540540541,
+            "distance": 0.541,
             "enabled": true
           },
           {
@@ -140,7 +140,7 @@
             "h": -7,
             "k": -2,
             "l": 2,
-            "distance": 4.347826086957,
+            "distance": 4.348,
             "enabled": true
           },
           {
@@ -148,7 +148,7 @@
             "h": -7,
             "k": 2,
             "l": -2,
-            "distance": 4.347826086957,
+            "distance": 4.348,
             "enabled": true
           },
           {
@@ -156,7 +156,7 @@
             "h": 7,
             "k": -2,
             "l": -2,
-            "distance": 4.347826086957,
+            "distance": 4.348,
             "enabled": true
           },
           {
@@ -164,7 +164,7 @@
             "h": 7,
             "k": 2,
             "l": 2,
-            "distance": 4.347826086957,
+            "distance": 4.348,
             "enabled": true
           },
           {
@@ -172,7 +172,7 @@
             "h": 2,
             "k": -7,
             "l": -2,
-            "distance": 4.347826086957,
+            "distance": 4.348,
             "enabled": true
           },
           {
@@ -180,7 +180,7 @@
             "h": 2,
             "k": 7,
             "l": 2,
-            "distance": 4.347826086957,
+            "distance": 4.348,
             "enabled": true
           },
           {
@@ -188,7 +188,7 @@
             "h": -2,
             "k": -7,
             "l": 2,
-            "distance": 4.347826086957,
+            "distance": 4.348,
             "enabled": true
           },
           {
@@ -196,7 +196,7 @@
             "h": -2,
             "k": 7,
             "l": -2,
-            "distance": 4.347826086957,
+            "distance": 4.348,
             "enabled": true
           },
           {
@@ -268,7 +268,7 @@
             "h": -2,
             "k": 2,
             "l": -7,
-            "distance": 4.347826086957,
+            "distance": 4.348,
             "enabled": true
           },
           {
@@ -276,7 +276,7 @@
             "h": -2,
             "k": -2,
             "l": 7,
-            "distance": 4.347826086957,
+            "distance": 4.348,
             "enabled": true
           },
           {
@@ -284,7 +284,7 @@
             "h": 2,
             "k": 2,
             "l": 7,
-            "distance": 4.347826086957,
+            "distance": 4.348,
             "enabled": true
           },
           {
@@ -292,7 +292,7 @@
             "h": 2,
             "k": -2,
             "l": -7,
-            "distance": 4.347826086957,
+            "distance": 4.348,
             "enabled": true
           },
           {
@@ -300,7 +300,7 @@
             "h": -1,
             "k": 0,
             "l": 0,
-            "distance": 0.540540540541,
+            "distance": 0.541,
             "enabled": true
           },
           {
@@ -308,7 +308,7 @@
             "h": 0,
             "k": -1,
             "l": 0,
-            "distance": 0.540540540541,
+            "distance": 0.541,
             "enabled": true
           },
           {
@@ -316,7 +316,7 @@
             "h": 0,
             "k": 1,
             "l": 0,
-            "distance": 0.540540540541,
+            "distance": 0.541,
             "enabled": true
           },
           {
@@ -324,7 +324,7 @@
             "h": 0,
             "k": 0,
             "l": 1,
-            "distance": 0.540540540541,
+            "distance": 0.541,
             "enabled": true
           },
           {
@@ -332,7 +332,7 @@
             "h": 0,
             "k": 0,
             "l": -1,
-            "distance": 0.540540540541,
+            "distance": 0.541,
             "enabled": true
           }
         ]

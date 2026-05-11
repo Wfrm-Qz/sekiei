@@ -144,7 +144,7 @@
             "h": 0,
             "k": 2,
             "l": 1,
-            "distance": 3.448275862069,
+            "distance": 3.448,
             "enabled": true,
             "text": {
               "content": "",
@@ -162,7 +162,7 @@
             "h": -2,
             "k": 0,
             "l": 1,
-            "distance": 3.448275862069,
+            "distance": 3.448,
             "enabled": true,
             "text": {
               "content": "",
@@ -180,7 +180,7 @@
             "h": 2,
             "k": -2,
             "l": 1,
-            "distance": 3.448275862069,
+            "distance": 3.448,
             "enabled": true,
             "text": {
               "content": "",
@@ -198,7 +198,7 @@
             "h": 0,
             "k": -2,
             "l": -1,
-            "distance": 3.448275862069,
+            "distance": 3.448,
             "enabled": true,
             "text": {
               "content": "",
@@ -216,7 +216,7 @@
             "h": 2,
             "k": 0,
             "l": -1,
-            "distance": 3.448275862069,
+            "distance": 3.448,
             "enabled": true,
             "text": {
               "content": "",
@@ -234,7 +234,7 @@
             "h": -2,
             "k": 2,
             "l": -1,
-            "distance": 3.448275862069,
+            "distance": 3.448,
             "enabled": true,
             "text": {
               "content": "",
@@ -360,7 +360,7 @@
             "h": -2,
             "k": -1,
             "l": 1,
-            "distance": 3.846153846154,
+            "distance": 3.846,
             "enabled": true,
             "text": {
               "content": "",
@@ -378,7 +378,7 @@
             "h": 3,
             "k": -2,
             "l": 1,
-            "distance": 3.846153846154,
+            "distance": 3.846,
             "enabled": true,
             "text": {
               "content": "",
@@ -396,7 +396,7 @@
             "h": -1,
             "k": 3,
             "l": 1,
-            "distance": 3.846153846154,
+            "distance": 3.846,
             "enabled": true,
             "text": {
               "content": "",
@@ -414,7 +414,7 @@
             "h": -2,
             "k": 3,
             "l": -1,
-            "distance": 3.846153846154,
+            "distance": 3.846,
             "enabled": true,
             "text": {
               "content": "",
@@ -432,7 +432,7 @@
             "h": -1,
             "k": -2,
             "l": -1,
-            "distance": 3.846153846154,
+            "distance": 3.846,
             "enabled": true,
             "text": {
               "content": "",
@@ -450,7 +450,7 @@
             "h": 3,
             "k": -1,
             "l": -1,
-            "distance": 3.846153846154,
+            "distance": 3.846,
             "enabled": true,
             "text": {
               "content": "",

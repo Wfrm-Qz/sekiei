@@ -144,7 +144,7 @@
             "h": 0,
             "k": 0,
             "l": 1,
-            "distance": 0.714285714286,
+            "distance": 0.714,
             "enabled": true,
             "text": {
               "content": "",
@@ -162,7 +162,7 @@
             "h": 0,
             "k": 0,
             "l": -1,
-            "distance": 0.714285714286,
+            "distance": 0.714,
             "enabled": true,
             "text": {
               "content": "",
@@ -180,7 +180,7 @@
             "h": 2,
             "k": 2,
             "l": 1,
-            "distance": 4.081632653061,
+            "distance": 4.082,
             "enabled": true,
             "text": {
               "content": "",
@@ -198,7 +198,7 @@
             "h": -4,
             "k": 2,
             "l": 1,
-            "distance": 4.081632653061,
+            "distance": 4.082,
             "enabled": true,
             "text": {
               "content": "",
@@ -216,7 +216,7 @@
             "h": 2,
             "k": -4,
             "l": 1,
-            "distance": 4.081632653061,
+            "distance": 4.082,
             "enabled": true,
             "text": {
               "content": "",
@@ -234,7 +234,7 @@
             "h": 2,
             "k": -4,
             "l": -1,
-            "distance": 4.081632653061,
+            "distance": 4.082,
             "enabled": true,
             "text": {
               "content": "",
@@ -252,7 +252,7 @@
             "h": 2,
             "k": 2,
             "l": -1,
-            "distance": 4.081632653061,
+            "distance": 4.082,
             "enabled": true,
             "text": {
               "content": "",
@@ -270,7 +270,7 @@
             "h": -4,
             "k": 2,
             "l": -1,
-            "distance": 4.081632653061,
+            "distance": 4.082,
             "enabled": true,
             "text": {
               "content": "",
@@ -288,7 +288,7 @@
             "h": -2,
             "k": -2,
             "l": 1,
-            "distance": 4.081632653061,
+            "distance": 4.082,
             "enabled": true,
             "text": {
               "content": "",
@@ -306,7 +306,7 @@
             "h": 4,
             "k": -2,
             "l": 1,
-            "distance": 4.081632653061,
+            "distance": 4.082,
             "enabled": true,
             "text": {
               "content": "",
@@ -324,7 +324,7 @@
             "h": -2,
             "k": 4,
             "l": 1,
-            "distance": 4.081632653061,
+            "distance": 4.082,
             "enabled": true,
             "text": {
               "content": "",
@@ -342,7 +342,7 @@
             "h": -2,
             "k": 4,
             "l": -1,
-            "distance": 4.081632653061,
+            "distance": 4.082,
             "enabled": true,
             "text": {
               "content": "",
@@ -360,7 +360,7 @@
             "h": -2,
             "k": -2,
             "l": -1,
-            "distance": 4.081632653061,
+            "distance": 4.082,
             "enabled": true,
             "text": {
               "content": "",
@@ -378,7 +378,7 @@
             "h": 4,
             "k": -2,
             "l": -1,
-            "distance": 4.081632653061,
+            "distance": 4.082,
             "enabled": true,
             "text": {
               "content": "",
