@@ -457,6 +457,10 @@ export function createTwinPreviewSceneActions(
       return { group, labelAnchors };
     }
     const ruleType = twinRuleTypeForTwinType(guideCrystal.twinType);
+    const parentIndex = Math.max(
+      0,
+      Math.min(Number(guideCrystal.from ?? 0), guideCrystalIndex - 1),
+    );
 
     if (ruleType === "axis") {
       const axis = twinAxisDirection(guideCrystal.axis, parameters);
@@ -465,7 +469,8 @@ export function createTwinPreviewSceneActions(
         const length = radius * 2.0;
         const center =
           buildAxisGuideCenter(
-            context.state.buildResult?.crystalPreviewMeshData?.[0]?.axisGuides,
+            context.state.buildResult?.crystalPreviewMeshData?.[parentIndex]
+              ?.axisGuides,
           ) ?? new THREE.Vector3();
         const start = center.clone().addScaledVector(direction, -length * 0.5);
         const end = center.clone().addScaledVector(direction, length * 0.5);
@@ -508,10 +513,6 @@ export function createTwinPreviewSceneActions(
       return { group, labelAnchors };
     }
 
-    const parentIndex = Math.max(
-      0,
-      Math.min(Number(guideCrystal.from ?? 0), guideCrystalIndex - 1),
-    );
     const parentContactFace =
       context.state.buildResult?.crystalPreviewMeshData?.[
         parentIndex

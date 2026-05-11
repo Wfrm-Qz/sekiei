@@ -384,6 +384,56 @@ function buildPenetrationAxisOffsetVector(parameters, crystal, validation) {
   return direction.normalize().multiplyScalar(basisLength * amount);
 }
 
+function axisGuideCenter(meshData) {
+  const axisGuides = Array.isArray(meshData?.axisGuides)
+    ? meshData.axisGuides
+    : [];
+  const midpointSum = new THREE.Vector3();
+  let midpointCount = 0;
+
+  axisGuides.forEach((axis) => {
+    if (!axis?.start || !axis?.end) {
+      return;
+    }
+    const start = new THREE.Vector3(axis.start.x, axis.start.y, axis.start.z);
+    const end = new THREE.Vector3(axis.end.x, axis.end.y, axis.end.z);
+    midpointSum.add(start.add(end).multiplyScalar(0.5));
+    midpointCount += 1;
+  });
+
+  return midpointCount > 0 ? midpointSum.divideScalar(midpointCount) : null;
+}
+
+/**
+ * 貫入双晶では、生成元結晶と派生結晶の軸中心が同じ双晶軸上に乗るよう
+ * 派生結晶側を平行移動する。
+ */
+function buildPenetrationAxisCenteringVector(
+  parameters,
+  crystal,
+  parentMeshData,
+  derivedMeshData,
+  validation,
+) {
+  const parentCenter = axisGuideCenter(parentMeshData);
+  const derivedCenter = axisGuideCenter(derivedMeshData);
+  if (!parentCenter || !derivedCenter) {
+    return new THREE.Vector3();
+  }
+
+  const axisRule = crystal?.axis ?? parameters.twin.axis;
+  const direction = twinAxisDirection(axisRule, parameters);
+  if (!Number.isFinite(direction.lengthSq()) || direction.lengthSq() === 0) {
+    validation.errors.push(t("builder.error.invalidAxisVector"));
+    return new THREE.Vector3();
+  }
+
+  const unitDirection = direction.normalize();
+  const relative = derivedCenter.clone().sub(parentCenter);
+  const projected = unitDirection.multiplyScalar(relative.dot(unitDirection));
+  return projected.sub(relative);
+}
+
 /**
  * 接触双晶の派生結晶を、指定した 2 面が向かい合うように回転・平行移動する。
  *
@@ -1026,6 +1076,27 @@ export function buildTwinMeshData(parameters, options = {}) {
         );
       }
     } else {
+      const centeringOffset = buildPenetrationAxisCenteringVector(
+        parameters,
+        build.crystal,
+        parentBuild.placedMeshData,
+        placedMeshData,
+        validation,
+      );
+      if (centeringOffset.lengthSq() > 0) {
+        placedMeshData = translateMeshData(placedMeshData, centeringOffset);
+        previewPlacedMeshData = translateMeshData(
+          previewPlacedMeshData,
+          centeringOffset,
+        );
+        if (stlCompositePlacedMeshData) {
+          stlCompositePlacedMeshData = translateMeshData(
+            stlCompositePlacedMeshData,
+            centeringOffset,
+          );
+        }
+      }
+
       const offset = buildPenetrationAxisOffsetVector(
         parameters,
         build.crystal,
