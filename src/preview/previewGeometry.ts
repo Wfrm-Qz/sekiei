@@ -30,7 +30,8 @@ interface PreviewVertexLike {
 
 interface PreviewFaceLike {
   id?: string | null;
-  coefficient?: number;
+  distance?: number;
+  enabled?: boolean;
   normal?: PreviewVertexLike;
   vertices?: PreviewVertexLike[];
   text?: {
@@ -645,7 +646,7 @@ export function createTwinPreviewGeometryActions(
       context.state.parameters.crystalSystem,
     );
     const validSourceFaces = sourceFaces.filter(
-      (face) => Number(face.coefficient) > 0,
+      (face) => face.enabled !== false,
     );
 
     for (const [faceIndex, face] of (meshData.faces ?? []).entries()) {

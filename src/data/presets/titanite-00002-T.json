@@ -36,7 +36,7 @@
             "h": 0,
             "k": 0,
             "l": 1,
-            "coefficient": 1.2,
+            "distance": 0.833333333333,
             "enabled": true,
             "text": {
               "content": "",
@@ -53,7 +53,7 @@
             "h": 0,
             "k": 0,
             "l": -1,
-            "coefficient": 1.2,
+            "distance": 0.833333333333,
             "enabled": false,
             "text": {
               "content": "",
@@ -70,7 +70,7 @@
             "h": 0,
             "k": 1,
             "l": 0,
-            "coefficient": 1.3,
+            "distance": 0.769230769231,
             "enabled": true,
             "text": {
               "content": "",
@@ -87,7 +87,7 @@
             "h": 0,
             "k": -1,
             "l": 0,
-            "coefficient": 1.3,
+            "distance": 0.769230769231,
             "enabled": true,
             "text": {
               "content": "",
@@ -104,7 +104,7 @@
             "h": 1,
             "k": 1,
             "l": 0,
-            "coefficient": 1.3,
+            "distance": 0.769230769231,
             "enabled": true,
             "text": {
               "content": "",
@@ -121,7 +121,7 @@
             "h": -1,
             "k": 1,
             "l": 0,
-            "coefficient": 2,
+            "distance": 0.5,
             "enabled": false,
             "text": {
               "content": "",
@@ -138,7 +138,7 @@
             "h": 1,
             "k": -1,
             "l": 0,
-            "coefficient": 1.3,
+            "distance": 0.769230769231,
             "enabled": true,
             "text": {
               "content": "",
@@ -155,7 +155,7 @@
             "h": -1,
             "k": -1,
             "l": 0,
-            "coefficient": 1,
+            "distance": 1.0,
             "enabled": false,
             "text": {
               "content": "",
@@ -172,7 +172,7 @@
             "h": 1,
             "k": 1,
             "l": 1,
-            "coefficient": 1,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "",
@@ -189,7 +189,7 @@
             "h": -1,
             "k": 1,
             "l": -1,
-            "coefficient": 1,
+            "distance": 1.0,
             "enabled": false,
             "text": {
               "content": "",
@@ -206,7 +206,7 @@
             "h": 1,
             "k": -1,
             "l": 1,
-            "coefficient": 1,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "",
@@ -223,7 +223,7 @@
             "h": -1,
             "k": -1,
             "l": -1,
-            "coefficient": 1,
+            "distance": 1.0,
             "enabled": false,
             "text": {
               "content": "",
@@ -240,7 +240,7 @@
             "h": -1,
             "k": 1,
             "l": 2,
-            "coefficient": 0.44,
+            "distance": 2.272727272727,
             "enabled": false,
             "text": {
               "content": "",
@@ -257,7 +257,7 @@
             "h": 1,
             "k": 1,
             "l": -2,
-            "coefficient": 0.44,
+            "distance": 2.272727272727,
             "enabled": true,
             "text": {
               "content": "",
@@ -274,7 +274,7 @@
             "h": -1,
             "k": -1,
             "l": 2,
-            "coefficient": 0.44,
+            "distance": 2.272727272727,
             "enabled": false,
             "text": {
               "content": "",
@@ -291,7 +291,7 @@
             "h": 1,
             "k": -1,
             "l": -2,
-            "coefficient": 0.44,
+            "distance": 2.272727272727,
             "enabled": true,
             "text": {
               "content": "",
@@ -308,7 +308,7 @@
             "h": -1,
             "k": 1,
             "l": 1,
-            "coefficient": 0.71,
+            "distance": 1.408450704225,
             "enabled": false,
             "text": {
               "content": "",
@@ -325,7 +325,7 @@
             "h": 1,
             "k": 1,
             "l": -1,
-            "coefficient": 0.73,
+            "distance": 1.369863013699,
             "enabled": true,
             "text": {
               "content": "",
@@ -342,7 +342,7 @@
             "h": -1,
             "k": -1,
             "l": 1,
-            "coefficient": 0.71,
+            "distance": 1.408450704225,
             "enabled": false,
             "text": {
               "content": "",
@@ -359,7 +359,7 @@
             "h": 1,
             "k": -1,
             "l": -1,
-            "coefficient": 0.73,
+            "distance": 1.369863013699,
             "enabled": true,
             "text": {
               "content": "",
@@ -376,7 +376,7 @@
             "h": -2,
             "k": 2,
             "l": 1,
-            "coefficient": 0.48,
+            "distance": 2.083333333333,
             "enabled": false,
             "text": {
               "content": "",
@@ -393,7 +393,7 @@
             "h": 2,
             "k": 2,
             "l": -1,
-            "coefficient": 0.48,
+            "distance": 2.083333333333,
             "enabled": true,
             "text": {
               "content": "",
@@ -410,7 +410,7 @@
             "h": -2,
             "k": -2,
             "l": 1,
-            "coefficient": 0.48,
+            "distance": 2.083333333333,
             "enabled": false,
             "text": {
               "content": "",
@@ -427,7 +427,7 @@
             "h": 2,
             "k": -2,
             "l": -1,
-            "coefficient": 0.48,
+            "distance": 2.083333333333,
             "enabled": true,
             "text": {
               "content": "",
@@ -444,7 +444,7 @@
             "h": 1,
             "k": 0,
             "l": 0,
-            "coefficient": 2.4,
+            "distance": 0.416666666667,
             "enabled": false,
             "text": {
               "content": "",
@@ -461,7 +461,7 @@
             "h": -1,
             "k": 0,
             "l": 0,
-            "coefficient": 4,
+            "distance": 0.25,
             "enabled": true,
             "text": {
               "content": "",
@@ -501,7 +501,7 @@
             "h": 0,
             "k": 0,
             "l": 1,
-            "coefficient": 1.2,
+            "distance": 0.833333333333,
             "enabled": true,
             "text": {
               "content": "",
@@ -518,7 +518,7 @@
             "h": 0,
             "k": 0,
             "l": -1,
-            "coefficient": 1.2,
+            "distance": 0.833333333333,
             "enabled": false,
             "text": {
               "content": "",
@@ -535,7 +535,7 @@
             "h": 0,
             "k": 1,
             "l": 0,
-            "coefficient": 1.3,
+            "distance": 0.769230769231,
             "enabled": true,
             "text": {
               "content": "",
@@ -552,7 +552,7 @@
             "h": 0,
             "k": -1,
             "l": 0,
-            "coefficient": 1.3,
+            "distance": 0.769230769231,
             "enabled": true,
             "text": {
               "content": "",
@@ -569,7 +569,7 @@
             "h": 1,
             "k": 1,
             "l": 0,
-            "coefficient": 1.3,
+            "distance": 0.769230769231,
             "enabled": true,
             "text": {
               "content": "",
@@ -586,7 +586,7 @@
             "h": -1,
             "k": 1,
             "l": 0,
-            "coefficient": 1,
+            "distance": 1.0,
             "enabled": false,
             "text": {
               "content": "",
@@ -603,7 +603,7 @@
             "h": 1,
             "k": -1,
             "l": 0,
-            "coefficient": 1.3,
+            "distance": 0.769230769231,
             "enabled": true,
             "text": {
               "content": "",
@@ -620,7 +620,7 @@
             "h": -1,
             "k": -1,
             "l": 0,
-            "coefficient": 2,
+            "distance": 0.5,
             "enabled": false,
             "text": {
               "content": "",
@@ -637,7 +637,7 @@
             "h": 1,
             "k": 1,
             "l": 1,
-            "coefficient": 1,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "",
@@ -654,7 +654,7 @@
             "h": -1,
             "k": 1,
             "l": -1,
-            "coefficient": 1,
+            "distance": 1.0,
             "enabled": false,
             "text": {
               "content": "",
@@ -671,7 +671,7 @@
             "h": 1,
             "k": -1,
             "l": 1,
-            "coefficient": 1,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "",
@@ -688,7 +688,7 @@
             "h": -1,
             "k": -1,
             "l": -1,
-            "coefficient": 1,
+            "distance": 1.0,
             "enabled": false,
             "text": {
               "content": "",
@@ -705,7 +705,7 @@
             "h": -1,
             "k": 1,
             "l": 2,
-            "coefficient": 0.44,
+            "distance": 2.272727272727,
             "enabled": false,
             "text": {
               "content": "",
@@ -722,7 +722,7 @@
             "h": 1,
             "k": 1,
             "l": -2,
-            "coefficient": 0.44,
+            "distance": 2.272727272727,
             "enabled": true,
             "text": {
               "content": "",
@@ -739,7 +739,7 @@
             "h": -1,
             "k": -1,
             "l": 2,
-            "coefficient": 0.44,
+            "distance": 2.272727272727,
             "enabled": false,
             "text": {
               "content": "",
@@ -756,7 +756,7 @@
             "h": 1,
             "k": -1,
             "l": -2,
-            "coefficient": 0.44,
+            "distance": 2.272727272727,
             "enabled": true,
             "text": {
               "content": "",
@@ -773,7 +773,7 @@
             "h": -1,
             "k": 1,
             "l": 1,
-            "coefficient": 0.71,
+            "distance": 1.408450704225,
             "enabled": false,
             "text": {
               "content": "",
@@ -790,7 +790,7 @@
             "h": 1,
             "k": 1,
             "l": -1,
-            "coefficient": 0.73,
+            "distance": 1.369863013699,
             "enabled": true,
             "text": {
               "content": "",
@@ -807,7 +807,7 @@
             "h": -1,
             "k": -1,
             "l": 1,
-            "coefficient": 0.71,
+            "distance": 1.408450704225,
             "enabled": false,
             "text": {
               "content": "",
@@ -824,7 +824,7 @@
             "h": 1,
             "k": -1,
             "l": -1,
-            "coefficient": 0.73,
+            "distance": 1.369863013699,
             "enabled": true,
             "text": {
               "content": "",
@@ -841,7 +841,7 @@
             "h": -2,
             "k": 2,
             "l": 1,
-            "coefficient": 0.48,
+            "distance": 2.083333333333,
             "enabled": false,
             "text": {
               "content": "",
@@ -858,7 +858,7 @@
             "h": 2,
             "k": 2,
             "l": -1,
-            "coefficient": 0.48,
+            "distance": 2.083333333333,
             "enabled": true,
             "text": {
               "content": "",
@@ -875,7 +875,7 @@
             "h": -2,
             "k": -2,
             "l": 1,
-            "coefficient": 0.48,
+            "distance": 2.083333333333,
             "enabled": false,
             "text": {
               "content": "",
@@ -892,7 +892,7 @@
             "h": 2,
             "k": -2,
             "l": -1,
-            "coefficient": 0.48,
+            "distance": 2.083333333333,
             "enabled": true,
             "text": {
               "content": "",
@@ -909,7 +909,7 @@
             "h": 1,
             "k": 0,
             "l": 0,
-            "coefficient": 2.4,
+            "distance": 0.416666666667,
             "enabled": false,
             "text": {
               "content": "",
@@ -926,7 +926,7 @@
             "h": -1,
             "k": 0,
             "l": 0,
-            "coefficient": 4,
+            "distance": 0.25,
             "enabled": true,
             "text": {
               "content": "",

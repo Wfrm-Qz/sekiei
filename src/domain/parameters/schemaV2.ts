@@ -54,7 +54,7 @@ export function serializeTwinParameters(
         h: number;
         k: number;
         l: number;
-        coefficient: number;
+        distance: number;
         enabled: boolean;
         accentColor?: string;
         i?: number;
@@ -72,7 +72,7 @@ export function serializeTwinParameters(
         h: Number(face.h),
         k: Number(face.k),
         l: Number(face.l),
-        coefficient: Number(face.coefficient),
+        distance: Number(face.distance),
         enabled: face.enabled !== false,
         ...(typeof face.accentColor === "string" &&
         face.accentColor.trim().length > 0

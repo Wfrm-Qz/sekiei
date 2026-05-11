@@ -13,7 +13,7 @@ import {
   getCrystalAccentColor as getDefaultCrystalAccentColor,
   normalizeFaceAccentColor,
 } from "./state/colorHelpers.js";
-import { getNextCoefficientValue } from "./ui/coefficientInput.js";
+import { getNextDistanceValue } from "./ui/distanceInput.js";
 import {
   EMPTY_DRAFT_FACE_FIELDS,
   createEmptyDraftFace,
@@ -1347,7 +1347,7 @@ function renderFaceRows() {
     collapse: t("common.collapse"),
     faceTextToggleOpen: t("faceText.toggleOpen"),
     faceTextToggleClose: t("faceText.toggleClose"),
-    coefficient: t("common.coefficient"),
+    distance: t("common.distance"),
     faceTextContent: t("faceText.content"),
     faceTextFont: t("faceText.font"),
     faceTextFontSize: t("faceText.fontSize"),
@@ -1396,7 +1396,7 @@ function renderFaceRows() {
             k: item.face.k,
             i: item.face.i,
             l: item.face.l,
-            coefficient: item.face.coefficient,
+            distance: item.face.distance,
             enabled: isFaceEnabled(item.face),
             accentColor: item.face.accentColor,
             draftEmptyFields: getDraftEmptyFields(item.face),
@@ -1617,7 +1617,7 @@ const {
   normalizeFaceForSystem,
   getEquivalentFaceGroupKey,
   getDraftEmptyFields,
-  getNextCoefficientValue,
+  getNextDistanceValue,
   getFaceGroupStateKey,
   renderFaceTableHeader,
   renderFaceRows,

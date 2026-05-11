@@ -20,7 +20,7 @@ function normalizeTwinStlSplitPlane(
       k: Number(raw?.k ?? 1),
       i: Number(raw?.i ?? 0),
       l: Number(raw?.l ?? 1),
-      coefficient: 1,
+      distance: 1,
     }),
     crystalSystem,
   );

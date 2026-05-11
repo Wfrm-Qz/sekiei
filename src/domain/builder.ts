@@ -359,7 +359,7 @@ function buildRuleMatrixForCrystal(parameters, crystal, validation) {
 /**
  * 貫入双晶の軸方向 offset を平行移動ベクトルに変換する。
  *
- * `amount = 1` は、双晶軸と同じ指数で coefficient 1 の面が双晶軸正方向と
+ * `amount = 1` は、双晶軸と同じ指数で distance 1 の面が双晶軸正方向と
  * 交わる点までの距離。amount はこの基準長に対して線形に効く。
  */
 function buildPenetrationAxisOffsetVector(parameters, crystal, validation) {

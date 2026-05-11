@@ -36,7 +36,7 @@
             "h": 1,
             "k": 1,
             "l": 1,
-            "coefficient": 1.55,
+            "distance": 0.645161290323,
             "enabled": true
           },
           {
@@ -44,7 +44,7 @@
             "h": -1,
             "k": -1,
             "l": 1,
-            "coefficient": 1.55,
+            "distance": 0.645161290323,
             "enabled": true
           },
           {
@@ -52,7 +52,7 @@
             "h": -1,
             "k": 1,
             "l": -1,
-            "coefficient": 1.55,
+            "distance": 0.645161290323,
             "enabled": true
           },
           {
@@ -60,7 +60,7 @@
             "h": 1,
             "k": -1,
             "l": -1,
-            "coefficient": 1.55,
+            "distance": 0.645161290323,
             "enabled": true
           },
           {
@@ -68,7 +68,7 @@
             "h": -1,
             "k": -1,
             "l": -1,
-            "coefficient": 0.7,
+            "distance": 1.428571428571,
             "enabled": true
           },
           {
@@ -76,7 +76,7 @@
             "h": -1,
             "k": 1,
             "l": 1,
-            "coefficient": 0.7,
+            "distance": 1.428571428571,
             "enabled": true
           },
           {
@@ -84,7 +84,7 @@
             "h": 1,
             "k": -1,
             "l": 1,
-            "coefficient": 0.7,
+            "distance": 1.428571428571,
             "enabled": true
           },
           {
@@ -92,7 +92,7 @@
             "h": 1,
             "k": 1,
             "l": -1,
-            "coefficient": 0.7,
+            "distance": 1.428571428571,
             "enabled": true
           },
           {
@@ -100,7 +100,7 @@
             "h": 5,
             "k": 2,
             "l": 2,
-            "coefficient": 0.33,
+            "distance": 3.030303030303,
             "enabled": true
           },
           {
@@ -108,7 +108,7 @@
             "h": -5,
             "k": -2,
             "l": 2,
-            "coefficient": 0.33,
+            "distance": 3.030303030303,
             "enabled": true
           },
           {
@@ -116,7 +116,7 @@
             "h": -5,
             "k": 2,
             "l": -2,
-            "coefficient": 0.33,
+            "distance": 3.030303030303,
             "enabled": true
           },
           {
@@ -124,7 +124,7 @@
             "h": 5,
             "k": -2,
             "l": -2,
-            "coefficient": 0.33,
+            "distance": 3.030303030303,
             "enabled": true
           },
           {
@@ -132,7 +132,7 @@
             "h": -2,
             "k": -2,
             "l": 5,
-            "coefficient": 0.33,
+            "distance": 3.030303030303,
             "enabled": true
           },
           {
@@ -140,7 +140,7 @@
             "h": -2,
             "k": 2,
             "l": -5,
-            "coefficient": 0.33,
+            "distance": 3.030303030303,
             "enabled": true
           },
           {
@@ -148,7 +148,7 @@
             "h": 2,
             "k": -2,
             "l": -5,
-            "coefficient": 0.33,
+            "distance": 3.030303030303,
             "enabled": true
           },
           {
@@ -156,7 +156,7 @@
             "h": 2,
             "k": 2,
             "l": 5,
-            "coefficient": 0.33,
+            "distance": 3.030303030303,
             "enabled": true
           },
           {
@@ -164,7 +164,7 @@
             "h": -2,
             "k": -5,
             "l": 2,
-            "coefficient": 0.33,
+            "distance": 3.030303030303,
             "enabled": true
           },
           {
@@ -172,7 +172,7 @@
             "h": -2,
             "k": 5,
             "l": -2,
-            "coefficient": 0.33,
+            "distance": 3.030303030303,
             "enabled": true
           },
           {
@@ -180,7 +180,7 @@
             "h": 2,
             "k": -5,
             "l": -2,
-            "coefficient": 0.33,
+            "distance": 3.030303030303,
             "enabled": true
           },
           {
@@ -188,7 +188,7 @@
             "h": 2,
             "k": 5,
             "l": 2,
-            "coefficient": 0.33,
+            "distance": 3.030303030303,
             "enabled": true
           }
         ]

@@ -98,7 +98,7 @@ Sekiei では、保存・読込・preset で共通の JSON 形式を使います
 }
 ```
 
-`amount` は双晶軸方向の移動量です。`1` は、双晶軸と同じ指数で係数 `1` の面がその軸と交わる位置までの軸上距離を基準にします。`0` のオフセットは保存時に省略されます。
+`amount` は双晶軸方向の移動量です。`1` は、双晶軸と同じ指数で距離 `1` の面がその軸と交わる位置までの軸上距離を基準にします。`0` のオフセットは保存時に省略されます。
 
 ## Face Fields
 
@@ -107,12 +107,16 @@ Sekiei では、保存・読込・preset で共通の JSON 形式を使います
 - `id`
 - `h`, `k`, `l`
 - `i` (四指数系のみ)
-- `coefficient`
+- `distance`
 - `enabled`
 - `accentColor`
 - `text`
 
 `text` には face engraving/embossing の設定が入ります。
+
+`distance` は面位置を表す値です。たとえば軸比 `a / b / c` の結晶で `(1, 1, 1)` 面の `distance` が `1` の場合、その面は a 軸上の距離 `a`、b 軸上の距離 `b`、c 軸上の距離 `c` の点を通ります。`distance` が `2` なら、それぞれ `2a / 2b / 2c` の点を通ります。`0` や負の値も読み込み・保存できますが、最終的に半空間の共通部分が閉じた 3D solid にならない場合は形状作成エラーになります。
+
+旧 JSON との互換のため、読み込みでは `coefficient` も受け付けます。`distance` と `coefficient` が両方ある場合は `distance` を優先します。旧 `coefficient: 0` は `distance: 100` かつ `enabled: false` として扱います。
 
 ## Color Ownership
 

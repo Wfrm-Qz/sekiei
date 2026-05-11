@@ -8,7 +8,7 @@ import { createFace, normalizeFaceForSystem } from "../constants.js";
  */
 
 /** 空欄下書き面で未入力扱いにする field 一覧。 */
-export const EMPTY_DRAFT_FACE_FIELDS = ["h", "k", "l", "coefficient"];
+export const EMPTY_DRAFT_FACE_FIELDS = ["h", "k", "l", "distance"];
 
 /** 面一覧へ追加する「空欄の新規面」下書きを作る。 */
 export function createEmptyDraftFace(crystalSystem: string) {
@@ -17,7 +17,7 @@ export function createEmptyDraftFace(crystalSystem: string) {
       h: 0,
       k: 0,
       l: 0,
-      coefficient: 0,
+      distance: 1,
       enabled: false,
       draftGroupKey:
         globalThis.crypto?.randomUUID?.() ??

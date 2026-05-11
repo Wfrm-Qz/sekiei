@@ -24,7 +24,7 @@ describe("domain/parameters/normalize", () => {
               h: 1,
               k: 0,
               l: 0,
-              coefficient: 1,
+              distance: 1,
               enabled: true,
               accentColor: "#3366cc",
             },
@@ -49,9 +49,7 @@ describe("domain/parameters/normalize", () => {
               },
             ],
           },
-          faces: [
-            { id: "f2", h: -1, k: 0, l: 0, coefficient: 1, enabled: true },
-          ],
+          faces: [{ id: "f2", h: -1, k: 0, l: 0, distance: 1, enabled: true }],
         },
       ],
     });

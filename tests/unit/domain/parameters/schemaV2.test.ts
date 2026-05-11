@@ -12,7 +12,7 @@ describe("domain/parameters/schemaV2", () => {
             h: 1,
             k: 0,
             l: 0,
-            coefficient: 1,
+            distance: 1,
             text: {
               content: "A",
               fontId: "optimer",
@@ -35,7 +35,7 @@ describe("domain/parameters/schemaV2", () => {
                   h: 1,
                   k: 0,
                   l: 0,
-                  coefficient: 1,
+                  distance: 1,
                   accentColor: "#3366cc",
                   text: {
                     content: "A",
@@ -65,7 +65,7 @@ describe("domain/parameters/schemaV2", () => {
                   unit: "axis-plane-intercept",
                 },
               ],
-              faces: [{ id: "f2", h: -1, k: 0, l: 0, coefficient: 1 }],
+              faces: [{ id: "f2", h: -1, k: 0, l: 0, distance: 1 }],
               contact: {
                 baseFaceRef: "f1",
                 derivedFaceRef: "f2",
@@ -90,6 +90,8 @@ describe("domain/parameters/schemaV2", () => {
       },
     ]);
     expect(serialized.crystals[0].faces[0].accentColor).toBe("#3366cc");
+    expect(serialized.crystals[0].faces[0]).toMatchObject({ distance: 1 });
+    expect(serialized.crystals[0].faces[0]).not.toHaveProperty("coefficient");
     expect(serialized.crystals[0].faces[0].text).toEqual({
       content: "A",
       fontId: "optimer",
@@ -105,7 +107,7 @@ describe("domain/parameters/schemaV2", () => {
     const serialized = serializeTwinParameters(
       normalizeTwinParameters({
         crystalSystem: "cubic",
-        faces: [{ h: 1, k: 0, l: 0, coefficient: 1 }],
+        faces: [{ h: 1, k: 0, l: 0, distance: 1 }],
       }),
     );
 
