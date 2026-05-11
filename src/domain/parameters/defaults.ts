@@ -8,6 +8,16 @@ import { normalizeFaceAccentColor } from "../../state/colorHelpers.js";
 
 export type TwinType = "penetration" | "contact";
 export type TwinRuleType = "axis" | "plane";
+export type TwinOffsetKind = "axis";
+export type TwinOffsetBasis = "twin-axis";
+export type TwinOffsetUnit = "axis-plane-intercept";
+
+export interface TwinOffsetParameters {
+  kind: TwinOffsetKind;
+  basis: TwinOffsetBasis;
+  amount: number;
+  unit: TwinOffsetUnit;
+}
 
 export interface TwinCrystalParameters {
   id: string;
@@ -20,6 +30,7 @@ export interface TwinCrystalParameters {
   plane: ReturnType<typeof normalizeRuleIndexes>;
   axis: ReturnType<typeof normalizeRuleIndexes>;
   rotationAngleDeg: number;
+  offsets: TwinOffsetParameters[];
   contact: {
     baseFaceRef: string | null;
     derivedFaceRef: string | null;
@@ -88,7 +99,7 @@ function normalizeRuleIndexes(
       k: Number(raw?.k ?? 0),
       i: Number(raw?.i ?? 0),
       l: Number(raw?.l ?? 1),
-      coefficient: 1,
+      distance: 1,
     }),
     systemId,
   );
@@ -128,7 +139,7 @@ function normalizeFaces(
         ...(Array.isArray(face?.draftEmptyFields)
           ? {
               draftEmptyFields: face.draftEmptyFields.filter((field) =>
-                ["h", "k", "l", "coefficient"].includes(String(field)),
+                ["h", "k", "l", "distance"].includes(String(field)),
               ),
             }
           : {}),
@@ -136,8 +147,9 @@ function normalizeFaces(
         k: Number(face?.k ?? 0),
         i: Number(face?.i ?? -1),
         l: Number(face?.l ?? 0),
-        coefficient: Number(face?.coefficient ?? 1),
-        enabled: typeof face?.enabled === "boolean" ? face.enabled : true,
+        distance: face?.distance,
+        coefficient: face?.coefficient,
+        enabled: typeof face?.enabled === "boolean" ? face.enabled : undefined,
         accentColor: normalizeFaceAccentColor(face?.accentColor),
         text: face?.text,
       }),
@@ -172,6 +184,7 @@ function buildDefaultTwinCrystals(
         crystalSystem,
       ),
       rotationAngleDeg: 60,
+      offsets: [],
       contact: {
         baseFaceRef: fallbackFaceRef(baseCrystalFaces, 0),
         derivedFaceRef: fallbackFaceRef(baseCrystalFaces, 0),
@@ -193,6 +206,7 @@ function buildDefaultTwinCrystals(
         crystalSystem,
       ),
       rotationAngleDeg: 60,
+      offsets: [],
       contact: {
         baseFaceRef: fallbackFaceRef(baseCrystalFaces, 0),
         derivedFaceRef: fallbackFaceRef(derivedCrystalFaces, 1),

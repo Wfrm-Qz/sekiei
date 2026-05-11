@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { createDefaultParameters } from "../../../src/constants.ts";
+import { createDefaultParameters, createFace } from "../../../src/constants.ts";
 import {
   buildCrystalMeshData,
   validateParameters,
@@ -55,6 +55,23 @@ describe("geometry/crystalGeometry", () => {
     expect(result.validation.errors.length).toBeGreaterThan(0);
     expect(validation).toBeTruthy();
     expect(result.geometry).toBeNull();
+  });
+
+  it("distance が 0 以下でも半空間の共通部分が閉じていれば meshData を構築できる", () => {
+    const parameters = createDefaultParameters();
+    parameters.faces = [
+      createFace({ h: 1, k: 0, l: 0, distance: 0 }),
+      createFace({ h: -1, k: 0, l: 0, distance: 1 }),
+      createFace({ h: 0, k: 1, l: 0, distance: -0.25 }),
+      createFace({ h: 0, k: -1, l: 0, distance: 1 }),
+      createFace({ h: 0, k: 0, l: 1, distance: 1 }),
+      createFace({ h: 0, k: 0, l: -1, distance: 1 }),
+    ];
+
+    const result = buildCrystalMeshData(parameters);
+
+    expect(result.validation.errors).toHaveLength(0);
+    expect(result.geometry).not.toBeNull();
   });
 
   it("文字設定とフォントが揃っていれば文字掘り込み込みの三角形へ増える", () => {

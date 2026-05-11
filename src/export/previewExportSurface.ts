@@ -33,7 +33,8 @@ import {
 
 interface PreviewExportSurfaceFaceLike {
   id?: string | null;
-  coefficient?: number | string | null;
+  distance?: number | string | null;
+  enabled?: boolean | null;
 }
 
 interface PreviewExportSurfaceMeshFaceLike {

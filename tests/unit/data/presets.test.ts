@@ -3,7 +3,44 @@ import { setCurrentLocale } from "../../../src/i18n.ts";
 import {
   getPresetById,
   getSelectablePresets,
+  PRESETS,
 } from "../../../src/data/presets.ts";
+
+function isRoundedToThreeDecimals(value: number): boolean {
+  const scaled = value * 1000;
+  return Math.abs(scaled - Math.round(scaled)) < 1e-9;
+}
+
+function collectUnroundedDistanceValues(
+  presetId: string,
+  source: unknown,
+): string[] {
+  const unroundedValues: string[] = [];
+
+  function visit(node: unknown): void {
+    if (!node || typeof node !== "object") {
+      return;
+    }
+    if (Array.isArray(node)) {
+      for (const item of node) visit(item);
+      return;
+    }
+
+    const record = node as Record<string, unknown>;
+    if (
+      typeof record.distance === "number" &&
+      !isRoundedToThreeDecimals(record.distance)
+    ) {
+      unroundedValues.push(`${presetId}: ${record.distance}`);
+    }
+    for (const value of Object.values(record)) {
+      visit(value);
+    }
+  }
+
+  visit(source);
+  return unroundedValues;
+}
 
 /**
  * プリセット候補表示のローカライズと並び順を確認する unit test。
@@ -44,5 +81,15 @@ describe("data/presets", () => {
     expect(cubePreset?.preview?.previewStyleSettings?.ridgeLines?.color).toBe(
       "#181818",
     );
+  });
+
+  it("built-in preset の face distance は小数点以下 3 桁までに丸めている", () => {
+    const unroundedValues = PRESETS.flatMap((preset) =>
+      preset.parameters
+        ? collectUnroundedDistanceValues(preset.id, preset.parameters)
+        : [],
+    );
+
+    expect(unroundedValues).toEqual([]);
   });
 });

@@ -6,6 +6,13 @@
 
 - より深い階層に別の `AGENTS.md` がない限り、この内容をリポジトリ全体に適用します。
 
+## 運用ルールの保守
+
+- 作業中に、今後も再利用すべき運用ルールや手順上の注意点が見つかった場合は、同じ作業の中で該当する `AGENTS.md` または local skill に反映します。
+- 反映先は、効かせたい範囲に対して最も狭い `AGENTS.md` と、実際に使う該当 skill を優先します。
+- 範囲が明確な場合は自動で更新します。広すぎる、曖昧、または別プロジェクトへ影響する場合だけユーザーに確認します。
+- 追加する内容は、今後の作業に効く安定したルールに限ります。試行錯誤や一時的なデバッグ履歴は `AGENTS.md` や skill へ入れません。
+
 ## 入口と主要ファイル
 
 - 正式版かつ唯一のページ入口は `index.html` です。
@@ -33,7 +40,11 @@
 - この公開リポジトリに `tasks/` を復活させないでください。
 - `.agents/` はローカル運用用として Git 管理対象から外します。
 - ユーザーが認識できる挙動、UI、出力内容、既知の制約が変わる場合は、同じ作業で `docs/changelog.md` を更新します。
+- お知らせに書く内容のうち、できることが変わっていない UI 調整は、不具合修正でない限り `UIを調整しました。` 程度の簡潔な表現にします。
 - `docs/changelog.md` の最新項目を変えた場合は、README の更新履歴抜粋と `tests/unit/data/announcements.test.ts` の最新 version 期待値も追従します。
+- リリースと version 変更は一致させます。実際に release version を上げる指示や公開反映がない限り、新しい version section は作らず、未リリースの変更は現在の release 範囲の最新 changelog entry に合流します。
+- 未リリース変更を最新 changelog entry に合流するときは、その entry の日付も今回の更新日へ揃え、README の更新履歴抜粋と announcement test も同じ日付・version にします。
+- `src/content/announcements.ts` の `updatedAt` はお知らせ再表示用の revision として更新してよいですが、release version の代わりとして扱いません。
 - 公開 sample JSON は `docs/samples/` に置きます。
 - スクリーンショット付きマニュアルの画像は日本語版を `docs/images/user-manual/`、英語版を `docs/images/user-manual/en/` に置きます。
 - UI の配置、主要ラベル、基本操作の流れを変えた時は、`docs/user-manual.md` と `docs/user-manual.en.md` の説明とスクリーンショットを必要に応じて差し替えます。
@@ -102,6 +113,8 @@
 - preset JSON、公開 sample JSON、test fixture JSON は現行 wrapper schema に揃えます。
   - outer: `schema: "sekiei-twin-preview-document-v1"`
   - inner parameters: `version: 2`, `schema: "sekiei-document"`
+- face の位置指定は現行 schema では `distance` を使います。旧 `coefficient` は import 互換専用として扱い、保存 JSON / preset / sample / fixture へ新規に書きません。
+- 旧 `coefficient` を読み込むときは、`distance` があれば `distance` を優先します。`coefficient > 0` は `distance = 1 / coefficient`、`coefficient: 0` は `distance: 100` かつ `enabled: false` として扱います。
 - 公開 sample は `docs/samples/`、test fixture は `tests/fixtures/domain/` を正とします。
 - 結晶色と face 色は preview 側へ複製せず、`parameters.crystals[].accentColor` と `parameters.crystals[].faces[].accentColor` を正として扱います。
 - wrapper preset / wrapper export JSON に preview 設定を保持してよいですが、現行の preset 適用では preview 設定を自動適用しません。保持と適用を混同しないでください。

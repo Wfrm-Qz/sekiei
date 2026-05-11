@@ -9,8 +9,8 @@
       content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; font-src 'self' data:; connect-src 'self' ws: wss:; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
     />
     <title data-i18n="app.pageTitle">Sekiei</title>
-    <link rel="stylesheet" href="./styles.css?v=20260427-manualmodal" />
-    <link rel="stylesheet" href="./app-ui.css?v=20260427-manualmodal" />
+    <link rel="stylesheet" href="./styles.css?v=20260511-face-distance" />
+    <link rel="stylesheet" href="./app-ui.css?v=20260511-tightspace" />
   </head>
   <body class="page-root">
     <!-- キーボード利用時にプレビュー領域を飛ばして main へ入るための導線。 -->
@@ -609,18 +609,18 @@
               </label>
             </div>
 
-            <h3 class="editor-subheading" data-i18n="editor.stlSplitTitle">
-              STL分割（β版）
-            </h3>
-            <div class="field-grid twin-two-columns">
-              <label class="toggle-chip">
+            <div class="stl-split-enable-row">
+              <label class="toggle-chip stl-split-enable-toggle">
                 <input id="app-stl-split-enabled-input" type="checkbox" />
-                <span data-i18n="editor.stlSplitEnabled">分割を有効にする</span>
+                <span data-i18n="editor.stlSplitEnabled">
+                  STL分割を有効にする（β版）
+                </span>
               </label>
             </div>
             <div
               id="app-stl-split-plane-fields"
-              class="field-grid four-columns twin-compact-rule-fields"
+              class="field-grid four-columns stl-split-plane-fields"
+              hidden
             >
               <label class="field">
                 <span>h</span>
@@ -658,7 +658,7 @@
             </div>
           </div>
 
-          <!-- 双晶パラメーター: 生成元結晶 / 双晶タイプ / 双晶面指数 / 回転角 / 基準方向 -->
+          <!-- 双晶パラメーター: 生成元結晶 / 双晶タイプ / 双晶面指数 / 回転角 / 軸方向オフセット / 基準方向 -->
           <div
             id="twin-settings-card"
             class="section-card"
@@ -738,10 +738,21 @@
                     step="0.1"
                   />
                 </label>
+                <label class="field">
+                  <span data-i18n="twin.axisOffset">軸方向オフセット</span>
+                  <input
+                    id="twin-axis-offset-input"
+                    type="number"
+                    step="0.01"
+                  />
+                </label>
               </div>
             </div>
 
-            <div id="twin-contact-fields" class="field-grid twin-two-columns">
+            <div
+              id="twin-contact-fields"
+              class="field-grid twin-contact-fields"
+            >
               <label class="field">
                 <span id="twin-base-face-ref-label">生成元結晶の接触面</span>
                 <select id="twin-base-face-ref-select"></select>
@@ -2322,6 +2333,6 @@
       </section>
     </div>
 
-    <script type="module" src="./src/main.ts?v=20260427-manualmodal"></script>
+    <script type="module" src="./src/main.ts?v=20260511-face-distance"></script>
   </body>
 </html>

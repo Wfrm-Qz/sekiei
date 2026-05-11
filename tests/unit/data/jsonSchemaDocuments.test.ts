@@ -28,6 +28,12 @@ const PRESET_JSON_PATHS = readdirSync(
 const PRESET_FILE_NAME_PATTERN =
   /^([a-z0-9]+(?:-[a-z0-9]+)*-\d{5})(?:-[A-Za-z0-9][A-Za-z0-9-]*)?\.json$/;
 
+const BASIC_SHAPE_PRESET_IDS = new Set([
+  "cube-00001",
+  "hexagonal-prism-00001",
+  "octahedron-00001",
+]);
+
 const SAMPLE_JSON_PATHS = [
   "docs/samples/cube.json",
   "docs/samples/cube-text.json",
@@ -38,6 +44,12 @@ const SAMPLE_JSON_PATHS = [
 const TEST_FIXTURE_JSON_PATHS = [
   "tests/fixtures/domain/twin-contact-cubic.json",
   "tests/fixtures/domain/twin-penetration-cubic.json",
+];
+const CURRENT_SCHEMA_JSON_PATHS = [
+  ...PRESET_JSON_PATHS,
+  ...SAMPLE_JSON_PATHS,
+  ...TEST_FIXTURE_JSON_PATHS,
+  "tests/fixtures/face-text/leftQuartz.withText.v2.json",
 ];
 
 function loadJsonDocument(relativePath: string): unknown {
@@ -100,6 +112,30 @@ describe("data/json schema documents", () => {
     },
   );
 
+  it.each(PRESET_JSON_PATHS)(
+    "built-in preset %s は非立方晶系・基本立体以外で Crystallography 出典を持つ",
+    (relativePath) => {
+      const document = loadJsonDocument(relativePath);
+
+      if (!isTwinPreviewSettingsDocument(document)) {
+        return;
+      }
+
+      const parameters = document.parameters;
+      if (
+        parameters.crystalSystem === "cubic" ||
+        BASIC_SHAPE_PRESET_IDS.has(parameters.presetId)
+      ) {
+        return;
+      }
+
+      expect(
+        String(parameters.metadata?.fullReference ?? ""),
+        `${relativePath} should include a Crystallography source in metadata.fullReference`,
+      ).toMatch(/\bCrystallography\b/);
+    },
+  );
+
   it.each(SAMPLE_JSON_PATHS)(
     "docs sample %s は現行 wrapper schema に一致する",
     (relativePath) => {
@@ -111,6 +147,16 @@ describe("data/json schema documents", () => {
     "test fixture %s は現行 wrapper schema に一致する",
     (relativePath) => {
       expectValidWrapperDocument(relativePath);
+    },
+  );
+
+  it.each(CURRENT_SCHEMA_JSON_PATHS)(
+    "current schema JSON %s は face distance を使い coefficient を含めない",
+    (relativePath) => {
+      const raw = readFileSync(resolve(process.cwd(), relativePath), "utf8");
+
+      expect(raw).toContain('"distance"');
+      expect(raw).not.toContain('"coefficient"');
     },
   );
 });

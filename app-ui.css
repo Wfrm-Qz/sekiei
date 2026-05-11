@@ -1,10 +1,12 @@
 /* 正式版ページ固有のレイアウト差分と、保存メニュー / 面一覧などの専用見た目を定義する。 */
 .app-editor-shell {
-  width: min(1700px, calc(100vw - 32px));
+  width: auto;
+  margin-inline: 10px;
 }
 
 .app-layout {
   grid-template-columns: minmax(400px, 520px) minmax(780px, 1fr);
+  gap: 10px;
 }
 
 .twin-two-columns {
@@ -217,13 +219,71 @@
   width: 100%;
 }
 
+.stl-split-plane-fields > .field {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.stl-split-plane-fields .field span {
+  white-space: nowrap;
+}
+
+.stl-split-plane-fields[hidden] {
+  display: none;
+}
+
+.stl-split-enable-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 18px 0 12px;
+}
+
+.stl-split-enable-toggle {
+  max-width: 100%;
+}
+
 .twin-axis-angle-block {
-  flex: 0 0 92px;
-  width: 92px;
+  display: grid;
+  flex: 0 0 200px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  width: 200px;
 }
 
 .twin-axis-angle-block .field {
+  justify-content: flex-end;
   min-width: 92px;
+}
+
+.twin-contact-fields {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.twin-contact-fields .field {
+  min-width: 0;
+}
+
+.twin-contact-fields .field span {
+  line-height: 1.2;
+}
+
+.twin-contact-fields .field select {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (min-width: 761px) {
+  html[lang="ja"] #app-crystal-system-select {
+    width: 60%;
+    min-width: 8.25rem;
+  }
 }
 
 .editor-subheading {
@@ -1193,6 +1253,7 @@
 @media (max-width: 1024px) {
   .app-layout,
   .twin-two-columns,
+  .twin-contact-fields,
   .four-columns,
   .preset-metadata-grid {
     grid-template-columns: minmax(0, 1fr);
@@ -1208,6 +1269,10 @@
   }
 
   .twin-compact-rule-fields {
+    width: 100%;
+  }
+
+  .twin-axis-angle-block {
     width: 100%;
   }
 }
@@ -1531,6 +1596,7 @@
   }
 
   .field-grid.three-columns.parameter-inline-grid > .field,
+  .stl-split-plane-fields > .field,
   .twin-compact-rule-fields > .field {
     grid-template-columns: 1fr;
     align-items: stretch;
@@ -1539,6 +1605,7 @@
   }
 
   .field-grid.three-columns.parameter-inline-grid .field span,
+  .stl-split-plane-fields .field span,
   .twin-compact-rule-fields .field span {
     white-space: normal;
     margin-right: 0;
@@ -1552,12 +1619,14 @@
 
   .field-grid.three-columns.parameter-inline-grid .field input,
   .field-grid.three-columns.parameter-inline-grid .field select,
+  .stl-split-plane-fields .field input,
   .twin-compact-rule-fields .field input {
     width: 100%;
     min-width: 0;
     padding-inline: 0.68rem;
   }
 
+  .stl-split-plane-fields .field input,
   .twin-compact-rule-fields .field input {
     padding-inline: 0.62rem;
   }
@@ -1565,7 +1634,7 @@
 
 @media (max-width: 720px) {
   .app-editor-shell {
-    width: min(100vw - 16px, 100%);
+    margin-inline: 8px;
   }
 
   .preview-stage {

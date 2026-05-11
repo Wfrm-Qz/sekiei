@@ -16,7 +16,7 @@ describe("domain/parameters/compatV1", () => {
         shortDescription: "short",
       },
       crystals: [
-        { id: "base", faces: [{ h: 1, k: 0, l: 0, coefficient: 1 }] },
+        { id: "base", faces: [{ h: 1, k: 0, l: 0, distance: 1 }] },
         {
           id: "derived",
           from: "base",
@@ -24,7 +24,7 @@ describe("domain/parameters/compatV1", () => {
             type: "contact",
             rule: { kind: "plane", plane: { h: 1, k: 1, l: 1 } },
           },
-          faces: [{ h: -1, k: 0, l: 0, coefficient: 1 }],
+          faces: [{ h: -1, k: 0, l: 0, distance: 1 }],
         },
       ],
     });

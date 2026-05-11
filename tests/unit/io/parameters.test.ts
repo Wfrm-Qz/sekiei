@@ -87,6 +87,39 @@ describe("io/parameters", () => {
     expect(normalized.faces).toHaveLength(1);
   });
 
+  it("旧 coefficient は distance へ変換し、distance があればそちらを優先する", () => {
+    const normalized = normalizeParameters({
+      crystalSystem: "cubic",
+      faces: [
+        { h: 1, k: 0, l: 0, coefficient: 2 },
+        { h: -1, k: 0, l: 0, coefficient: 0, enabled: true },
+        { h: 0, k: 1, l: 0, coefficient: 2, distance: 3 },
+        { h: 0, k: -1, l: 0, coefficient: 0, distance: 4, enabled: true },
+      ],
+    });
+
+    expect(normalized.faces[0].distance).toBe(0.5);
+    expect(normalized.faces[0].enabled).toBe(true);
+    expect(normalized.faces[1].distance).toBe(100);
+    expect(normalized.faces[1].enabled).toBe(false);
+    expect(normalized.faces[2].distance).toBe(3);
+    expect(normalized.faces[2].enabled).toBe(true);
+    expect(normalized.faces[3].distance).toBe(4);
+    expect(normalized.faces[3].enabled).toBe(true);
+  });
+
+  it("serializeParameters は current schema として distance を出力する", () => {
+    const serialized = serializeParameters(
+      normalizeParameters({
+        crystalSystem: "cubic",
+        faces: [{ h: 1, k: 0, l: 0, distance: -0.5 }],
+      }),
+    );
+
+    expect(serialized.faces[0]).toMatchObject({ distance: -0.5 });
+    expect(serialized.faces[0]).not.toHaveProperty("coefficient");
+  });
+
   it("ファイルサイズ上限を超える JSON ファイルを拒否する", async () => {
     const file = new File(["x".repeat(1_000_001)], "huge.json", {
       type: "application/json",

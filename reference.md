@@ -23,6 +23,8 @@
 - cerussite-00001
   - Face
     - Charles Palache, The minerals of Franklin and Sterling Hill, Sussex County, New Jersey (USGS Professional Paper 180, 1935)
+  - Crystallography
+    - RRUFF(R060017)
 - corundum-00001
   - Face
     - Charles Palache, The minerals of Franklin and Sterling Hill, Sussex County, New Jersey (USGS Professional Paper 180, 1935)
@@ -47,18 +49,30 @@
 - gahnite-00001
   - Face
     - Charles Palache, The minerals of Franklin and Sterling Hill, Sussex County, New Jersey (USGS Professional Paper 180, 1935)
+- garnet-00001
+  - Face
+    - 外部出典なし（指数指定プリセット）
+- garnet-00002
+  - Face
+    - 外部出典なし（指数指定プリセット）
 - hematite-00001
   - Face
     - Charles Palache, The minerals of Franklin and Sterling Hill, Sussex County, New Jersey (USGS Professional Paper 180, 1935)
+  - Crystallography
+    - American Mineralogist 97 (2012) 1808-1811 (via RRUFF)
 - hexagonal-prism-00001
   - Face
     - 外部出典なし（基本形状プリセット）
 - microcline-00001
   - Face
     - Charles Palache, The minerals of Franklin and Sterling Hill, Sussex County, New Jersey (USGS Professional Paper 180, 1935)
+  - Crystallography
+    - European Journal of Mineralogy 20 (2008) 635-651 (via RRUFF)
 - microcline-00002
   - Face
     - Charles Palache, The minerals of Franklin and Sterling Hill, Sussex County, New Jersey (USGS Professional Paper 180, 1935)
+  - Crystallography
+    - European Journal of Mineralogy 20 (2008) 635-651 (via RRUFF)
 - octahedron-00001
   - Face
     - 外部出典なし（基本形状プリセット）
@@ -85,6 +99,8 @@
 - smithsonite-00001
   - Face
     - Charles Palache, The minerals of Franklin and Sterling Hill, Sussex County, New Jersey (USGS Professional Paper 180, 1935)
+  - Crystallography
+    - RRUFF(R040051)
 - sphalerite-00001
   - Face
     - Charles Palache, The minerals of Franklin and Sterling Hill, Sussex County, New Jersey (USGS Professional Paper 180, 1935)
@@ -94,6 +110,9 @@
 - sphalerite-00003
   - Face
     - Charles Palache, The minerals of Franklin and Sterling Hill, Sussex County, New Jersey (USGS Professional Paper 180, 1935)
+- spinel-00001
+  - Face
+    - 外部出典なし（指数指定プリセット）
 - titanite-00001
   - Face
     - Charles Palache, The minerals of Franklin and Sterling Hill, Sussex County, New Jersey (USGS Professional Paper 180, 1935)

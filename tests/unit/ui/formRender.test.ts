@@ -66,12 +66,15 @@ describe("ui/formRender", () => {
       l: document.createElement("input"),
     };
     const rotationAngleInput = document.createElement("input");
+    const axisOffsetInput = document.createElement("input");
 
     applyTwinRuleFieldValues(
       ruleInputs,
       { h: 1, k: 2, i: -3, l: 4 },
       rotationAngleInput,
       60,
+      axisOffsetInput,
+      0.25,
     );
 
     expect(ruleInputs.h.value).toBe("1");
@@ -79,6 +82,7 @@ describe("ui/formRender", () => {
     expect(ruleInputs.i.value).toBe("-3");
     expect(ruleInputs.l.value).toBe("4");
     expect(rotationAngleInput.value).toBe("60");
+    expect(axisOffsetInput.value).toBe("0.25");
 
     const toggleElements = {
       faceDisplayModeSelect: document.createElement("select"),

@@ -30,7 +30,7 @@ import { getFaceTextFont } from "../text/fonts.js";
  *
  * 主に扱う日本語文言:
  * - 軸長 / 軸角 / モデルサイズの入力エラー
- * - 面係数 / ミラー指数 / h + k + i = 0 の検証エラー
+ * - 面距離 / ミラー指数 / h + k + i = 0 の検証エラー
  * - 最小稜線長 / 最小面内半径 / 細長さの警告
  */
 
@@ -145,13 +145,18 @@ function collectVertices(planes) {
           [planes[j].normal.x, planes[j].normal.y, planes[j].normal.z],
           [planes[k].normal.x, planes[k].normal.y, planes[k].normal.z],
         ];
-        const point = solve3x3(rows, [1, 1, 1]);
+        const point = solve3x3(rows, [
+          planes[i].distance,
+          planes[j].distance,
+          planes[k].distance,
+        ]);
         if (!point) {
           continue;
         }
 
         const inside = planes.every(
-          (plane) => dot(plane.normal, point) <= 1 + PLANE_TOLERANCE,
+          (plane) =>
+            dot(plane.normal, point) <= plane.distance + PLANE_TOLERANCE,
         );
         if (inside) {
           points.push(point);
@@ -201,7 +206,9 @@ function buildFacePolygons(planes, vertices) {
     .map((plane) => {
       const onPlane = vertices
         .filter(
-          (vertex) => Math.abs(dot(plane.normal, vertex) - 1) < PLANE_TOLERANCE,
+          (vertex) =>
+            Math.abs(dot(plane.normal, vertex) - plane.distance) <
+            PLANE_TOLERANCE,
         )
         .map((vertex) => findVertexIndex(vertices, vertex))
         .filter((index) => index !== -1);
@@ -541,9 +548,9 @@ export function validateParameters(parameters) {
   const activeFaces = parameters.faces.filter((face) => face.enabled !== false);
 
   activeFaces.forEach((face, index) => {
-    const coefficient = Number(face.coefficient);
-    if (!Number.isFinite(coefficient) || coefficient < 0) {
-      errors.push(t("geometry.error.faceCoefficient", { index: index + 1 }));
+    const distance = Number(face.distance);
+    if (!Number.isFinite(distance)) {
+      errors.push(t("geometry.error.faceDistance", { index: index + 1 }));
     }
 
     const h = Number(face.h);
@@ -573,12 +580,6 @@ export function validateParameters(parameters) {
       Math.abs(h + k + i) > 1e-6
     ) {
       errors.push(t("geometry.error.faceFourAxisRule", { index: index + 1 }));
-    }
-
-    if (Math.abs(coefficient) < EPSILON) {
-      warnings.push(
-        t("geometry.warning.faceCoefficientZero", { index: index + 1 }),
-      );
     }
   });
 
@@ -625,9 +626,9 @@ function buildCrystalMeshDataInternal(
     .filter((face) => face.enabled !== false)
     .map((face, index) => {
       const effective = {
-        h: Number(face.h) * Number(face.coefficient),
-        k: Number(face.k) * Number(face.coefficient),
-        l: Number(face.l) * Number(face.coefficient),
+        h: Number(face.h),
+        k: Number(face.k),
+        l: Number(face.l),
       };
 
       if (
@@ -658,6 +659,7 @@ function buildCrystalMeshDataInternal(
         label: t("geometry.faceLabel", { index: index + 1 }),
         labelParts: buildFaceLabelParts(face, parameters.crystalSystem),
         normal,
+        distance: Number(face.distance),
       };
     })
     .filter(Boolean);

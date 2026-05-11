@@ -31,7 +31,7 @@ describe("ui/faceTableHandlers", () => {
         h: 1,
         k: 0,
         l: 0,
-        coefficient: 1,
+        distance: 1,
         enabled: true,
         accentColor: null,
         text: {
@@ -49,7 +49,7 @@ describe("ui/faceTableHandlers", () => {
         h: -1,
         k: 0,
         l: 0,
-        coefficient: 1,
+        distance: 1,
         enabled: true,
         accentColor: null,
         text: {
@@ -75,7 +75,7 @@ describe("ui/faceTableHandlers", () => {
           ) as HTMLElement,
           faceMobileList: document.getElementById("mobile-list") as HTMLElement,
         },
-        emptyDraftFaceFields: ["h", "k", "l", "coefficient"],
+        emptyDraftFaceFields: ["h", "k", "l", "distance"],
         commitParameters: vi.fn((mutator) => mutator(state.parameters)),
         commitNumericInput: vi.fn((rawValue, onCommit) =>
           onCommit(Number(rawValue)),
@@ -89,14 +89,14 @@ describe("ui/faceTableHandlers", () => {
           h: 0,
           k: 0,
           l: 0,
-          coefficient: 0,
+          distance: 100,
           enabled: false,
-          draftEmptyFields: ["h", "k", "l", "coefficient"],
+          draftEmptyFields: ["h", "k", "l", "distance"],
         })),
         normalizeFaceForSystem: vi.fn((face) => face),
         getEquivalentFaceGroupKey: vi.fn(() => "group-1"),
         getDraftEmptyFields: vi.fn((face) => face?.draftEmptyFields ?? []),
-        getNextCoefficientValue: vi.fn((value, direction) => value + direction),
+        getNextDistanceValue: vi.fn((value, direction) => value + direction),
         getFaceGroupStateKey: vi.fn((key) => `0::${key}`),
         renderFaceTableHeader: vi.fn(),
         renderFaceRows: vi.fn(),
@@ -115,7 +115,7 @@ describe("ui/faceTableHandlers", () => {
     context.elements.facesTableHeadRow.innerHTML = `
       <button id="app-add-face-button"></button>
       <button id="app-clear-faces-button"></button>
-      <button data-sort-field="coefficient" data-sort-direction="asc"></button>
+      <button data-sort-field="distance" data-sort-direction="asc"></button>
     `;
 
     (
@@ -135,11 +135,11 @@ describe("ui/faceTableHandlers", () => {
 
     (
       context.elements.facesTableHeadRow.querySelector(
-        '[data-sort-field="coefficient"]',
+        '[data-sort-field="distance"]',
       ) as HTMLButtonElement
     ).click();
     expect(context.state.faceSort).toEqual({
-      field: "coefficient",
+      field: "distance",
       direction: "asc",
     });
     expect(context.renderFaceTableHeader).toHaveBeenCalled();
@@ -179,8 +179,8 @@ describe("ui/faceTableHandlers", () => {
           <button class="face-index-spin-button" data-face-index-field="h" data-spin-direction="down"></button>
         </td>
         <td>
-          <input data-face-field="coefficient" value="1" />
-          <button class="coefficient-spin-button" data-spin-direction="up"></button>
+          <input data-face-field="distance" value="1" />
+          <button class="distance-spin-button" data-spin-direction="up"></button>
         </td>
         <td><button class="face-group-toggle" data-group-key="group-1"></button></td>
       </tr>
@@ -268,7 +268,7 @@ describe("ui/faceTableHandlers", () => {
     );
 
     const spinButton = context.elements.facesTableBody.querySelector(
-      ".coefficient-spin-button",
+      ".distance-spin-button",
     ) as HTMLButtonElement;
     const mouseDownEvent = new MouseEvent("mousedown", {
       bubbles: true,
@@ -277,7 +277,7 @@ describe("ui/faceTableHandlers", () => {
     spinButton.dispatchEvent(mouseDownEvent);
     expect(mouseDownEvent.defaultPrevented).toBe(true);
     spinButton.click();
-    expect(context.getNextCoefficientValue).toHaveBeenCalledWith(1, 1);
+    expect(context.getNextDistanceValue).toHaveBeenCalledWith(1, 1);
 
     const toggleButton = context.elements.facesTableBody.querySelector(
       ".face-group-toggle",
@@ -331,8 +331,8 @@ describe("ui/faceTableHandlers", () => {
       <article data-face-index="0" data-face-id="face-1" data-group-key="group-1" data-group-collapsed="false">
         <input data-face-field="enabled" type="checkbox" />
         <input data-face-field="accentColor" type="color" value="#2244aa" />
-        <input data-face-field="coefficient" value="1" />
-        <button class="coefficient-spin-button" data-spin-direction="down"></button>
+        <input data-face-field="distance" value="1" />
+        <button class="distance-spin-button" data-spin-direction="down"></button>
         <button class="toggle-face-text-button" data-face-text-toggle="true"></button>
         <input data-face-text-field="content" value="R" />
       </article>
@@ -352,7 +352,7 @@ describe("ui/faceTableHandlers", () => {
 
     (
       context.elements.faceMobileList!.querySelector(
-        ".coefficient-spin-button",
+        ".distance-spin-button",
       ) as HTMLButtonElement
     ).click();
     (
@@ -362,7 +362,7 @@ describe("ui/faceTableHandlers", () => {
     ).click();
 
     expect(context.commitParameters).toHaveBeenCalled();
-    expect(context.getNextCoefficientValue).toHaveBeenCalledWith(1, -1);
+    expect(context.getNextDistanceValue).toHaveBeenCalledWith(1, -1);
     expect(context.state.faceTextEditorsExpanded["face-1"]).toBe(true);
   });
 });

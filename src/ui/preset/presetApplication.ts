@@ -4,7 +4,6 @@ import {
 } from "../../domain/parameters.js";
 import { normalizeTwinPreviewStyleSettings } from "../../preview/previewStyleSettings.js";
 import { normalizeTwinPreviewFaceDisplayMode } from "../../preview/previewProfiles.js";
-import { isTwinEnabled } from "../../state/stateHelpers.js";
 
 type TwinParametersLike = ReturnType<typeof createDefaultTwinParameters>;
 
@@ -43,8 +42,8 @@ export function shouldApplyPresetPreviewSettings() {
 /**
  * preset を state へ反映し、必要な UI/preview 再同期 callback を呼ぶ。
  *
- * twin block を持つ preset は定義をそのまま使い、持たない preset は現在の twin 状態を
- * 温存したまま結晶データだけを取り込む。
+ * preset の結晶構成をそのまま使う。単結晶 preset は既存の双晶状態を解除し、
+ * twin 定義を持つ preset だけが双晶として反映される。
  */
 export function applyTwinPresetToState({
   state,
@@ -55,40 +54,7 @@ export function applyTwinPresetToState({
   onAfterSync,
 }: ApplyTwinPresetOptions) {
   const normalizedPreset = normalizeTwinParameters(preset.parameters);
-  const presetHasTwinDefinition =
-    Array.isArray(normalizedPreset?.twin?.crystals) &&
-    normalizedPreset.twin.crystals.length > 1;
-  const currentTwin = structuredClone(state.parameters.twin);
-  const presetCrystalFaces = Array.isArray(normalizedPreset?.twin?.crystals)
-    ? normalizedPreset.twin.crystals.map((crystal) =>
-        structuredClone(Array.isArray(crystal?.faces) ? crystal.faces : []),
-      )
-    : [];
-  const presetBaseFaces = structuredClone(
-    presetCrystalFaces.find((faces) => faces.length > 0) ??
-      (Array.isArray(normalizedPreset?.faces) ? normalizedPreset.faces : []),
-  );
-  const next = normalizeTwinParameters(
-    presetHasTwinDefinition
-      ? {
-          ...normalizedPreset,
-        }
-      : {
-          ...normalizedPreset,
-          twin: {
-            ...currentTwin,
-            enabled: isTwinEnabled(state.parameters),
-            crystals: currentTwin.crystals.map((crystal, index) => ({
-              ...crystal,
-              faces: structuredClone(
-                presetCrystalFaces[index]?.length > 0
-                  ? presetCrystalFaces[index]
-                  : presetBaseFaces,
-              ),
-            })),
-          },
-        },
-  );
+  const next = normalizeTwinParameters(normalizedPreset);
   next.presetId = preset.id;
   state.parameters = next;
   if (preset.preview && shouldApplyPreview()) {

@@ -48,12 +48,15 @@ export function applyTwinRuleFieldValues(
   rule,
   rotationAngleInput,
   rotationAngleDeg,
+  axisOffsetInput,
+  axisOffsetAmount,
 ) {
   ruleInputs.h.value = rule.h;
   ruleInputs.k.value = rule.k;
   ruleInputs.i.value = rule.i;
   ruleInputs.l.value = rule.l;
   rotationAngleInput.value = rotationAngleDeg;
+  axisOffsetInput.value = axisOffsetAmount;
 }
 
 export function applyTwinPreviewToggleValues(toggleElements, values) {

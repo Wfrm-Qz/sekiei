@@ -49,6 +49,7 @@ describe("ui/pageTranslations", () => {
       <label><span></span><select id="twin-from-crystal-select"></select></label>
       <label><span></span><select id="twin-type-select"><option></option><option></option></select></label>
       <label><span></span><input id="twin-rotation-angle-input" /></label>
+      <label><span></span><input id="twin-axis-offset-input" /></label>
       <label><span></span><select id="twin-contact-reference-axis-select"></select></label>
       <button id="app-save-button"></button>
       <button id="app-save-as-button"></button>

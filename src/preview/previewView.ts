@@ -97,7 +97,13 @@ interface TwinPreviewAxisGuideLike {
 
 interface TwinPreviewControlsStateLike {
   parameters: {
-    crystals?: { enabled?: boolean }[];
+    twin?: {
+      crystals?: {
+        enabled?: boolean;
+        twinType?: string;
+        offsets?: unknown[];
+      }[];
+    };
   };
   buildResult: TwinPreviewBuildResultLike | null;
   previewRoot: THREE.Group | null;
@@ -579,6 +585,26 @@ function expandBoxByVisiblePreviewMeshData(
   return hasBounds;
 }
 
+/** 指定 target を中心に preview bounds を収めるための半径を返す。 */
+function buildBoundsRadiusFromTarget(box: THREE.Box3, target: THREE.Vector3) {
+  if (box.isEmpty()) {
+    return 1;
+  }
+  const min = box.min;
+  const max = box.max;
+  const corners = [
+    new THREE.Vector3(min.x, min.y, min.z),
+    new THREE.Vector3(min.x, min.y, max.z),
+    new THREE.Vector3(min.x, max.y, min.z),
+    new THREE.Vector3(min.x, max.y, max.z),
+    new THREE.Vector3(max.x, min.y, min.z),
+    new THREE.Vector3(max.x, min.y, max.z),
+    new THREE.Vector3(max.x, max.y, min.z),
+    new THREE.Vector3(max.x, max.y, max.z),
+  ];
+  return Math.max(...corners.map((corner) => corner.distanceTo(target)), 1);
+}
+
 /** preview 照明 action 群を返す。 */
 export function createTwinPreviewLightingActions(
   context: TwinPreviewLightingContext,
@@ -927,7 +953,8 @@ export function createTwinPreviewControlActions(
     );
     context.camera.lookAt(orbitTarget);
     context.controls.target.copy(orbitTarget);
-    const diameter = Math.max(sphere.radius * 2, 1);
+    const targetCenteredRadius = buildBoundsRadiusFromTarget(box, orbitTarget);
+    const diameter = Math.max(targetCenteredRadius * 2, sphere.radius * 2, 1);
     const { clientWidth, clientHeight } = context.elements.previewStage;
     context.camera.zoom =
       (Math.min(clientWidth, clientHeight) / (diameter * context.fitMargin)) *

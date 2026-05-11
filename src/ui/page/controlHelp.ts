@@ -124,6 +124,7 @@ const fieldHelpTargets: FieldHelpTarget[] = [
     label: "l",
   },
   { selector: "#twin-rotation-angle-input", helpKey: "help.twin.rotation" },
+  { selector: "#twin-axis-offset-input", helpKey: "help.twin.axisOffset" },
   {
     selector: "#twin-base-face-ref-select",
     helpKey: "help.twin.baseContactFace",
@@ -383,13 +384,13 @@ function applyFaceTableHelp(root: ParentNode) {
         label: button.dataset.faceIndexField ?? "",
       });
     });
-  root.querySelectorAll<HTMLElement>(".coefficient-input").forEach((input) => {
-    setFieldHelp(input, "help.face.coefficient");
+  root.querySelectorAll<HTMLElement>(".distance-input").forEach((input) => {
+    setFieldHelp(input, "help.face.distance");
   });
   root
-    .querySelectorAll<HTMLElement>(".coefficient-spin-button")
+    .querySelectorAll<HTMLElement>(".distance-spin-button")
     .forEach((button) => {
-      setHelp(button, "help.face.coefficientStep");
+      setHelp(button, "help.face.distanceStep");
     });
   root
     .querySelectorAll<HTMLElement>("[data-face-text-field]")

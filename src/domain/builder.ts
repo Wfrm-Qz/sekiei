@@ -11,9 +11,11 @@ import {
   createReflectionMatrix,
   createRotationMatrix,
   twinAxisDirection,
+  twinAxisPlaneInterceptLength,
   twinPlaneNormal,
 } from "./crystalFrame.js";
 import { resolveContactReferenceAxisDirection } from "./contactReferenceAxis.js";
+import { getTwinAxisOffsetAmount } from "./penetrationOffsets.js";
 
 /**
  * 双晶の複数結晶を配置し、必要なら CSG 和集合して preview / export 用 meshData を返す。
@@ -355,6 +357,84 @@ function buildRuleMatrixForCrystal(parameters, crystal, validation) {
 }
 
 /**
+ * 貫入双晶の軸方向 offset を平行移動ベクトルに変換する。
+ *
+ * `amount = 1` は、双晶軸と同じ指数で distance 1 の面が双晶軸正方向と
+ * 交わる点までの距離。amount はこの基準長に対して線形に効く。
+ */
+function buildPenetrationAxisOffsetVector(parameters, crystal, validation) {
+  const amount = getTwinAxisOffsetAmount(crystal);
+  if (Math.abs(amount) < 1e-12) {
+    return new THREE.Vector3();
+  }
+
+  const axisRule = crystal?.axis ?? parameters.twin.axis;
+  const direction = twinAxisDirection(axisRule, parameters);
+  const basisLength = twinAxisPlaneInterceptLength(axisRule, parameters);
+  if (
+    !Number.isFinite(direction.lengthSq()) ||
+    direction.lengthSq() === 0 ||
+    !Number.isFinite(basisLength) ||
+    basisLength === 0
+  ) {
+    validation.errors.push(t("builder.error.invalidAxisVector"));
+    return new THREE.Vector3();
+  }
+
+  return direction.normalize().multiplyScalar(basisLength * amount);
+}
+
+function axisGuideCenter(meshData) {
+  const axisGuides = Array.isArray(meshData?.axisGuides)
+    ? meshData.axisGuides
+    : [];
+  const midpointSum = new THREE.Vector3();
+  let midpointCount = 0;
+
+  axisGuides.forEach((axis) => {
+    if (!axis?.start || !axis?.end) {
+      return;
+    }
+    const start = new THREE.Vector3(axis.start.x, axis.start.y, axis.start.z);
+    const end = new THREE.Vector3(axis.end.x, axis.end.y, axis.end.z);
+    midpointSum.add(start.add(end).multiplyScalar(0.5));
+    midpointCount += 1;
+  });
+
+  return midpointCount > 0 ? midpointSum.divideScalar(midpointCount) : null;
+}
+
+/**
+ * 貫入双晶では、生成元結晶と派生結晶の軸中心が同じ双晶軸上に乗るよう
+ * 派生結晶側を平行移動する。
+ */
+function buildPenetrationAxisCenteringVector(
+  parameters,
+  crystal,
+  parentMeshData,
+  derivedMeshData,
+  validation,
+) {
+  const parentCenter = axisGuideCenter(parentMeshData);
+  const derivedCenter = axisGuideCenter(derivedMeshData);
+  if (!parentCenter || !derivedCenter) {
+    return new THREE.Vector3();
+  }
+
+  const axisRule = crystal?.axis ?? parameters.twin.axis;
+  const direction = twinAxisDirection(axisRule, parameters);
+  if (!Number.isFinite(direction.lengthSq()) || direction.lengthSq() === 0) {
+    validation.errors.push(t("builder.error.invalidAxisVector"));
+    return new THREE.Vector3();
+  }
+
+  const unitDirection = direction.normalize();
+  const relative = derivedCenter.clone().sub(parentCenter);
+  const projected = unitDirection.multiplyScalar(relative.dot(unitDirection));
+  return projected.sub(relative);
+}
+
+/**
  * 接触双晶の派生結晶を、指定した 2 面が向かい合うように回転・平行移動する。
  *
  * 手順:
@@ -527,6 +607,52 @@ function translateMeshData(meshData, offset) {
   };
 }
 
+/** meshData の座標群を原点基準でまとめてスケーリングする。 */
+function scaleMeshData(meshData, scaleFactor) {
+  if (!meshData || scaleFactor === 1) {
+    return meshData;
+  }
+
+  return {
+    ...meshData,
+    positions: meshData.positions.map((value) => value * scaleFactor),
+    vertices: (meshData.vertices ?? []).map((vertex) => ({
+      x: vertex.x * scaleFactor,
+      y: vertex.y * scaleFactor,
+      z: vertex.z * scaleFactor,
+    })),
+    faces: (meshData.faces ?? []).map((face) => ({
+      ...face,
+      vertices: (face.vertices ?? []).map((vertex) => ({
+        x: vertex.x * scaleFactor,
+        y: vertex.y * scaleFactor,
+        z: vertex.z * scaleFactor,
+      })),
+    })),
+    axisGuides: (meshData.axisGuides ?? []).map((axis) => ({
+      ...axis,
+      start: {
+        x: axis.start.x * scaleFactor,
+        y: axis.start.y * scaleFactor,
+        z: axis.start.z * scaleFactor,
+      },
+      end: {
+        x: axis.end.x * scaleFactor,
+        y: axis.end.y * scaleFactor,
+        z: axis.end.z * scaleFactor,
+      },
+    })),
+  };
+}
+
+/** preview 表示用に、meshData を最終 model size と同じ座標系へ移す。 */
+function transformPreviewMeshData(meshData, scaleFactor, centeringOffset) {
+  return translateMeshData(
+    scaleMeshData(meshData, scaleFactor),
+    centeringOffset,
+  );
+}
+
 /** axis guide の start/end も meshData と同じ比率でスケールする。 */
 function scaleAxisGuides(meshData, scaleFactor) {
   if (!meshData || !Array.isArray(meshData.axisGuides) || scaleFactor === 1) {
@@ -658,25 +784,27 @@ function buildFallbackResult({
 
   const finalGeometry = previewFinalGeometry.clone();
   scaleGeometryInPlace(finalGeometry, scaleFactor);
-  const previewCenteringOffset = buildCenteringOffset(previewFinalGeometry);
-  translateGeometryInPlace(previewFinalGeometry, previewCenteringOffset);
-  crystalPreviewGeometries
-    .filter(Boolean)
-    .forEach((geometry) =>
-      translateGeometryInPlace(geometry, previewCenteringOffset),
-    );
-  crystalStlCompositeGeometries
-    .filter(Boolean)
-    .forEach((geometry) =>
-      translateGeometryInPlace(geometry, previewCenteringOffset),
-    );
   const finalCenteringOffset = buildCenteringOffset(finalGeometry);
   translateGeometryInPlace(finalGeometry, finalCenteringOffset);
+  scaleGeometryInPlace(previewFinalGeometry, scaleFactor);
+  translateGeometryInPlace(previewFinalGeometry, finalCenteringOffset);
+  crystalPreviewGeometries.filter(Boolean).forEach((geometry) => {
+    scaleGeometryInPlace(geometry, scaleFactor);
+    translateGeometryInPlace(geometry, finalCenteringOffset);
+  });
+  crystalStlCompositeGeometries.filter(Boolean).forEach((geometry) => {
+    scaleGeometryInPlace(geometry, scaleFactor);
+    translateGeometryInPlace(geometry, finalCenteringOffset);
+  });
   const translatedCrystalPreviewMeshData = alignedCrystalMeshData.map(
     (meshData) =>
       meshData
         ? scaleAxisGuides(
-            translateMeshData(meshData, previewCenteringOffset),
+            transformPreviewMeshData(
+              meshData,
+              scaleFactor,
+              finalCenteringOffset,
+            ),
             1.5,
           )
         : null,
@@ -685,7 +813,11 @@ function buildFallbackResult({
     (meshData) =>
       meshData
         ? scaleAxisGuides(
-            translateMeshData(meshData, previewCenteringOffset),
+            transformPreviewMeshData(
+              meshData,
+              scaleFactor,
+              finalCenteringOffset,
+            ),
             1.5,
           )
         : null,
@@ -943,6 +1075,46 @@ export function buildTwinMeshData(parameters, options = {}) {
           index,
         );
       }
+    } else {
+      const centeringOffset = buildPenetrationAxisCenteringVector(
+        parameters,
+        build.crystal,
+        parentBuild.placedMeshData,
+        placedMeshData,
+        validation,
+      );
+      if (centeringOffset.lengthSq() > 0) {
+        placedMeshData = translateMeshData(placedMeshData, centeringOffset);
+        previewPlacedMeshData = translateMeshData(
+          previewPlacedMeshData,
+          centeringOffset,
+        );
+        if (stlCompositePlacedMeshData) {
+          stlCompositePlacedMeshData = translateMeshData(
+            stlCompositePlacedMeshData,
+            centeringOffset,
+          );
+        }
+      }
+
+      const offset = buildPenetrationAxisOffsetVector(
+        parameters,
+        build.crystal,
+        validation,
+      );
+      if (offset.lengthSq() > 0) {
+        placedMeshData = translateMeshData(placedMeshData, offset);
+        previewPlacedMeshData = translateMeshData(
+          previewPlacedMeshData,
+          offset,
+        );
+        if (stlCompositePlacedMeshData) {
+          stlCompositePlacedMeshData = translateMeshData(
+            stlCompositePlacedMeshData,
+            offset,
+          );
+        }
+      }
     }
 
     build.placedMeshData = placedMeshData;
@@ -1011,6 +1183,8 @@ export function buildTwinMeshData(parameters, options = {}) {
 
     const finalGeometry = previewFinalGeometry.clone();
     scaleGeometryInPlace(finalGeometry, scaleFactor);
+    const finalCenteringOffset = buildCenteringOffset(finalGeometry);
+    translateGeometryInPlace(finalGeometry, finalCenteringOffset);
     const crystalPreviewGeometries = crystalBuilds.map((build, index) =>
       (index === 0 || build?.crystal?.enabled !== false) &&
       (build?.previewPlacedMeshData ?? build?.placedMeshData)
@@ -1027,27 +1201,24 @@ export function buildTwinMeshData(parameters, options = {}) {
     );
     const basePreviewGeometry = crystalPreviewGeometries[0] ?? null;
     const derivedPreviewGeometry = crystalPreviewGeometries[1] ?? null;
-    const previewCenteringOffset = buildCenteringOffset(previewFinalGeometry);
-    translateGeometryInPlace(previewFinalGeometry, previewCenteringOffset);
-    crystalPreviewGeometries
-      .filter(Boolean)
-      .forEach((geometry) =>
-        translateGeometryInPlace(geometry, previewCenteringOffset),
-      );
-    crystalStlCompositeGeometries
-      .filter(Boolean)
-      .forEach((geometry) =>
-        translateGeometryInPlace(geometry, previewCenteringOffset),
-      );
-    const finalCenteringOffset = buildCenteringOffset(finalGeometry);
-    translateGeometryInPlace(finalGeometry, finalCenteringOffset);
+    scaleGeometryInPlace(previewFinalGeometry, scaleFactor);
+    translateGeometryInPlace(previewFinalGeometry, finalCenteringOffset);
+    crystalPreviewGeometries.filter(Boolean).forEach((geometry) => {
+      scaleGeometryInPlace(geometry, scaleFactor);
+      translateGeometryInPlace(geometry, finalCenteringOffset);
+    });
+    crystalStlCompositeGeometries.filter(Boolean).forEach((geometry) => {
+      scaleGeometryInPlace(geometry, scaleFactor);
+      translateGeometryInPlace(geometry, finalCenteringOffset);
+    });
     const crystalPreviewMeshData = crystalBuilds.map((build, index) =>
       (index === 0 || build?.crystal?.enabled !== false) &&
       (build?.previewPlacedMeshData ?? build?.placedMeshData)
         ? scaleAxisGuides(
-            translateMeshData(
+            transformPreviewMeshData(
               build.previewPlacedMeshData ?? build.placedMeshData,
-              previewCenteringOffset,
+              scaleFactor,
+              finalCenteringOffset,
             ),
             1.5,
           )
@@ -1057,9 +1228,10 @@ export function buildTwinMeshData(parameters, options = {}) {
       (index === 0 || build?.crystal?.enabled !== false) &&
       build?.stlCompositePlacedMeshData
         ? scaleAxisGuides(
-            translateMeshData(
+            transformPreviewMeshData(
               build.stlCompositePlacedMeshData,
-              previewCenteringOffset,
+              scaleFactor,
+              finalCenteringOffset,
             ),
             1.5,
           )

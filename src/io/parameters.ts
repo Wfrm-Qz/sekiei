@@ -33,6 +33,7 @@ export const JSON_IMPORT_LIMITS = Object.freeze({
   maxAxisLength: 1_000,
   maxSizeMm: 1_000,
   maxMillerIndexAbs: 1_000,
+  maxFaceDistance: 1_000,
   maxCoefficient: 1_000,
   maxRotationAngleDeg: 360,
 });
@@ -231,6 +232,10 @@ function validateFaceShape(raw, path, crystalSystem) {
       max: JSON_IMPORT_LIMITS.maxMillerIndexAbs,
     });
   }
+  validateOptionalNumberField(raw.distance, `${path}.distance`, {
+    min: -JSON_IMPORT_LIMITS.maxFaceDistance,
+    max: JSON_IMPORT_LIMITS.maxFaceDistance,
+  });
   validateOptionalNumberField(raw.coefficient, `${path}.coefficient`, {
     min: 0,
     max: JSON_IMPORT_LIMITS.maxCoefficient,
@@ -426,7 +431,10 @@ export function normalizeParameters(raw) {
               k: toNumber(face?.k, 0),
               i: toNumber(face?.i, -1),
               l: toNumber(face?.l, 0),
-              coefficient: toNumber(face?.coefficient, 1),
+              distance: face?.distance,
+              coefficient: face?.coefficient,
+              enabled:
+                typeof face?.enabled === "boolean" ? face.enabled : undefined,
               accentColor: normalizeFaceAccentColor(face?.accentColor),
               text: normalizeFaceText(face?.text),
             }),
@@ -478,7 +486,8 @@ export function serializeParameters(parameters) {
         h: number;
         k: number;
         l: number;
-        coefficient: number;
+        distance: number;
+        enabled?: boolean;
         accentColor?: string;
         i?: number;
         text: {
@@ -494,7 +503,8 @@ export function serializeParameters(parameters) {
         h: Number(face.h),
         k: Number(face.k),
         l: Number(face.l),
-        coefficient: Number(face.coefficient),
+        distance: Number(face.distance),
+        ...(face.enabled === false ? { enabled: false } : {}),
         ...(normalizeFaceAccentColor(face.accentColor)
           ? { accentColor: normalizeFaceAccentColor(face.accentColor) }
           : {}),

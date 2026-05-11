@@ -24,7 +24,7 @@ describe("domain/parameters/normalize", () => {
               h: 1,
               k: 0,
               l: 0,
-              coefficient: 1,
+              distance: 1,
               enabled: true,
               accentColor: "#3366cc",
             },
@@ -40,10 +40,16 @@ describe("domain/parameters/normalize", () => {
               axis: { h: 1, k: 1, l: 1 },
               rotationAngleDeg: 60,
             },
+            offsets: [
+              {
+                kind: "axis",
+                basis: "twin-axis",
+                amount: 0.25,
+                unit: "axis-plane-intercept",
+              },
+            ],
           },
-          faces: [
-            { id: "f2", h: -1, k: 0, l: 0, coefficient: 1, enabled: true },
-          ],
+          faces: [{ id: "f2", h: -1, k: 0, l: 0, distance: 1, enabled: true }],
         },
       ],
     });
@@ -51,6 +57,14 @@ describe("domain/parameters/normalize", () => {
     expect(normalized.twin.enabled).toBe(true);
     expect(normalized.twin.crystals).toHaveLength(2);
     expect(normalized.twin.crystals[1].from).toBe(0);
+    expect(normalized.twin.crystals[1].offsets).toEqual([
+      {
+        kind: "axis",
+        basis: "twin-axis",
+        amount: 0.25,
+        unit: "axis-plane-intercept",
+      },
+    ]);
     expect(normalized.twin.crystals[0].faces[0].accentColor).toBe("#3366cc");
   });
 

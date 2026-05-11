@@ -14,7 +14,7 @@ const EXPECTED_SCREENSHOT_LINKS = [
   "./images/user-manual/face-list-table.png",
   "./images/user-manual/face-list-mobile-card.png",
   "./images/user-manual/face-list-add-face.png",
-  "./images/user-manual/face-list-index-coefficient.png",
+  "./images/user-manual/face-list-index-distance.png",
   "./images/user-manual/face-list-hidden-face.png",
   "./images/user-manual/face-list-expanded-row.png",
   "./images/user-manual/face-list-crystal-tabs.png",
@@ -101,7 +101,7 @@ describe("user manual documentation", () => {
     expect(manual).toContain("face-list-overview.png");
     expect(manual).toContain("face-list-table.png");
     expect(manual).toContain("face-list-mobile-card.png");
-    expect(manual).toContain("face-list-index-coefficient.png");
+    expect(manual).toContain("face-list-index-distance.png");
     expect(manual).toContain("face-list-hidden-face.png");
     expect(manual).toContain("face-list-expanded-row.png");
     expect(manual).toContain("face-list-add-face.png");
@@ -110,9 +110,10 @@ describe("user manual documentation", () => {
     expect(manual).toContain("a 軸の中心に近い位置");
     expect(manual).toContain("`0` の場合、その面は b 軸とは交わりません");
     expect(manual).toContain("負の場合は c 軸の負側");
-    expect(manual).toContain("係数の考え方");
+    expect(manual).toContain("距離の考え方");
     expect(manual).toContain("基本的には面が大きくなります");
     expect(manual).toContain("基本的には面が小さくなります");
+    expect(manual).toContain("閉じた立体になる場合だけ使えます");
     expect(manual).toContain("i が出る結晶系");
     expect(manual).toContain("`i` は直接入力できず");
     expect(manual).toContain(
@@ -130,7 +131,7 @@ describe("user manual documentation", () => {
     expect(manual).toContain("face-list-overview.png");
     expect(manual).toContain("face-list-table.png");
     expect(manual).toContain("face-list-mobile-card.png");
-    expect(manual).toContain("face-list-index-coefficient.png");
+    expect(manual).toContain("face-list-index-distance.png");
     expect(manual).toContain("face-list-hidden-face.png");
     expect(manual).toContain("face-list-expanded-row.png");
     expect(manual).toContain("face-list-add-face.png");
@@ -143,9 +144,10 @@ describe("user manual documentation", () => {
     expect(manual).toContain(
       "Positive values intersect the positive side of the c axis; negative values intersect the negative side",
     );
-    expect(manual).toContain("Understanding the Coefficient");
+    expect(manual).toContain("Understanding Distance");
     expect(manual).toContain("the face itself becomes larger");
     expect(manual).toContain("the face itself becomes smaller");
+    expect(manual).toContain("form a closed solid");
     expect(manual).toContain("Crystal Systems That Show i");
     expect(manual).toContain("`i` is read-only");
     expect(manual).toContain("you do not need to adjust `i` yourself");

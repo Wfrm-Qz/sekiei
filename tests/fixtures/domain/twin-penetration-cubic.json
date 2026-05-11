@@ -36,7 +36,7 @@
             "h": 1,
             "k": 1,
             "l": 1,
-            "coefficient": 1.0,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "",
@@ -53,7 +53,7 @@
             "h": -1,
             "k": 1,
             "l": 1,
-            "coefficient": 1.0,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "",
@@ -70,7 +70,7 @@
             "h": 1,
             "k": -1,
             "l": 1,
-            "coefficient": 1.0,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "",
@@ -87,7 +87,7 @@
             "h": 1,
             "k": 1,
             "l": -1,
-            "coefficient": 1.0,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "",
@@ -104,7 +104,7 @@
             "h": -1,
             "k": -1,
             "l": 1,
-            "coefficient": 1.0,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "",
@@ -121,7 +121,7 @@
             "h": -1,
             "k": 1,
             "l": -1,
-            "coefficient": 1.0,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "",
@@ -138,7 +138,7 @@
             "h": 1,
             "k": -1,
             "l": -1,
-            "coefficient": 1.0,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "",
@@ -155,7 +155,7 @@
             "h": -1,
             "k": -1,
             "l": -1,
-            "coefficient": 1.0,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "",
@@ -179,7 +179,7 @@
             "h": 1,
             "k": 1,
             "l": 1,
-            "coefficient": 1.0,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "",
@@ -196,7 +196,7 @@
             "h": -1,
             "k": 1,
             "l": 1,
-            "coefficient": 1.0,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "",
@@ -213,7 +213,7 @@
             "h": 1,
             "k": -1,
             "l": 1,
-            "coefficient": 1.0,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "",
@@ -230,7 +230,7 @@
             "h": 1,
             "k": 1,
             "l": -1,
-            "coefficient": 1.0,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "",
@@ -247,7 +247,7 @@
             "h": -1,
             "k": -1,
             "l": 1,
-            "coefficient": 1.0,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "",
@@ -264,7 +264,7 @@
             "h": -1,
             "k": 1,
             "l": -1,
-            "coefficient": 1.0,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "",
@@ -281,7 +281,7 @@
             "h": 1,
             "k": -1,
             "l": -1,
-            "coefficient": 1.0,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "",
@@ -298,7 +298,7 @@
             "h": -1,
             "k": -1,
             "l": -1,
-            "coefficient": 1.0,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "",

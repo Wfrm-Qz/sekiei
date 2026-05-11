@@ -74,7 +74,7 @@ function normalizeRuleIndexes(
       k: toNumber(raw?.k, 0),
       i: toNumber(raw?.i, 0),
       l: toNumber(raw?.l, 1),
-      coefficient: 1,
+      distance: 1,
     }),
     systemId,
   );
@@ -102,7 +102,7 @@ function normalizeFaces(
         ...(Array.isArray(face?.draftEmptyFields)
           ? {
               draftEmptyFields: face.draftEmptyFields.filter((field) =>
-                ["h", "k", "l", "coefficient"].includes(String(field)),
+                ["h", "k", "l", "distance"].includes(String(field)),
               ),
             }
           : {}),
@@ -110,8 +110,9 @@ function normalizeFaces(
         k: toNumber(face?.k, 0),
         i: toNumber(face?.i, -1),
         l: toNumber(face?.l, 0),
-        coefficient: toNumber(face?.coefficient, 1),
-        enabled: typeof face?.enabled === "boolean" ? face.enabled : true,
+        distance: face?.distance,
+        coefficient: face?.coefficient,
+        enabled: typeof face?.enabled === "boolean" ? face.enabled : undefined,
         accentColor: normalizeFaceAccentColor(face?.accentColor),
         text: face?.text,
       }),
@@ -154,6 +155,41 @@ function normalizeFaceRef(
   }
 
   return fallbackFaceRef(faces, fallbackIndex);
+}
+
+/** 貫入双晶の offset 指定を、MVP で扱う軸方向 offset だけへ正規化する。 */
+function normalizeTwinOffsets(
+  rawOffsets: unknown,
+): TwinCrystalShape["offsets"] {
+  if (!Array.isArray(rawOffsets)) {
+    return [];
+  }
+
+  return rawOffsets
+    .filter(isPlainRecord)
+    .filter(
+      (offset) =>
+        (offset.kind == null || offset.kind === "axis") &&
+        (offset.basis == null || offset.basis === "twin-axis") &&
+        (offset.unit == null || offset.unit === "axis-plane-intercept"),
+    )
+    .map((offset) => ({
+      kind: "axis" as const,
+      basis: "twin-axis" as const,
+      amount: toNumber(offset.amount, 0),
+      unit: "axis-plane-intercept" as const,
+    }));
+}
+
+/** 保存案の揺れを吸収し、正式な `offsets` 配列を優先して読む。 */
+function readRawTwinOffsets(rawCrystal: Record<string, unknown> | undefined) {
+  if (Array.isArray(rawCrystal?.offsets)) {
+    return rawCrystal.offsets;
+  }
+  if (Array.isArray(rawCrystal?.offset)) {
+    return rawCrystal.offset;
+  }
+  return [];
 }
 
 /** 結晶 1 個分の定義を正規化する。 */
@@ -201,6 +237,7 @@ function normalizeCrystalDefinition(
       systemId,
     ),
     rotationAngleDeg: toNumber(rawCrystal?.rotationAngleDeg, 60),
+    offsets: normalizeTwinOffsets(readRawTwinOffsets(rawCrystal)),
     contact: {
       baseFaceRef: normalizeFaceRef(rawContact.baseFaceRef, sourceFaces, 0),
       derivedFaceRef: normalizeFaceRef(rawContact.derivedFaceRef, faces, 0),
@@ -238,6 +275,7 @@ function buildDefaultTwinCrystals(
         crystalSystem,
       ),
       rotationAngleDeg: 60,
+      offsets: [],
       contact: {
         baseFaceRef: fallbackFaceRef(baseCrystalFaces, 0),
         derivedFaceRef: fallbackFaceRef(baseCrystalFaces, 0),
@@ -258,6 +296,7 @@ function buildDefaultTwinCrystals(
         crystalSystem,
       ),
       rotationAngleDeg: 60,
+      offsets: [],
       contact: {
         baseFaceRef: fallbackFaceRef(baseCrystalFaces, 0),
         derivedFaceRef: fallbackFaceRef(derivedCrystalFaces, 1),
@@ -441,6 +480,7 @@ export function normalizeTwinParameters(raw: unknown) {
       plane: normalizeRuleIndexes(crystal.plane, next.crystalSystem),
       axis: normalizeRuleIndexes(crystal.axis, next.crystalSystem),
       rotationAngleDeg: toNumber(crystal.rotationAngleDeg, 60),
+      offsets: index === 0 ? [] : normalizeTwinOffsets(crystal.offsets),
       contact: {
         baseFaceRef: normalizeFaceRef(
           crystal.contact?.baseFaceRef,

@@ -68,6 +68,7 @@ describe("ui/crystalConfigHandlers", () => {
       <input id="rule-k" />
       <input id="rule-l" />
       <input id="rotation" />
+      <input id="axis-offset" />
       <select id="from"><option value="0">0</option></select>
       <select id="base-face"><option value="face-1">face-1</option></select>
       <select id="derived-face"><option value="face-2">face-2</option></select>
@@ -126,6 +127,9 @@ describe("ui/crystalConfigHandlers", () => {
         },
         rotationAngleInput: document.getElementById(
           "rotation",
+        ) as HTMLInputElement,
+        axisOffsetInput: document.getElementById(
+          "axis-offset",
         ) as HTMLInputElement,
         fromCrystalSelect: document.getElementById("from") as HTMLSelectElement,
         baseFaceRefSelect: document.getElementById(
@@ -187,6 +191,17 @@ describe("ui/crystalConfigHandlers", () => {
     context.elements.stlSplitPlaneInputs.h.value = "2";
     context.elements.stlSplitPlaneInputs.h.dispatchEvent(new Event("change"));
     expect(context.state.stlSplit.plane.h).toBe(2);
+
+    context.elements.axisOffsetInput.value = "0.5";
+    context.elements.axisOffsetInput.dispatchEvent(new Event("change"));
+    expect(context.state.parameters.twin.crystals[1].offsets).toEqual([
+      {
+        kind: "axis",
+        basis: "twin-axis",
+        amount: 0.5,
+        unit: "axis-plane-intercept",
+      },
+    ]);
 
     context.elements.twinTypeSelect.value = "contact";
     context.elements.twinTypeSelect.dispatchEvent(new Event("change"));

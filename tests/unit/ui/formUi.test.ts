@@ -23,6 +23,7 @@ describe("ui/formUi", () => {
       <textarea id="metadata-full-reference"></textarea>
       <input id="size" />
       <input id="stl-split-enabled" type="checkbox" />
+      <div id="stl-split-fields"></div>
       <input id="stl-split-h" />
       <input id="stl-split-k" />
       <input id="stl-split-i" />
@@ -34,6 +35,7 @@ describe("ui/formUi", () => {
       <select id="derived-face"></select>
       <select id="contact-axis"></select>
       <input id="rotation" />
+      <input id="axis-offset" />
       <div id="head-row"></div>
       <div id="twin-settings-card"></div>
       <div id="twin-settings-note"></div>
@@ -79,6 +81,7 @@ describe("ui/formUi", () => {
       },
       sizeInput: document.getElementById("size"),
       stlSplitEnabledInput: document.getElementById("stl-split-enabled"),
+      stlSplitPlaneFields: document.getElementById("stl-split-fields"),
       stlSplitPlaneInputs: {
         h: document.getElementById("stl-split-h"),
         k: document.getElementById("stl-split-k"),
@@ -108,6 +111,7 @@ describe("ui/formUi", () => {
       derivedFaceRefSelect: document.getElementById("derived-face"),
       contactReferenceAxisSelect: document.getElementById("contact-axis"),
       rotationAngleInput: document.getElementById("rotation"),
+      axisOffsetInput: document.getElementById("axis-offset"),
       facesTableHeadRow: document.getElementById("head-row"),
       twinSettingsCard: document.getElementById("twin-settings-card"),
       twinSettingsNote: document.getElementById("twin-settings-note"),
@@ -229,7 +233,24 @@ describe("ui/formUi", () => {
     expect(context.state.presetQuery).toBe("Custom");
   });
 
-  it("applyTwinPreset は text preset 適用時も現 crystal 数を維持しつつ preset face text を各 crystal へ配る", () => {
+  it("renderFormValues は STL 分割が有効な時だけ指数入力欄を表示する", () => {
+    const context = createContext();
+    const actions = createPageUiActions(context);
+    const fields = context.elements.stlSplitPlaneFields as HTMLElement;
+
+    actions.renderFormValues();
+
+    expect(fields.hidden).toBe(true);
+    expect(fields.style.display).toBe("none");
+
+    context.state.stlSplit.enabled = true;
+    actions.renderFormValues();
+
+    expect(fields.hidden).toBe(false);
+    expect(fields.style.display).toBe("");
+  });
+
+  it("applyTwinPreset は単結晶 preset 適用時に既存の双晶状態を引き継がない", () => {
     const context = createContext();
     const actions = createPageUiActions(context);
     const preset = {
@@ -286,14 +307,11 @@ describe("ui/formUi", () => {
       id: "derived-2",
       from: 1,
     });
-    const crystalCountBeforeApply =
-      context.state.parameters.twin.crystals.length;
 
     actions.applyTwinPreset(preset);
 
-    expect(context.state.parameters.twin.crystals).toHaveLength(
-      crystalCountBeforeApply,
-    );
+    expect(context.state.parameters.twin.enabled).toBe(false);
+    expect(context.state.parameters.twin.crystals).toHaveLength(1);
     expect(context.state.parameters.presetId).toBe("text-preset");
     expect(context.state.activeFaceCrystalIndex).toBe(0);
     expect(context.state.pendingPreviewRefit).toBe(true);
@@ -303,8 +321,8 @@ describe("ui/formUi", () => {
       plane: { h: 3, k: 2, l: 1 },
     });
     expect(
-      context.state.parameters.twin.crystals.every((crystal) =>
-        crystal.faces.some((face) => String(face.text?.content ?? "") === "A"),
+      context.state.parameters.twin.crystals[0]?.faces.some(
+        (face) => String(face.text?.content ?? "") === "A",
       ),
     ).toBe(true);
   });

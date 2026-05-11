@@ -7,7 +7,7 @@ import enFaceListAddFaceImageUrl from "../../docs/images/user-manual/en/face-lis
 import enFaceListCrystalTabsImageUrl from "../../docs/images/user-manual/en/face-list-crystal-tabs.png";
 import enFaceListExpandedRowImageUrl from "../../docs/images/user-manual/en/face-list-expanded-row.png";
 import enFaceListHiddenFaceImageUrl from "../../docs/images/user-manual/en/face-list-hidden-face.png";
-import enFaceListIndexCoefficientImageUrl from "../../docs/images/user-manual/en/face-list-index-coefficient.png";
+import enFaceListIndexDistanceImageUrl from "../../docs/images/user-manual/en/face-list-index-distance.png";
 import enFaceListMobileCardImageUrl from "../../docs/images/user-manual/en/face-list-mobile-card.png";
 import enFaceListOverviewImageUrl from "../../docs/images/user-manual/en/face-list-overview.png";
 import enFaceListTableImageUrl from "../../docs/images/user-manual/en/face-list-table.png";
@@ -19,7 +19,7 @@ import faceListAddFaceImageUrl from "../../docs/images/user-manual/face-list-add
 import faceListCrystalTabsImageUrl from "../../docs/images/user-manual/face-list-crystal-tabs.png";
 import faceListExpandedRowImageUrl from "../../docs/images/user-manual/face-list-expanded-row.png";
 import faceListHiddenFaceImageUrl from "../../docs/images/user-manual/face-list-hidden-face.png";
-import faceListIndexCoefficientImageUrl from "../../docs/images/user-manual/face-list-index-coefficient.png";
+import faceListIndexDistanceImageUrl from "../../docs/images/user-manual/face-list-index-distance.png";
 import faceListMobileCardImageUrl from "../../docs/images/user-manual/face-list-mobile-card.png";
 import faceListOverviewImageUrl from "../../docs/images/user-manual/face-list-overview.png";
 import faceListTableImageUrl from "../../docs/images/user-manual/face-list-table.png";
@@ -69,8 +69,8 @@ const USER_MANUAL_IMAGE_URLS: Record<SupportedLocale, Map<string, string>> = {
       faceListMobileCardImageUrl,
     ],
     [
-      "./images/user-manual/face-list-index-coefficient.png",
-      faceListIndexCoefficientImageUrl,
+      "./images/user-manual/face-list-index-distance.png",
+      faceListIndexDistanceImageUrl,
     ],
     [
       "./images/user-manual/face-list-hidden-face.png",
@@ -102,8 +102,8 @@ const USER_MANUAL_IMAGE_URLS: Record<SupportedLocale, Map<string, string>> = {
       enFaceListMobileCardImageUrl,
     ],
     [
-      "./images/user-manual/en/face-list-index-coefficient.png",
-      enFaceListIndexCoefficientImageUrl,
+      "./images/user-manual/en/face-list-index-distance.png",
+      enFaceListIndexDistanceImageUrl,
     ],
     [
       "./images/user-manual/en/face-list-hidden-face.png",

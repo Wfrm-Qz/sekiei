@@ -33,6 +33,7 @@ import {
   createDefaultTwinAxisRule,
   createDefaultTwinParameters,
 } from "../domain/parameters.js";
+import { getTwinAxisOffsetAmount } from "../domain/penetrationOffsets.js";
 import type { TwinStlSplitSettings } from "../state/stlSplitSettings.js";
 import { applySettingsPanelViewModel } from "./settingsPanel.js";
 import {
@@ -66,7 +67,7 @@ import {
  *
  * 主に扱う日本語文言:
  * - 一致するプリセットはありません / カスタム入力 / 自動
- * - 面 {index} (...) / 係数 / 面を全削除 / 面を追加
+ * - 面 {index} (...) / 距離 / 面を全削除 / 面を追加
  * - 生成元結晶の接触面 / この結晶の接触面 / 双晶則を設定します
  * - 結晶を追加 / 結晶タブの操作
  */
@@ -142,6 +143,7 @@ export function createPageUiActions(context: PageUiActionContext) {
       sizeInput: context.elements.sizeInput as HTMLInputElement,
       stlSplitEnabledInput: context.elements
         .stlSplitEnabledInput as HTMLInputElement,
+      stlSplitPlaneFields: context.elements.stlSplitPlaneFields as HTMLElement,
       stlSplitPlaneInputs: {
         h: context.elements.stlSplitPlaneInputs.h as HTMLInputElement,
         k: context.elements.stlSplitPlaneInputs.k as HTMLInputElement,
@@ -159,6 +161,7 @@ export function createPageUiActions(context: PageUiActionContext) {
         .contactReferenceAxisSelect as HTMLSelectElement,
       rotationAngleInput: context.elements
         .rotationAngleInput as HTMLInputElement,
+      axisOffsetInput: context.elements.axisOffsetInput as HTMLInputElement,
     };
   }
 
@@ -277,8 +280,8 @@ export function createPageUiActions(context: PageUiActionContext) {
   /**
    * preset を state へ反映し、フォームと preview を同期する。
    *
-   * twin block を持つ preset は定義をそのまま使い、持たない preset は現在の twin 状態を
-   * 温存したまま結晶データだけを取り込む。
+   * preset の結晶構成をそのまま使う。単結晶 preset は既存の双晶状態を解除し、
+   * twin 定義を持つ preset だけが双晶として反映される。
    */
   function applyTwinPreset(
     preset: NonNullable<ReturnType<typeof getPresetById>>,
@@ -299,7 +302,7 @@ export function createPageUiActions(context: PageUiActionContext) {
         useFourAxis: usesFourAxisMiller(context.state.parameters.crystalSystem),
         sort: context.state.faceSort ?? null,
         labels: {
-          coefficient: t("common.coefficient"),
+          distance: t("common.distance"),
           deleteAllFaces: t("common.deleteAllFaces"),
           addFace: t("common.addFace"),
           sortAscending: (label) => t("common.sortAscending", { label }),
@@ -514,8 +517,12 @@ export function createPageUiActions(context: PageUiActionContext) {
     typedElements.crystalSystemSelect.value =
       context.state.parameters.crystalSystem;
     typedElements.sizeInput.value = String(context.state.parameters.sizeMm);
-    typedElements.stlSplitEnabledInput.checked =
-      context.state.stlSplit.enabled === true;
+    const stlSplitEnabled = context.state.stlSplit.enabled === true;
+    typedElements.stlSplitEnabledInput.checked = stlSplitEnabled;
+    typedElements.stlSplitPlaneFields.hidden = !stlSplitEnabled;
+    typedElements.stlSplitPlaneFields.style.display = stlSplitEnabled
+      ? ""
+      : "none";
     typedElements.stlSplitPlaneInputs.h.value = String(
       context.state.stlSplit.plane?.h ?? 1,
     );
@@ -563,12 +570,14 @@ export function createPageUiActions(context: PageUiActionContext) {
         ? (activeCrystal?.axis ??
           createDefaultTwinAxisRule(context.state.parameters.crystalSystem))
         : (activeCrystal?.plane ??
-          createFace({ h: 1, k: 1, l: 1, coefficient: 1 }));
+          createFace({ h: 1, k: 1, l: 1, distance: 1 }));
     applyTwinRuleFieldValues(
       context.elements.twinRuleInputs,
       rule,
       typedElements.rotationAngleInput,
       activeCrystal?.rotationAngleDeg ?? 60,
+      typedElements.axisOffsetInput,
+      getTwinAxisOffsetAmount(activeCrystal),
     );
     applyTwinPreviewToggleValues(context.elements, {
       faceDisplayMode: context.state.faceDisplayMode,

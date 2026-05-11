@@ -28,7 +28,7 @@ describe("ui/faceTable", () => {
       collapse: "折り畳み",
       faceTextToggleOpen: "文字",
       faceTextToggleClose: "閉じる",
-      coefficient: "係数",
+      distance: "距離",
       faceTextContent: "刻印文字",
       faceTextFont: "フォント",
       faceTextFontSize: "文字サイズ",
@@ -113,21 +113,21 @@ describe("ui/faceTable", () => {
     const editableFaces = [
       {
         ...normalizeFaceForSystem(
-          createFace({ h: 0, k: 0, l: 0, coefficient: 0, enabled: false }),
+          createFace({ h: 0, k: 0, l: 0, distance: 100, enabled: false }),
           "cubic",
         ),
         id: "draft-a",
         draftGroupKey: "draft-a",
-        draftEmptyFields: ["h", "k", "l", "coefficient"],
+        draftEmptyFields: ["h", "k", "l", "distance"],
       },
       {
         ...normalizeFaceForSystem(
-          createFace({ h: 0, k: 0, l: 0, coefficient: 0, enabled: false }),
+          createFace({ h: 0, k: 0, l: 0, distance: 100, enabled: false }),
           "cubic",
         ),
         id: "draft-b",
         draftGroupKey: "draft-b",
-        draftEmptyFields: ["h", "k", "l", "coefficient"],
+        draftEmptyFields: ["h", "k", "l", "distance"],
       },
     ];
 
@@ -153,11 +153,11 @@ describe("ui/faceTable", () => {
   it("同じソート値の行は元 index を tie-break に使って順序を安定化する", () => {
     const left = {
       index: 1,
-      face: { h: 1, k: 0, l: 0, coefficient: 1 },
+      face: { h: 1, k: 0, l: 0, distance: 1 },
     };
     const right = {
       index: 4,
-      face: { h: 1, k: 0, l: 0, coefficient: 1 },
+      face: { h: 1, k: 0, l: 0, distance: 1 },
     };
 
     expect(compareTwinFaceItemsForSort(left, right, "h", "asc")).toBeLessThan(
@@ -175,11 +175,11 @@ describe("ui/faceTable", () => {
         items: [
           {
             index: 0,
-            face: { h: 1, k: 0, l: 0, coefficient: 1 },
+            face: { h: 1, k: 0, l: 0, distance: 1 },
           },
           {
             index: 1,
-            face: { h: -1, k: 0, l: 0, coefficient: 1 },
+            face: { h: -1, k: 0, l: 0, distance: 1 },
           },
         ],
       },
@@ -198,11 +198,11 @@ describe("ui/faceTable", () => {
         items: [
           {
             index: 0,
-            face: { h: 1, k: 0, l: 0, coefficient: 1 },
+            face: { h: 1, k: 0, l: 0, distance: 1 },
           },
           {
             index: 1,
-            face: { h: -1, k: 0, l: 0, coefficient: 1 },
+            face: { h: -1, k: 0, l: 0, distance: 1 },
           },
         ],
       },
@@ -229,7 +229,7 @@ describe("ui/faceTable", () => {
           h: 1,
           k: 0,
           l: 0,
-          coefficient: 1,
+          distance: 1,
           enabled: true,
         },
       },
@@ -250,7 +250,7 @@ describe("ui/faceTable", () => {
     expect(markup).not.toContain("equivalent-face-button");
   });
 
-  it("下書き面は指数と係数を空欄表示で描画する", () => {
+  it("下書き面は指数と距離を空欄表示で描画する", () => {
     const markup = buildTwinFaceRowMarkup({
       groupKey: "draft-face-1",
       groupItemCount: 1,
@@ -267,9 +267,9 @@ describe("ui/faceTable", () => {
           k: 0,
           i: 0,
           l: 0,
-          coefficient: 0,
+          distance: 100,
           enabled: false,
-          draftEmptyFields: ["h", "k", "l", "coefficient"],
+          draftEmptyFields: ["h", "k", "l", "distance"],
         },
       },
       useFourAxis: true,
@@ -289,7 +289,7 @@ describe("ui/faceTable", () => {
     expect(markup).toContain(
       'data-face-field="l" type="number" step="1" value=""',
     );
-    expect(markup).toContain('data-face-field="coefficient" type="number"');
+    expect(markup).toContain('data-face-field="distance" type="number"');
   });
 
   it("指数入力は常時表示の増減ボタンを持つ", () => {
@@ -309,7 +309,7 @@ describe("ui/faceTable", () => {
           k: 0,
           i: -1,
           l: 0,
-          coefficient: 1,
+          distance: 1,
           enabled: true,
         },
       },
@@ -353,7 +353,7 @@ describe("ui/faceTable", () => {
           h: 1,
           k: 0,
           l: 0,
-          coefficient: 1,
+          distance: 1,
           text: {
             content: "R",
             fontId: "optimer",
@@ -440,7 +440,7 @@ describe("ui/faceTable", () => {
           h: 1,
           k: 0,
           l: 0,
-          coefficient: 1,
+          distance: 1,
           text: {
             content: "R",
           },
@@ -474,7 +474,7 @@ describe("ui/faceTable", () => {
           h: 1,
           k: 0,
           l: 0,
-          coefficient: 1,
+          distance: 1,
           enabled: true,
         },
       },
@@ -511,7 +511,7 @@ describe("ui/faceTable", () => {
           h: 1,
           k: 0,
           l: 0,
-          coefficient: 1,
+          distance: 1,
           enabled: true,
           text: {
             content: "R",
@@ -531,9 +531,11 @@ describe("ui/faceTable", () => {
     expect(
       card.querySelector(".face-mobile-card__title-face")?.textContent,
     ).toBe("(1, 0, 0)");
-    expect(
-      card.querySelector('[data-face-field="coefficient"]'),
-    ).not.toBeNull();
+    const distanceInput = card.querySelector(
+      '[data-face-field="distance"]',
+    ) as HTMLInputElement | null;
+    expect(distanceInput).not.toBeNull();
+    expect(distanceInput?.getAttribute("min")).toBeNull();
     expect(card.querySelectorAll(".face-index-spin-button")).toHaveLength(6);
     expect(card.querySelector(".toggle-face-text-button")).not.toBeNull();
     expect(card.querySelector(".face-mobile-card__text-editor")).not.toBeNull();

@@ -12,7 +12,7 @@
       "shortDescription": "Trotter mine",
       "description": "?",
       "reference": "Palache 1935",
-      "fullReference": "Charles Palache, The minerals of Franklin and Sterling Hill, Sussex County, New Jersey (USGS Professional Paper 180, 1935)"
+      "fullReference": "Charles Palache, The minerals of Franklin and Sterling Hill, Sussex County, New Jersey (USGS Professional Paper 180, 1935)\nCrystallography :European Journal of Mineralogy 20  (2008) 635-651 (via RRUFF)"
     },
     "crystalSystem": "triclinic",
     "axes": {
@@ -36,7 +36,7 @@
             "h": 1,
             "k": -1,
             "l": 0,
-            "coefficient": 2,
+            "distance": 0.5,
             "enabled": true,
             "text": {
               "content": "",
@@ -53,7 +53,7 @@
             "h": -1,
             "k": 1,
             "l": 0,
-            "coefficient": 2,
+            "distance": 0.5,
             "enabled": true,
             "text": {
               "content": "",
@@ -70,7 +70,7 @@
             "h": 1,
             "k": 1,
             "l": 0,
-            "coefficient": 1.8,
+            "distance": 0.556,
             "enabled": true,
             "text": {
               "content": "",
@@ -87,7 +87,7 @@
             "h": -1,
             "k": -1,
             "l": 0,
-            "coefficient": 1.8,
+            "distance": 0.556,
             "enabled": true,
             "text": {
               "content": "",
@@ -104,7 +104,7 @@
             "h": 0,
             "k": 0,
             "l": 1,
-            "coefficient": 1.5,
+            "distance": 0.667,
             "enabled": true,
             "text": {
               "content": "",
@@ -121,7 +121,7 @@
             "h": 0,
             "k": 0,
             "l": -1,
-            "coefficient": 1.5,
+            "distance": 0.667,
             "enabled": true,
             "text": {
               "content": "",
@@ -138,7 +138,7 @@
             "h": 1,
             "k": 3,
             "l": 0,
-            "coefficient": 0.75,
+            "distance": 1.333,
             "enabled": false,
             "text": {
               "content": "",
@@ -155,7 +155,7 @@
             "h": -1,
             "k": -3,
             "l": 0,
-            "coefficient": 0.75,
+            "distance": 1.333,
             "enabled": false,
             "text": {
               "content": "",
@@ -172,7 +172,7 @@
             "h": 1,
             "k": -3,
             "l": 0,
-            "coefficient": 0.88,
+            "distance": 1.136,
             "enabled": false,
             "text": {
               "content": "",
@@ -189,7 +189,7 @@
             "h": -1,
             "k": 3,
             "l": 0,
-            "coefficient": 0.88,
+            "distance": 1.136,
             "enabled": false,
             "text": {
               "content": "",
@@ -206,7 +206,7 @@
             "h": 0,
             "k": 1,
             "l": 0,
-            "coefficient": 5.45,
+            "distance": 0.183,
             "enabled": true,
             "text": {
               "content": "",
@@ -223,7 +223,7 @@
             "h": 0,
             "k": -1,
             "l": 0,
-            "coefficient": 5.45,
+            "distance": 0.183,
             "enabled": true,
             "text": {
               "content": "",
@@ -240,7 +240,7 @@
             "h": -2,
             "k": 0,
             "l": 1,
-            "coefficient": 0.9,
+            "distance": 1.111,
             "enabled": true,
             "text": {
               "content": "",
@@ -257,7 +257,7 @@
             "h": 2,
             "k": 0,
             "l": -1,
-            "coefficient": 0.9,
+            "distance": 1.111,
             "enabled": true,
             "text": {
               "content": "",
@@ -274,7 +274,7 @@
             "h": 0,
             "k": 2,
             "l": 1,
-            "coefficient": 0.66,
+            "distance": 1.515,
             "enabled": false,
             "text": {
               "content": "",
@@ -291,7 +291,7 @@
             "h": 0,
             "k": -2,
             "l": -1,
-            "coefficient": 0.66,
+            "distance": 1.515,
             "enabled": false,
             "text": {
               "content": "",
@@ -308,7 +308,7 @@
             "h": 0,
             "k": -2,
             "l": 1,
-            "coefficient": 0.76,
+            "distance": 1.316,
             "enabled": false,
             "text": {
               "content": "",
@@ -325,7 +325,7 @@
             "h": 0,
             "k": 2,
             "l": -1,
-            "coefficient": 0.76,
+            "distance": 1.316,
             "enabled": false,
             "text": {
               "content": "",
@@ -342,7 +342,7 @@
             "h": -1,
             "k": 1,
             "l": 1,
-            "coefficient": 0.99,
+            "distance": 1.01,
             "enabled": true,
             "text": {
               "content": "",
@@ -359,7 +359,7 @@
             "h": -1,
             "k": -1,
             "l": 1,
-            "coefficient": 0.99,
+            "distance": 1.01,
             "enabled": true,
             "text": {
               "content": "",
@@ -376,7 +376,7 @@
             "h": 1,
             "k": -1,
             "l": -1,
-            "coefficient": 0.99,
+            "distance": 1.01,
             "enabled": true,
             "text": {
               "content": "",
@@ -393,7 +393,7 @@
             "h": 1,
             "k": 1,
             "l": -1,
-            "coefficient": 0.99,
+            "distance": 1.01,
             "enabled": true,
             "text": {
               "content": "",
@@ -410,7 +410,7 @@
             "h": -1,
             "k": 0,
             "l": 1,
-            "coefficient": 1.15,
+            "distance": 0.87,
             "enabled": true,
             "text": {
               "content": "",
@@ -427,7 +427,7 @@
             "h": 1,
             "k": 0,
             "l": -1,
-            "coefficient": 1.15,
+            "distance": 0.87,
             "enabled": true,
             "text": {
               "content": "",

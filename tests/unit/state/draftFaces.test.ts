@@ -23,9 +23,9 @@ describe("state/draftFaces", () => {
   it("getDraftEmptyFields は未知 field を捨て、isDraftFace は null や空配列を false にする", () => {
     expect(
       getDraftEmptyFields({
-        draftEmptyFields: ["h", "unknown", "coefficient"],
+        draftEmptyFields: ["h", "unknown", "distance"],
       }),
-    ).toEqual(["h", "coefficient"]);
+    ).toEqual(["h", "distance"]);
     expect(getDraftEmptyFields(null)).toEqual([]);
     expect(isDraftFace(null)).toBe(false);
     expect(isDraftFace({ draftEmptyFields: [] })).toBe(false);
