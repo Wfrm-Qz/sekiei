@@ -113,6 +113,8 @@
 - preset JSON、公開 sample JSON、test fixture JSON は現行 wrapper schema に揃えます。
   - outer: `schema: "sekiei-twin-preview-document-v1"`
   - inner parameters: `version: 2`, `schema: "sekiei-document"`
+- face の位置指定は現行 schema では `distance` を使います。旧 `coefficient` は import 互換専用として扱い、保存 JSON / preset / sample / fixture へ新規に書きません。
+- 旧 `coefficient` を読み込むときは、`distance` があれば `distance` を優先します。`coefficient > 0` は `distance = 1 / coefficient`、`coefficient: 0` は `distance: 100` かつ `enabled: false` として扱います。
 - 公開 sample は `docs/samples/`、test fixture は `tests/fixtures/domain/` を正とします。
 - 結晶色と face 色は preview 側へ複製せず、`parameters.crystals[].accentColor` と `parameters.crystals[].faces[].accentColor` を正として扱います。
 - wrapper preset / wrapper export JSON に preview 設定を保持してよいですが、現行の preset 適用では preview 設定を自動適用しません。保持と適用を混同しないでください。

@@ -41,7 +41,8 @@ interface PreviewVertexLike {
 
 interface PreviewFaceLike {
   id?: string | null;
-  coefficient?: number;
+  distance?: number;
+  enabled?: boolean;
   normal?: PreviewVertexLike;
   vertices?: PreviewVertexLike[];
   textUpVector?: PreviewVertexLike;
@@ -784,7 +785,7 @@ export function createTwinPreviewSceneActions(
           index,
         );
         const validSourceFaces = sourceFaces.filter(
-          (face) => Number(face.coefficient) > 0,
+          (face) => face.enabled !== false,
         );
         const object =
           faceProfile.componentBuildMode === "grouped-face-group"

@@ -99,7 +99,7 @@ function normalizeRuleIndexes(
       k: Number(raw?.k ?? 0),
       i: Number(raw?.i ?? 0),
       l: Number(raw?.l ?? 1),
-      coefficient: 1,
+      distance: 1,
     }),
     systemId,
   );
@@ -139,7 +139,7 @@ function normalizeFaces(
         ...(Array.isArray(face?.draftEmptyFields)
           ? {
               draftEmptyFields: face.draftEmptyFields.filter((field) =>
-                ["h", "k", "l", "coefficient"].includes(String(field)),
+                ["h", "k", "l", "distance"].includes(String(field)),
               ),
             }
           : {}),
@@ -147,8 +147,9 @@ function normalizeFaces(
         k: Number(face?.k ?? 0),
         i: Number(face?.i ?? -1),
         l: Number(face?.l ?? 0),
-        coefficient: Number(face?.coefficient ?? 1),
-        enabled: typeof face?.enabled === "boolean" ? face.enabled : true,
+        distance: face?.distance,
+        coefficient: face?.coefficient,
+        enabled: typeof face?.enabled === "boolean" ? face.enabled : undefined,
         accentColor: normalizeFaceAccentColor(face?.accentColor),
         text: face?.text,
       }),

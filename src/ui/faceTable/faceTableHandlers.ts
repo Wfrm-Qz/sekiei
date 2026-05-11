@@ -19,7 +19,7 @@ interface TwinFaceTableFaceLike {
   k: number;
   i?: number;
   l: number;
-  coefficient: number;
+  distance: number;
   enabled?: boolean;
   accentColor?: string | null;
   draftEmptyFields?: string[];
@@ -103,7 +103,7 @@ export interface TwinFaceTableHandlersContext {
     crystalSystem: string,
   ) => string;
   getDraftEmptyFields: (face: TwinFaceTableFaceLike | undefined) => string[];
-  getNextCoefficientValue: (currentValue: number, direction: number) => number;
+  getNextDistanceValue: (currentValue: number, direction: number) => number;
   getFaceGroupStateKey: (groupKey: string) => string;
   renderFaceTableHeader: () => void;
   renderFaceRows: () => void;
@@ -441,7 +441,7 @@ export function createTwinFaceTableHandlers(
         const target = event.target;
         if (
           target instanceof HTMLButtonElement &&
-          (target.classList.contains("coefficient-spin-button") ||
+          (target.classList.contains("distance-spin-button") ||
             target.classList.contains("face-index-spin-button"))
         ) {
           event.preventDefault();
@@ -558,13 +558,13 @@ export function createTwinFaceTableHandlers(
           return;
         }
 
-        if (target.classList.contains("coefficient-spin-button")) {
-          const coefficientInput = row.querySelector(
-            'input[data-face-field="coefficient"]',
+        if (target.classList.contains("distance-spin-button")) {
+          const distanceInput = row.querySelector(
+            'input[data-face-field="distance"]',
           );
           const currentValue = Number(
-            coefficientInput instanceof HTMLInputElement
-              ? coefficientInput.value
+            distanceInput instanceof HTMLInputElement
+              ? distanceInput.value
               : NaN,
           );
           const editableFaces = context.getEditableFaces();
@@ -576,18 +576,15 @@ export function createTwinFaceTableHandlers(
                     face,
                     context.state.parameters.crystalSystem,
                   ) === groupKey,
-              )?.coefficient
-            : sourceFace?.coefficient;
+              )?.distance
+            : sourceFace?.distance;
           const baseValue = Number.isFinite(currentValue)
             ? currentValue
             : Number(fallbackValue ?? 1);
           const direction = target.dataset.spinDirection === "down" ? -1 : 1;
-          const nextValue = context.getNextCoefficientValue(
-            baseValue,
-            direction,
-          );
-          if (coefficientInput instanceof HTMLInputElement) {
-            coefficientInput.value = String(nextValue);
+          const nextValue = context.getNextDistanceValue(baseValue, direction);
+          if (distanceInput instanceof HTMLInputElement) {
+            distanceInput.value = String(nextValue);
           }
           context.commitParameters((next) => {
             const crystalIndex = context.getEditableCrystalIndex();
@@ -596,7 +593,7 @@ export function createTwinFaceTableHandlers(
               .map((face) => {
                 const remainingDraftFields = context
                   .getDraftEmptyFields(face)
-                  .filter((name) => name !== "coefficient");
+                  .filter((name) => name !== "distance");
                 return (
                   groupCollapsed
                     ? context.getEquivalentFaceGroupKey(
@@ -608,7 +605,7 @@ export function createTwinFaceTableHandlers(
                   ? context.normalizeFaceForSystem(
                       {
                         ...face,
-                        coefficient: nextValue,
+                        distance: nextValue,
                         enabled: remainingDraftFields.length === 0,
                         ...(remainingDraftFields.length > 0
                           ? {

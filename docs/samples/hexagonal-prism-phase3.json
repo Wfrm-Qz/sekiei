@@ -36,7 +36,7 @@
             "h": 1,
             "k": 0,
             "l": 0,
-            "coefficient": 1.0,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "6",
@@ -54,7 +54,7 @@
             "h": 0,
             "k": 1,
             "l": 0,
-            "coefficient": 1.0,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "HEX",
@@ -72,7 +72,7 @@
             "h": -1,
             "k": 1,
             "l": 0,
-            "coefficient": 1.0,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "",
@@ -90,7 +90,7 @@
             "h": -1,
             "k": 0,
             "l": 0,
-            "coefficient": 1.0,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "",
@@ -108,7 +108,7 @@
             "h": 0,
             "k": -1,
             "l": 0,
-            "coefficient": 1.0,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "",
@@ -126,7 +126,7 @@
             "h": 1,
             "k": -1,
             "l": 0,
-            "coefficient": 1.0,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "",
@@ -144,7 +144,7 @@
             "h": 0,
             "k": 0,
             "l": 1,
-            "coefficient": 1.0,
+            "distance": 1.0,
             "enabled": true,
             "text": {
               "content": "",
@@ -162,7 +162,7 @@
             "h": 0,
             "k": 0,
             "l": -1,
-            "coefficient": 0.12,
+            "distance": 8.333333333333,
             "enabled": true,
             "text": {
               "content": "",

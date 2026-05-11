@@ -14,7 +14,7 @@ With Sekiei, you can:
 
 - Create 3D models from crystal parameters
 - Build single-crystal and twin-crystal configurations
-- Adjust each face's coefficient, color, visibility, and engraved text
+- Adjust each face's distance, color, visibility, and engraved text
 - Preview the model in 3D in the browser
 - Save STL / SVG / PNG / JPEG / JSON files
 
@@ -215,8 +215,8 @@ Even without knowing Miller indices, you can start with these ideas.
   - Numbers that control the face direction
 - `i`
   - An extra number shown for trigonal and hexagonal systems
-- `Coefficient`
-  - Controls how far the face is pushed toward the center
+- `Distance`
+  - Controls how far the face is placed from the center
 - `Color`
   - The display color of that face
 - Visibility toggle
@@ -224,15 +224,15 @@ Even without knowing Miller indices, you can start with these ideas.
 - Text settings
   - Adds engraved or label text to that face
 
-![Desktop Face List table. It includes crystal tabs, face number, visibility toggle, expand button, face count, h/k/l, coefficient, color, and delete controls.](./images/user-manual/en/face-list-table.png)
+![Desktop Face List table. It includes crystal tabs, face number, visibility toggle, expand button, face count, h/k/l, distance, color, and delete controls.](./images/user-manual/en/face-list-table.png)
 
 On desktop, the Face List is a table. On phones, each face is edited as a card.
 
-![Mobile face card. h/k/l, coefficient, color, and delete controls are grouped for one face.](./images/user-manual/en/face-list-mobile-card.png)
+![Mobile face card. h/k/l, distance, color, and delete controls are grouped for one face.](./images/user-manual/en/face-list-mobile-card.png)
 
-Press `Add Face` to add a new row to the currently selected crystal. In the new row, enter `h / k / l`, coefficient, and color to add another boundary face to the shape.
+Press `Add Face` to add a new row to the currently selected crystal. In the new row, enter `h / k / l`, distance, and color to add another boundary face to the shape.
 
-![Face added to the list. A new row appears where h/k/l, coefficient, and color can be entered.](./images/user-manual/en/face-list-add-face.png)
+![Face added to the list. A new row appears where h/k/l, distance, and color can be entered.](./images/user-manual/en/face-list-add-face.png)
 
 ### Understanding h / k / l Face Indices
 
@@ -260,7 +260,7 @@ Press `Add Face` to add a new row to the currently selected crystal. In the new 
 
 For example, `(1, 0, 0)` and `(-1, 0, 0)` are opposite faces related to the same axis. If you enter values on multiple axes, such as `(1, 1, 0)`, the face becomes diagonal across those axes.
 
-![Expanded face row with h/k/l and color editing. Changing these values changes the face direction and display color.](./images/user-manual/en/face-list-index-coefficient.png)
+![Expanded face row with h/k/l, distance, and color editing. Changing these values changes the face direction and display color.](./images/user-manual/en/face-list-index-distance.png)
 
 ### Crystal Systems That Show i
 
@@ -273,18 +273,22 @@ Trigonal and hexagonal systems use four face indices: `h / k / i / l`.
 
 In normal operation, you do not need to adjust `i` yourself. When you increase or decrease `h` or `k`, `i` changes automatically.
 
-### Understanding the Coefficient
+### Understanding Distance
 
-`Coefficient` controls how far the face is from the center of the crystal. When the shape is created, each face works as a boundary that cuts the crystal from outside.
+`Distance` controls how far the face is from the center of the crystal. When the shape is created, each face works as a boundary that cuts the crystal from outside.
 
-- Increase the coefficient
-  - The face moves toward the center and the model becomes shorter in that direction. In most cases, the face itself becomes larger
-- Decrease the coefficient
+- Increase the distance
   - The face moves outward and the model becomes longer in that direction. In most cases, the face itself becomes smaller
-- Set the coefficient to `0`
-  - The face cannot be used as a boundary face
-- Multiply every face coefficient by the same amount
+- Decrease the distance
+  - The face moves toward the center and the model becomes shorter in that direction. In most cases, the face itself becomes larger
+- Set the distance to `0`
+  - The face passes through the center. It can be used only when the other faces still form a closed solid
+- Use a negative distance
+  - The face moves to the opposite side. Depending on the opposite face, it can still form a closed solid
+- Multiply every face distance by the same amount
   - The final model is scaled to `Model Size`, so the visible proportions usually stay almost the same
+
+For a crystal with axis ratio `a / b / c`, a `(1, 1, 1)` face at distance `1` passes through distance `a` on the a axis, distance `b` on the b axis, and distance `c` on the c axis. At distance `2`, it passes through `2a / 2b / 2c`.
 
 When you want to adjust a shape, change one face slightly and watch the preview.
 
@@ -348,7 +352,7 @@ For a contact twin, the contact faces are aligned. For a penetration twin, the a
 
 For penetration twins, `Axis Offset` moves the added crystal along the twin axis. `0` means no axis-direction offset. Positive values move in the positive twin-axis direction, and negative values move in the opposite direction.
 
-`1` uses the distance from the center to the point where the twin axis meets the coefficient `1` face with the same indices as the twin axis. The distance changes linearly, so `0.5` is half that distance and `2` is twice that distance.
+`1` uses the distance from the center to the point where the twin axis meets the distance `1` face with the same indices as the twin axis. The distance changes linearly, so `0.5` is half that distance and `2` is twice that distance.
 
 ### Adjust the Preview
 

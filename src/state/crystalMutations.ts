@@ -54,7 +54,7 @@ export function appendDerivedCrystal(
     enabled: true,
     twinType: "penetration",
     ruleType: "axis",
-    plane: createFace({ h: 1, k: 1, l: 1, coefficient: 1 }),
+    plane: createFace({ h: 1, k: 1, l: 1, distance: 1 }),
     axis: createDefaultTwinAxisRule(next.crystalSystem),
     rotationAngleDeg: 60,
     offsets: [],

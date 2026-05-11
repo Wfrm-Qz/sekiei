@@ -442,4 +442,33 @@ describe("domain/parameters", () => {
     const roundTripped = readTwinParametersContent(JSON.stringify(serialized));
     expect(roundTripped).not.toHaveProperty("stlSplit");
   });
+
+  it("旧 coefficient 0 の双晶 face は distance 100 の無効面として正規化する", () => {
+    const normalized = normalizeTwinParameters({
+      crystalSystem: "cubic",
+      twin: {
+        crystals: [
+          {
+            id: "base",
+            faces: [
+              {
+                id: "f1",
+                h: 1,
+                k: 0,
+                l: 0,
+                coefficient: 0,
+                enabled: true,
+              },
+            ],
+          },
+        ],
+      },
+    });
+
+    expect(normalized.twin.crystals[0].faces[0]).toMatchObject({
+      id: "f1",
+      distance: 100,
+      enabled: false,
+    });
+  });
 });

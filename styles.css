@@ -709,32 +709,32 @@ textarea:focus-visible {
   justify-self: center;
 }
 
-.coefficient-input-wrap,
+.distance-input-wrap,
 .face-index-input-wrap {
   position: relative;
   min-width: 84px;
 }
 
-.coefficient-input-wrap input,
+.distance-input-wrap input,
 .face-index-input-wrap input {
   padding-right: 1.7rem;
 }
 
-.coefficient-input::-webkit-outer-spin-button,
-.coefficient-input::-webkit-inner-spin-button,
+.distance-input::-webkit-outer-spin-button,
+.distance-input::-webkit-inner-spin-button,
 .face-index-input::-webkit-outer-spin-button,
 .face-index-input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.coefficient-input,
+.distance-input,
 .face-index-input {
   appearance: textfield;
   -moz-appearance: textfield;
 }
 
-.coefficient-spin-buttons,
+.distance-spin-buttons,
 .face-index-spin-buttons {
   position: absolute;
   top: 50%;
@@ -744,7 +744,7 @@ textarea:focus-visible {
   transform: translateY(-50%);
 }
 
-.coefficient-spin-button,
+.distance-spin-button,
 .face-index-spin-button {
   width: 1.2rem;
   height: 0.9rem;
@@ -758,14 +758,14 @@ textarea:focus-visible {
   box-shadow: none;
 }
 
-.coefficient-spin-button:hover:not(:disabled),
+.distance-spin-button:hover:not(:disabled),
 .face-index-spin-button:hover:not(:disabled) {
   transform: none;
   box-shadow: none;
   background: rgba(145, 107, 42, 0.12);
 }
 
-.coefficient-spin-button:disabled,
+.distance-spin-button:disabled,
 .face-index-spin-button:disabled {
   cursor: default;
   opacity: 0.35;

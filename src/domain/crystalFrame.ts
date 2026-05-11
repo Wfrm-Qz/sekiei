@@ -127,12 +127,12 @@ function twinAxisVector(indexes, parameters) {
 }
 
 /**
- * 結晶形状の面生成と同じ plane equation で、coefficient 1 の面法線を返す。
+ * 結晶形状の面生成と同じ plane equation で、distance 1 の面法線を返す。
  *
  * 四指数系でも現在の面生成は h/k/l と reciprocal basis から plane を作るため、
  * offset 基準長も同じ面生成モデルへ揃える。
  */
-function coefficientOneFaceNormalVector(indexes, parameters) {
+function distanceOneFaceNormalVector(indexes, parameters) {
   const { reciprocalBasis } = buildFourAxisSets(parameters);
   return reciprocalBasis.aStar
     .clone()
@@ -162,12 +162,12 @@ export function twinAxisDirection(indexes, parameters) {
 /**
  * `amount = 1` の基準長を返す。
  *
- * 双晶軸と同じ指数で coefficient 1 の面を仮想的に置き、双晶軸の正方向
+ * 双晶軸と同じ指数で distance 1 の面を仮想的に置き、双晶軸の正方向
  * との交点までの軸上距離を基準にする。実際の offset はこの値へ amount を掛ける。
  */
 export function twinAxisPlaneInterceptLength(indexes, parameters) {
   const axis = twinAxisVector(indexes, parameters);
-  const normal = coefficientOneFaceNormalVector(indexes, parameters);
+  const normal = distanceOneFaceNormalVector(indexes, parameters);
   if (
     !Number.isFinite(axis.lengthSq()) ||
     !Number.isFinite(normal.lengthSq()) ||

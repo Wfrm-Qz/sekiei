@@ -19,7 +19,7 @@ const translations = {
     "common.locale.en": "English",
     "common.actions": "操作",
     "common.skipToContent": "メインコンテンツへ移動",
-    "common.coefficient": "係数",
+    "common.distance": "距離",
     "common.auto": "自動",
     "common.add": "追加",
     "common.delete": "削除",
@@ -157,7 +157,7 @@ const translations = {
     "help.twin.ruleIndex": "双晶則に使う {label} 指数を指定します。",
     "help.twin.rotation": "双晶を配置するときの回転角を指定します。",
     "help.twin.axisOffset":
-      "貫入双晶を双晶軸方向へずらします。1 は双晶軸に対応する係数1面までの距離です。",
+      "貫入双晶を双晶軸方向へずらします。1 は双晶軸に対応する距離1面までの距離です。",
     "help.twin.baseContactFace": "生成元結晶側で接触させる面を選びます。",
     "help.twin.derivedContactFace": "この結晶側で接触させる面を選びます。",
     "help.twin.referenceAxis": "接触面上で向きを合わせる基準方向を選びます。",
@@ -199,9 +199,9 @@ const translations = {
     "help.face.index.l":
       "c 軸方向に対する面の向きを変えます。0 の場合、その面は c 軸とは交わりません。",
     "help.face.indexStep": "{label} の値を 1 ずつ増減します。",
-    "help.face.coefficient":
-      "面の大きさに関わる係数です。大きくすると基本的には面が大きくなり、小さくすると面が小さくなります。",
-    "help.face.coefficientStep": "係数を段階的に増減します。",
+    "help.face.distance":
+      "面の位置を決める距離です。1 は各軸切片の基準位置、2 はその 2 倍、0 や負の値も指定できます。",
+    "help.face.distanceStep": "距離を段階的に増減します。",
     "help.face.color": "この面または等価面グループの色を変更します。",
     "help.face.textToggle": "この面に入れる刻印文字の設定を開閉します。",
     "help.face.equivalent": "現在の面から等価な面を追加します。",
@@ -443,8 +443,8 @@ const translations = {
     "geometry.error.modelSize": "モデルサイズは正の数にしてください。",
     "geometry.error.invalidAxisAngles":
       "軸角の組み合わせが幾何学的に不正です。",
-    "geometry.error.faceCoefficient":
-      "面 {index} の係数は 0 以上にしてください。",
+    "geometry.error.faceDistance":
+      "面 {index} の距離は有限な数値にしてください。",
     "geometry.error.faceIndexNumeric":
       "面 {index} のミラー指数は数値にしてください。",
     "geometry.error.faceIndexINumeric":
@@ -453,8 +453,6 @@ const translations = {
       "面 {index} のミラー指数は 0,0,0 にできません。",
     "geometry.error.faceFourAxisRule":
       "面 {index} は六方晶系/三方晶系のため h + k + i = 0 を満たす必要があります。",
-    "geometry.warning.faceCoefficientZero":
-      "面 {index} は係数 0 のため、境界面としては無効になります。",
     "geometry.warning.closedSolidNeedsFaces":
       "閉じた立体には通常 4 面以上が必要です。",
     "geometry.warning.faceNormalIgnored":
@@ -501,7 +499,7 @@ const translations = {
     "common.locale.en": "English",
     "common.actions": "Actions",
     "common.skipToContent": "Skip to main content",
-    "common.coefficient": "Coefficient",
+    "common.distance": "Distance",
     "common.auto": "Auto",
     "common.add": "Add",
     "common.delete": "Delete",
@@ -644,7 +642,7 @@ const translations = {
     "help.twin.ruleIndex": "Set the {label} index used by the twin law.",
     "help.twin.rotation": "Set the rotation angle used to place the twin.",
     "help.twin.axisOffset":
-      "Move a penetration twin along its twin axis. 1 means the distance to the coefficient-1 plane for that twin axis.",
+      "Move a penetration twin along its twin axis. 1 means the distance to the distance-1 plane for that twin axis.",
     "help.twin.baseContactFace":
       "Choose the contact face on the source crystal.",
     "help.twin.derivedContactFace": "Choose the contact face on this crystal.",
@@ -689,10 +687,9 @@ const translations = {
     "help.face.index.l":
       "Change the face direction relative to the c axis. When this is 0, the face does not intersect the c axis.",
     "help.face.indexStep": "Increase or decrease {label} by 1.",
-    "help.face.coefficient":
-      "This coefficient affects face size. Increasing it usually makes the face larger; decreasing it usually makes the face smaller.",
-    "help.face.coefficientStep":
-      "Increase or decrease the coefficient step by step.",
+    "help.face.distance":
+      "This signed distance sets the face position. 1 uses the base intercepts, 2 doubles them, and 0 or negative values are allowed.",
+    "help.face.distanceStep": "Increase or decrease the distance step by step.",
     "help.face.color":
       "Change the color of this face or equivalent-face group.",
     "help.face.textToggle":
@@ -940,8 +937,8 @@ const translations = {
     "geometry.error.modelSize": "Model size must be a positive number.",
     "geometry.error.invalidAxisAngles":
       "The combination of axis angles is geometrically invalid.",
-    "geometry.error.faceCoefficient":
-      "Face {index} coefficient must be 0 or greater.",
+    "geometry.error.faceDistance":
+      "Face {index} distance must be a finite number.",
     "geometry.error.faceIndexNumeric":
       "Face {index} Miller indices must be numeric.",
     "geometry.error.faceIndexINumeric": "Face {index} i index must be numeric.",
@@ -949,8 +946,6 @@ const translations = {
       "Face {index} Miller indices cannot all be 0,0,0.",
     "geometry.error.faceFourAxisRule":
       "Face {index} must satisfy h + k + i = 0 for hexagonal/trigonal systems.",
-    "geometry.warning.faceCoefficientZero":
-      "Face {index} has coefficient 0, so it is ignored as a boundary face.",
     "geometry.warning.closedSolidNeedsFaces":
       "A closed solid typically requires at least 4 faces.",
     "geometry.warning.faceNormalIgnored":

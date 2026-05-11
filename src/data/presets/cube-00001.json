@@ -35,42 +35,42 @@
             "h": 1,
             "k": 0,
             "l": 0,
-            "coefficient": 1,
+            "distance": 1.0,
             "enabled": true
           },
           {
             "h": -1,
             "k": 0,
             "l": 0,
-            "coefficient": 1,
+            "distance": 1.0,
             "enabled": true
           },
           {
             "h": 0,
             "k": 1,
             "l": 0,
-            "coefficient": 1,
+            "distance": 1.0,
             "enabled": true
           },
           {
             "h": 0,
             "k": -1,
             "l": 0,
-            "coefficient": 1,
+            "distance": 1.0,
             "enabled": true
           },
           {
             "h": 0,
             "k": 0,
             "l": 1,
-            "coefficient": 1,
+            "distance": 1.0,
             "enabled": true
           },
           {
             "h": 0,
             "k": 0,
             "l": -1,
-            "coefficient": 1,
+            "distance": 1.0,
             "enabled": true
           }
         ]

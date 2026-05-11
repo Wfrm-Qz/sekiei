@@ -8,6 +8,7 @@ import { type CrystalSystemId, usesFourAxisMiller } from "./crystalSystems.js";
  */
 
 const FACE_KEY_EPSILON = 1e-9;
+export const LEGACY_ZERO_COEFFICIENT_DISTANCE = 100;
 
 /** 面上テキストの既定値。面追加時の初期 state として使う。 */
 export const FACE_TEXT_DEFAULTS = {
@@ -27,7 +28,7 @@ export interface CrystalFace {
   k: number;
   i?: number;
   l: number;
-  coefficient?: number;
+  distance?: number;
   enabled?: boolean;
   accentColor?: string | null;
   draft?: boolean;
@@ -43,12 +44,40 @@ interface FaceLikeRecord {
   l?: unknown;
 }
 
+interface FaceDistanceLikeRecord {
+  coefficient?: unknown;
+  distance?: unknown;
+  enabled?: unknown;
+}
+
 /** 面 id 用の一意文字列を生成する。crypto がない環境では簡易 fallback を使う。 */
 function createFaceId() {
   return (
     globalThis.crypto?.randomUUID?.() ??
     `face-${Date.now()}-${Math.random().toString(16).slice(2)}`
   );
+}
+
+function normalizeFaceDistance(raw: FaceDistanceLikeRecord, fallback = 1) {
+  const distance = raw.distance == null ? NaN : Number(raw.distance);
+  if (Number.isFinite(distance)) {
+    return distance;
+  }
+
+  const coefficient = raw.coefficient == null ? NaN : Number(raw.coefficient);
+  if (Number.isFinite(coefficient)) {
+    return coefficient > 0 ? 1 / coefficient : LEGACY_ZERO_COEFFICIENT_DISTANCE;
+  }
+
+  return fallback;
+}
+
+function isDisabledLegacyCoefficient(raw: FaceDistanceLikeRecord) {
+  return raw.distance == null &&
+    raw.coefficient != null &&
+    Number.isFinite(Number(raw.coefficient))
+    ? Number(raw.coefficient) <= 0
+    : false;
 }
 
 /**
@@ -61,24 +90,34 @@ function createFaceId() {
  * - text 既定値や一意 id を含んだ face object
  */
 export function createFace(
-  overrides: Record<string, unknown> & {
-    text?: Partial<typeof FACE_TEXT_DEFAULTS>;
-  } = {},
+  overrides: Record<string, unknown> &
+    FaceDistanceLikeRecord & {
+      text?: Partial<typeof FACE_TEXT_DEFAULTS>;
+    } = {},
 ) {
   const textOverrides = overrides.text ?? {};
+  const rest = { ...overrides };
+  delete rest.coefficient;
+  delete rest.distance;
+  delete rest.enabled;
+  delete rest.text;
   return {
     id: createFaceId(),
     h: 1,
     k: 0,
     i: -1,
     l: 0,
-    coefficient: 1,
-    enabled: true,
+    distance: normalizeFaceDistance(overrides),
+    enabled: isDisabledLegacyCoefficient(overrides)
+      ? false
+      : typeof overrides.enabled === "boolean"
+        ? overrides.enabled
+        : true,
     text: {
       ...FACE_TEXT_DEFAULTS,
       ...textOverrides,
     },
-    ...overrides,
+    ...rest,
   };
 }
 
@@ -142,7 +181,7 @@ function buildFaceKey(face, systemId) {
 /** 結晶系向けに正規化した面 object を 1 枚生成する。 */
 function createSystemFace(
   systemId,
-  coefficient,
+  distance,
   indexes,
   text = undefined,
   accentColor = undefined,
@@ -150,7 +189,7 @@ function createSystemFace(
   return normalizeFaceForSystem(
     createFace({
       ...indexes,
-      coefficient,
+      distance,
       text,
       ...(accentColor != null ? { accentColor } : {}),
     }),
@@ -192,7 +231,7 @@ function buildTrigonalEquivalentOrbit(face) {
   ]);
   const negativeSeed = createSystemFace(
     "trigonal",
-    face.coefficient,
+    face.distance,
     flipTrigonalLOrbit(face),
     face.text,
   );
@@ -210,7 +249,7 @@ function buildHexagonalEquivalentOrbit(face) {
   ]);
   const negativeSeed = createSystemFace(
     "hexagonal",
-    face.coefficient,
+    face.distance,
     {
       h: Number(face.h),
       k: Number(face.k),
@@ -249,7 +288,7 @@ function buildEquivalentOrbit(seedFace, systemId, transforms) {
       queue.push(
         createSystemFace(
           systemId,
-          face.coefficient,
+          face.distance,
           transform(face),
           face.text,
           face.accentColor,
@@ -288,7 +327,7 @@ function getCubicEquivalentFaces(face) {
           orbit.push(
             createSystemFace(
               "cubic",
-              face.coefficient,
+              face.distance,
               {
                 h: sx * values[permutation[0]],
                 k: sy * values[permutation[1]],
@@ -374,7 +413,7 @@ function getEquivalentOrbit(face, systemId) {
       break;
     default:
       orbit = [
-        createSystemFace(systemId, normalizedFace.coefficient, normalizedFace),
+        createSystemFace(systemId, normalizedFace.distance, normalizedFace),
       ];
       break;
   }

@@ -67,7 +67,7 @@ import {
  *
  * 主に扱う日本語文言:
  * - 一致するプリセットはありません / カスタム入力 / 自動
- * - 面 {index} (...) / 係数 / 面を全削除 / 面を追加
+ * - 面 {index} (...) / 距離 / 面を全削除 / 面を追加
  * - 生成元結晶の接触面 / この結晶の接触面 / 双晶則を設定します
  * - 結晶を追加 / 結晶タブの操作
  */
@@ -302,7 +302,7 @@ export function createPageUiActions(context: PageUiActionContext) {
         useFourAxis: usesFourAxisMiller(context.state.parameters.crystalSystem),
         sort: context.state.faceSort ?? null,
         labels: {
-          coefficient: t("common.coefficient"),
+          distance: t("common.distance"),
           deleteAllFaces: t("common.deleteAllFaces"),
           addFace: t("common.addFace"),
           sortAscending: (label) => t("common.sortAscending", { label }),
@@ -570,7 +570,7 @@ export function createPageUiActions(context: PageUiActionContext) {
         ? (activeCrystal?.axis ??
           createDefaultTwinAxisRule(context.state.parameters.crystalSystem))
         : (activeCrystal?.plane ??
-          createFace({ h: 1, k: 1, l: 1, coefficient: 1 }));
+          createFace({ h: 1, k: 1, l: 1, distance: 1 }));
     applyTwinRuleFieldValues(
       context.elements.twinRuleInputs,
       rule,

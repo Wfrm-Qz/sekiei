@@ -3,7 +3,7 @@
  *
  * 既存 UI の `data-sort-field` と 1:1 対応しているため、表記変更時は DOM 側も合わせる必要がある。
  */
-export type TwinFaceSortField = "#" | "h" | "k" | "i" | "l" | "coefficient";
+export type TwinFaceSortField = "#" | "h" | "k" | "i" | "l" | "distance";
 
 type EditableFaceIndexField = "h" | "k" | "l";
 
@@ -24,13 +24,13 @@ export interface TwinFaceItem {
     k: number;
     i?: number;
     l: number;
-    coefficient: number;
+    distance: number;
   };
 }
 
 /** 面一覧ヘッダー部で使う文言群。 */
 export interface TwinFaceTableHeaderLabelSet {
-  coefficient: string;
+  distance: string;
   deleteAllFaces: string;
   addFace: string;
   sortAscending: (label: string) => string;
@@ -51,7 +51,7 @@ export interface TwinFaceRowLabelSet {
   collapse: string;
   faceTextToggleOpen: string;
   faceTextToggleClose: string;
-  coefficient: string;
+  distance: string;
   faceTextContent: string;
   faceTextFont: string;
   faceTextFontSize: string;
@@ -82,7 +82,7 @@ export interface TwinFaceRowMarkupOptions {
       k: number;
       i?: number;
       l: number;
-      coefficient: number;
+      distance: number;
       enabled?: boolean;
       accentColor?: string | null;
       draftEmptyFields?: string[];
@@ -142,8 +142,8 @@ export function getTwinFaceSortValue(
   if (field === "#") {
     return item.index + 1;
   }
-  if (field === "coefficient") {
-    return Number(item.face.coefficient);
+  if (field === "distance") {
+    return Number(item.face.distance);
   }
   return Number(item.face[field] ?? 0);
 }
@@ -196,7 +196,7 @@ export function buildTwinFaceTableHeaderMarkup(options: {
     { label: "k", field: "k" },
     ...(options.useFourAxis ? [{ label: "i", field: "i" as const }] : []),
     { label: "l", field: "l" },
-    { label: options.labels.coefficient, field: "coefficient" },
+    { label: options.labels.distance, field: "distance" },
   ];
 
   return [
@@ -411,9 +411,9 @@ export function createTwinFaceRowElement(
     emptyFields.has("h") || emptyFields.has("k")
       ? ""
       : String(options.item.face.i ?? "");
-  const coefficientValue = emptyFields.has("coefficient")
+  const distanceValue = emptyFields.has("distance")
     ? ""
-    : String(options.item.face.coefficient);
+    : String(options.item.face.distance);
   const row = document.createElement("tr");
   row.dataset.faceId = options.item.face.id;
   row.dataset.faceIndex = String(options.item.index);
@@ -511,46 +511,45 @@ export function createTwinFaceRowElement(
     ),
   );
 
-  const coefficientCell = document.createElement("td");
-  const coefficientWrap = document.createElement("div");
-  coefficientWrap.className = "coefficient-input-wrap";
-  const coefficientInput = document.createElement("input");
-  coefficientInput.className = "coefficient-input";
-  coefficientInput.dataset.faceField = "coefficient";
-  coefficientInput.type = "number";
-  coefficientInput.min = "0";
-  coefficientInput.step = "any";
-  coefficientInput.value = coefficientValue;
-  coefficientInput.setAttribute("value", coefficientValue);
-  coefficientWrap.append(coefficientInput);
+  const distanceCell = document.createElement("td");
+  const distanceWrap = document.createElement("div");
+  distanceWrap.className = "distance-input-wrap";
+  const distanceInput = document.createElement("input");
+  distanceInput.className = "distance-input";
+  distanceInput.dataset.faceField = "distance";
+  distanceInput.type = "number";
+  distanceInput.step = "any";
+  distanceInput.value = distanceValue;
+  distanceInput.setAttribute("value", distanceValue);
+  distanceWrap.append(distanceInput);
 
   const spinButtons = document.createElement("div");
-  spinButtons.className = "coefficient-spin-buttons";
+  spinButtons.className = "distance-spin-buttons";
   const upButton = document.createElement("button");
-  upButton.className = "coefficient-spin-button";
+  upButton.className = "distance-spin-button";
   upButton.type = "button";
   upButton.dataset.spinDirection = "up";
   upButton.setAttribute(
     "aria-label",
-    options.labels.sortAscending(options.labels.coefficient),
+    options.labels.sortAscending(options.labels.distance),
   );
   upButton.textContent = "▲";
   spinButtons.append(upButton);
 
   const downButton = document.createElement("button");
-  downButton.className = "coefficient-spin-button";
+  downButton.className = "distance-spin-button";
   downButton.type = "button";
   downButton.dataset.spinDirection = "down";
   downButton.setAttribute(
     "aria-label",
-    options.labels.sortDescending(options.labels.coefficient),
+    options.labels.sortDescending(options.labels.distance),
   );
   downButton.textContent = "▼";
   spinButtons.append(downButton);
 
-  coefficientWrap.append(spinButtons);
-  coefficientCell.append(coefficientWrap);
-  row.append(coefficientCell);
+  distanceWrap.append(spinButtons);
+  distanceCell.append(distanceWrap);
+  row.append(distanceCell);
 
   const actionsCell = document.createElement("td");
   actionsCell.className = "face-actions";
@@ -639,9 +638,9 @@ export function createTwinFaceMobileCardElement(
     emptyFields.has("h") || emptyFields.has("k")
       ? ""
       : String(options.item.face.i ?? "");
-  const coefficientValue = emptyFields.has("coefficient")
+  const distanceValue = emptyFields.has("distance")
     ? ""
-    : String(options.item.face.coefficient);
+    : String(options.item.face.distance);
 
   const card = document.createElement("article");
   card.className = "face-mobile-card";
@@ -712,7 +711,7 @@ export function createTwinFaceMobileCardElement(
       disabled?: boolean;
       readOnly?: boolean;
       indexStepper?: boolean;
-      coefficient?: boolean;
+      distance?: boolean;
     } = {},
   ) => {
     const label = document.createElement("label");
@@ -720,11 +719,10 @@ export function createTwinFaceMobileCardElement(
     const span = document.createElement("span");
     span.textContent = fieldLabel;
     label.append(span);
-    if (fieldOptions.coefficient) {
+    if (fieldOptions.distance) {
       const wrap = document.createElement("div");
-      wrap.className = "coefficient-input-wrap";
-      input.className = "coefficient-input";
-      input.min = "0";
+      wrap.className = "distance-input-wrap";
+      input.className = "distance-input";
       input.step = "any";
       if (fieldOptions.disabled) {
         input.disabled = true;
@@ -732,23 +730,23 @@ export function createTwinFaceMobileCardElement(
       wrap.append(input);
 
       const spinButtons = document.createElement("div");
-      spinButtons.className = "coefficient-spin-buttons";
+      spinButtons.className = "distance-spin-buttons";
       const upButton = document.createElement("button");
-      upButton.className = "coefficient-spin-button";
+      upButton.className = "distance-spin-button";
       upButton.type = "button";
       upButton.dataset.spinDirection = "up";
       upButton.setAttribute(
         "aria-label",
-        options.labels.sortAscending(options.labels.coefficient),
+        options.labels.sortAscending(options.labels.distance),
       );
       upButton.textContent = "▲";
       const downButton = document.createElement("button");
-      downButton.className = "coefficient-spin-button";
+      downButton.className = "distance-spin-button";
       downButton.type = "button";
       downButton.dataset.spinDirection = "down";
       downButton.setAttribute(
         "aria-label",
-        options.labels.sortDescending(options.labels.coefficient),
+        options.labels.sortDescending(options.labels.distance),
       );
       downButton.textContent = "▼";
       spinButtons.append(upButton, downButton);
@@ -798,10 +796,10 @@ export function createTwinFaceMobileCardElement(
     indexStepper: true,
   });
   appendField(
-    options.labels.coefficient,
-    createFaceNumberInput("coefficient", coefficientValue),
+    options.labels.distance,
+    createFaceNumberInput("distance", distanceValue),
     {
-      coefficient: true,
+      distance: true,
     },
   );
   card.append(fieldGrid);

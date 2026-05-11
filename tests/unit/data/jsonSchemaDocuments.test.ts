@@ -45,6 +45,12 @@ const TEST_FIXTURE_JSON_PATHS = [
   "tests/fixtures/domain/twin-contact-cubic.json",
   "tests/fixtures/domain/twin-penetration-cubic.json",
 ];
+const CURRENT_SCHEMA_JSON_PATHS = [
+  ...PRESET_JSON_PATHS,
+  ...SAMPLE_JSON_PATHS,
+  ...TEST_FIXTURE_JSON_PATHS,
+  "tests/fixtures/face-text/leftQuartz.withText.v2.json",
+];
 
 function loadJsonDocument(relativePath: string): unknown {
   return JSON.parse(
@@ -141,6 +147,16 @@ describe("data/json schema documents", () => {
     "test fixture %s は現行 wrapper schema に一致する",
     (relativePath) => {
       expectValidWrapperDocument(relativePath);
+    },
+  );
+
+  it.each(CURRENT_SCHEMA_JSON_PATHS)(
+    "current schema JSON %s は face distance を使い coefficient を含めない",
+    (relativePath) => {
+      const raw = readFileSync(resolve(process.cwd(), relativePath), "utf8");
+
+      expect(raw).toContain('"distance"');
+      expect(raw).not.toContain('"coefficient"');
     },
   );
 });
