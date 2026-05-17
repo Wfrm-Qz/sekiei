@@ -155,7 +155,8 @@ const translations = {
     "help.twin.fromCrystal": "この結晶を作る元の結晶を選びます。",
     "help.twin.type": "接触双晶または貫入双晶を選びます。",
     "help.twin.ruleIndex": "双晶則に使う {label} 指数を指定します。",
-    "help.twin.rotation": "双晶を配置するときの回転角を指定します。",
+    "help.twin.rotation":
+      "貫入双晶では双晶軸まわり、接触双晶では接触面の法線まわりの回転角を指定します。",
     "help.twin.axisOffset":
       "貫入双晶を双晶軸方向へずらします。1 は双晶軸に対応する距離1面までの距離です。",
     "help.twin.baseContactFace": "生成元結晶側で接触させる面を選びます。",
@@ -640,7 +641,8 @@ const translations = {
     "help.twin.fromCrystal": "Choose the source crystal for this crystal.",
     "help.twin.type": "Choose a contact twin or penetration twin.",
     "help.twin.ruleIndex": "Set the {label} index used by the twin law.",
-    "help.twin.rotation": "Set the rotation angle used to place the twin.",
+    "help.twin.rotation":
+      "Set the rotation angle around the twin axis for penetration twins, or around the contact-face normal for contact twins.",
     "help.twin.axisOffset":
       "Move a penetration twin along its twin axis. 1 means the distance to the distance-1 plane for that twin axis.",
     "help.twin.baseContactFace":

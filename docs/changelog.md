@@ -3,10 +3,11 @@
 Sekiei のお知らせモーダルで表示する更新履歴です。  
 This file is also used as the source for the in-app announcement modal.
 
-## 2026-05-11 / v0.1.4
+## 2026-05-18 / v0.1.5
 
 ### ja
 
+- 接触双晶で、接触面を保ったまま派生結晶を面内回転できるようにしました。
 - 柘榴石の形状プリセット 2 件とスピネル式双晶プリセットを追加しました。
 - 双晶を編集中に単結晶プリセットを読み込んだ場合、既存の双晶状態を引き継がず単結晶として読み込むようにしました。
 - 貫入双晶で、派生結晶を双晶軸方向へずらす `軸方向オフセット` を指定できるようにしました。
@@ -16,6 +17,7 @@ This file is also used as the source for the in-app announcement modal.
 
 ### en
 
+- Added in-face rotation for contact twins so the derived crystal can be rotated while keeping the contact face aligned.
 - Added two garnet shape presets and a spinel-law twin preset.
 - When loading a single-crystal preset while editing a twin, the preset now loads as a single crystal instead of inheriting the current twin state.
 - Added `Axis Offset` for penetration twins so the derived crystal can be moved along the twin axis.

@@ -13,6 +13,10 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.twin-primary-fields {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 /* プリセット帯は検索 popup をはみ出して出せるよう overflow を抑制しない。 */
 .preset-strip {
   position: relative;
@@ -250,7 +254,7 @@
 .twin-axis-angle-block {
   display: grid;
   flex: 0 0 200px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 8px;
   width: 200px;
 }
@@ -1253,6 +1257,7 @@
 @media (max-width: 1024px) {
   .app-layout,
   .twin-two-columns,
+  .twin-primary-fields,
   .twin-contact-fields,
   .four-columns,
   .preset-metadata-grid {

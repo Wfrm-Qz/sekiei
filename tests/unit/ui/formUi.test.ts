@@ -44,6 +44,8 @@ describe("ui/formUi", () => {
       <div id="twin-rule-fields"></div>
       <div id="twin-rule-i-field"></div>
       <div id="twin-axis-angle-field"></div>
+      <div id="twin-rotation-angle-field"></div>
+      <div id="twin-axis-offset-field"></div>
       <div id="twin-contact-fields"></div>
       <div id="base-face-ref-label"></div>
       <div id="derived-face-ref-label"></div>
@@ -120,6 +122,10 @@ describe("ui/formUi", () => {
       twinRuleFields: document.getElementById("twin-rule-fields"),
       twinRuleIField: document.getElementById("twin-rule-i-field"),
       twinAxisAngleField: document.getElementById("twin-axis-angle-field"),
+      twinRotationAngleField: document.getElementById(
+        "twin-rotation-angle-field",
+      ),
+      twinAxisOffsetField: document.getElementById("twin-axis-offset-field"),
       twinContactFields: document.getElementById("twin-contact-fields"),
       baseFaceRefLabel: document.getElementById("base-face-ref-label"),
       derivedFaceRefLabel: document.getElementById("derived-face-ref-label"),
@@ -181,7 +187,8 @@ describe("ui/formUi", () => {
       buildFaceIndexText: (face: { h: number; k: number; l: number }) =>
         `${face.h},${face.k},${face.l}`,
       getActiveCrystalIndex: () => state.activeFaceCrystalIndex,
-      getActiveCrystal: (next = state.parameters) => next.twin.crystals[0],
+      getActiveCrystal: (next = state.parameters) =>
+        next.twin.crystals[state.activeFaceCrystalIndex] ?? null,
       getEditableCrystalIndex: () => state.activeFaceCrystalIndex,
       closeTabMenuPopover: vi.fn(),
       applyPresetMetadataSectionVisibility: vi.fn(),
@@ -248,6 +255,41 @@ describe("ui/formUi", () => {
 
     expect(fields.hidden).toBe(false);
     expect(fields.style.display).toBe("");
+  });
+
+  it("renderFormValues は接触双晶で回転角だけを表示し、軸方向オフセットを隠す", () => {
+    const context = createContext();
+    const actions = createPageUiActions(context);
+    const baseCrystal = structuredClone(
+      context.state.parameters.twin.crystals[0],
+    );
+    context.state.parameters.twin.enabled = true;
+    context.state.parameters.twin.crystals.push({
+      ...structuredClone(baseCrystal),
+      id: "derived-1",
+      from: 0,
+      role: "derived",
+      twinType: "contact",
+      ruleType: "plane",
+      rotationAngleDeg: 15,
+      contact: {
+        baseFaceRef: baseCrystal.faces[0]?.id ?? null,
+        derivedFaceRef: baseCrystal.faces[0]?.id ?? null,
+        referenceAxisLabel: null,
+      },
+    });
+    context.state.activeFaceCrystalIndex = 1;
+
+    actions.renderFormValues();
+
+    expect(context.elements.twinRuleFields.hidden).toBe(true);
+    expect(context.elements.twinAxisAngleField.hidden).toBe(true);
+    expect(context.elements.twinRotationAngleField.hidden).toBe(false);
+    expect(context.elements.twinAxisOffsetField.hidden).toBe(true);
+    expect(context.elements.twinContactFields.hidden).toBe(false);
+    expect(
+      (context.elements.rotationAngleInput as HTMLInputElement).value,
+    ).toBe("15");
   });
 
   it("applyTwinPreset は単結晶 preset 適用時に既存の双晶状態を引き継がない", () => {

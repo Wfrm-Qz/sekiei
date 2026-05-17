@@ -222,6 +222,73 @@ describe("domain/builder", () => {
     expect(derivedX - baseX).toBeCloseTo(1);
   });
 
+  it("接触双晶の回転角は接触面を保ったまま派生結晶だけを面内回転する", () => {
+    const parameters = normalizeTwinParameters({
+      crystalSystem: "cubic",
+      faces: [{ id: "base-face", h: 1, k: 0, l: 0, distance: 1 }],
+      twin: {
+        enabled: true,
+        crystals: [
+          {
+            id: "base",
+            faces: [{ id: "base-face", h: 1, k: 0, l: 0, distance: 1 }],
+          },
+          {
+            id: "derived",
+            from: 0,
+            enabled: true,
+            twinType: "contact",
+            ruleType: "plane",
+            rotationAngleDeg: 90,
+            contact: {
+              baseFaceRef: "base-face",
+              derivedFaceRef: "derived-face",
+              referenceAxisLabel: null,
+            },
+            faces: [{ id: "derived-face", h: -1, k: 0, l: 0, distance: 1 }],
+          },
+        ],
+      },
+    });
+
+    buildCrystalMeshDataMock
+      .mockImplementationOnce(() => ({
+        geometry: createMockContactMeshData("base-face", { x: 0, y: 0, z: 1 }),
+        validation: { errors: [], warnings: [] },
+        metrics: { vertexCount: 3, faceCount: 1, maxDimensionMm: 1 },
+      }))
+      .mockImplementationOnce(() => ({
+        geometry: createMockContactMeshData("derived-face", {
+          x: 0,
+          y: 0,
+          z: -1,
+        }),
+        validation: { errors: [], warnings: [] },
+        metrics: { vertexCount: 3, faceCount: 1, maxDimensionMm: 1 },
+      }));
+
+    const result = buildTwinMeshData(parameters);
+    const derivedAxis = result.crystalPreviewMeshData?.[1]?.axisGuides?.find(
+      (axis) => axis.label === "a",
+    );
+    const direction = axisGuideDirection(derivedAxis);
+    const baseFaceCenter = resultFaceCenter(
+      result.crystalPreviewMeshData?.[0],
+      "base-face",
+    );
+    const derivedFaceCenter = resultFaceCenter(
+      result.crystalPreviewMeshData?.[1],
+      "derived-face",
+    );
+
+    expect(direction).not.toBeNull();
+    expect(direction!.x).toBeCloseTo(0);
+    expect(direction!.y).toBeGreaterThan(0.9);
+    expect(baseFaceCenter).not.toBeNull();
+    expect(derivedFaceCenter).not.toBeNull();
+    expect(derivedFaceCenter!.distanceTo(baseFaceCenter!)).toBeCloseTo(0);
+  });
+
   it("貫入双晶の派生結晶軸中心は生成元結晶の双晶軸上へ補正する", () => {
     const parameters = normalizeTwinParameters({
       ...createDefaultTwinParameters(),
@@ -267,6 +334,49 @@ describe("domain/builder", () => {
   });
 });
 
+function createMockContactMeshData(
+  faceId: string,
+  normal: { x: number; y: number; z: number },
+) {
+  return {
+    positions: [-1, -1, 0, 1, -1, 0, 0, 1, 0],
+    vertices: [
+      { x: -1, y: -1, z: 0 },
+      { x: 1, y: -1, z: 0 },
+      { x: 0, y: 1, z: 0 },
+    ],
+    faces: [
+      {
+        id: faceId,
+        normal,
+        vertices: [
+          { x: -1, y: -1, z: 0 },
+          { x: 1, y: -1, z: 0 },
+          { x: 0, y: 1, z: 0 },
+        ],
+      },
+    ],
+    axisGuides: [
+      {
+        label: "a",
+        start: { x: -1, y: 0, z: 0 },
+        end: { x: 1, y: 0, z: 0 },
+      },
+      {
+        label: "b",
+        start: { x: 0, y: -1, z: 0 },
+        end: { x: 0, y: 1, z: 0 },
+      },
+      {
+        label: "c",
+        start: { x: 0, y: 0, z: -1 },
+        end: { x: 0, y: 0, z: 1 },
+      },
+    ],
+    faceVertexCounts: [{ id: faceId, vertexCount: 3 }],
+  };
+}
+
 function createMockMeshDataWithAxisCenter(center: THREE.Vector3) {
   return {
     positions: [0, 0, 0, 1, 0, 0, 0, 1, 0],
@@ -305,6 +415,53 @@ function createMockMeshDataWithAxisCenter(center: THREE.Vector3) {
     ],
     faceVertexCounts: [{ id: "face-1", vertexCount: 3 }],
   };
+}
+
+interface PointLike {
+  x: number;
+  y: number;
+  z: number;
+}
+
+interface AxisGuideLike {
+  label: string;
+  start: PointLike;
+  end: PointLike;
+}
+
+interface FaceLike {
+  id: string;
+  vertices: PointLike[];
+}
+
+function axisGuideDirection(axis: AxisGuideLike | null | undefined) {
+  if (!axis) {
+    return null;
+  }
+  return new THREE.Vector3(
+    axis.end.x - axis.start.x,
+    axis.end.y - axis.start.y,
+    axis.end.z - axis.start.z,
+  ).normalize();
+}
+
+function resultFaceCenter(
+  meshData: { faces?: FaceLike[] | null } | null | undefined,
+  faceId: string,
+) {
+  const face = meshData?.faces?.find(
+    (candidate: FaceLike) => candidate.id === faceId,
+  );
+  if (!face) {
+    return null;
+  }
+  return face.vertices
+    .reduce(
+      (sum: THREE.Vector3, vertex: { x: number; y: number; z: number }) =>
+        sum.add(new THREE.Vector3(vertex.x, vertex.y, vertex.z)),
+      new THREE.Vector3(),
+    )
+    .divideScalar(face.vertices.length);
 }
 
 function resultAxisGuideCenter(
