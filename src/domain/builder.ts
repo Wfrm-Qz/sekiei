@@ -309,6 +309,28 @@ function applyContactRollAlignment(
   return transformMeshData(alignedMeshData, twistMatrix);
 }
 
+/** 接触面を保ったまま、派生結晶を接触面法線まわりに追加回転する。 */
+function applyContactFaceRotation(alignedMeshData, baseFace, rotationAngleDeg) {
+  const angle = Number(rotationAngleDeg ?? 0);
+  if (!Number.isFinite(angle) || Math.abs(angle) <= 1e-8) {
+    return alignedMeshData;
+  }
+
+  const baseNormal = new THREE.Vector3(
+    baseFace.normal.x,
+    baseFace.normal.y,
+    baseFace.normal.z,
+  ).normalize();
+  if (!Number.isFinite(baseNormal.lengthSq()) || baseNormal.lengthSq() === 0) {
+    return alignedMeshData;
+  }
+
+  return transformMeshData(
+    alignedMeshData,
+    createRotationMatrix(baseNormal, angle),
+  );
+}
+
 /**
  * 結晶 1 個に対して双晶則行列を作る。
  *
@@ -499,6 +521,11 @@ function alignDerivedForContact(
     baseFace,
     derivedFaceWithReference,
     alignQuaternion,
+  );
+  alignedMeshData = applyContactFaceRotation(
+    alignedMeshData,
+    baseFace,
+    crystal?.rotationAngleDeg,
   );
   const alignedFace = alignedMeshData.faces.find(
     (face) => face.id === derivedFace.id,

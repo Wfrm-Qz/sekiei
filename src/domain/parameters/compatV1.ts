@@ -2,7 +2,10 @@ import {
   JSON_IMPORT_LIMITS,
   validateParameterImportShape,
 } from "../../io/parameters.js";
-import { twinRuleTypeForTwinType } from "./defaults.js";
+import {
+  defaultRotationAngleDegForTwinType,
+  twinRuleTypeForTwinType,
+} from "./defaults.js";
 import { isSupportedTwinParametersDocumentSchema } from "./schemaNames.js";
 
 /**
@@ -117,6 +120,8 @@ export function convertTwinDocumentV2ToLegacyShape(
       rule?.kind === "axis" || rule?.kind === "plane"
         ? rule.kind
         : twinRuleTypeForTwinType(resolvedTwinType);
+    const rotationAngleFallback =
+      defaultRotationAngleDegForTwinType(resolvedTwinType);
     return {
       id:
         typeof crystalRecord.id === "string"
@@ -137,7 +142,9 @@ export function convertTwinDocumentV2ToLegacyShape(
       plane: rule?.plane ?? crystalRecord.plane,
       axis: rule?.axis ?? crystalRecord.axis,
       rotationAngleDeg:
-        rule?.rotationAngleDeg ?? crystalRecord.rotationAngleDeg ?? 60,
+        rule?.rotationAngleDeg ??
+        crystalRecord.rotationAngleDeg ??
+        rotationAngleFallback,
       offsets,
       contact: crystalRecord.contact,
       faces: crystalRecord.faces,

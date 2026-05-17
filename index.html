@@ -730,7 +730,7 @@
               </div>
 
               <div id="twin-axis-angle-field" class="twin-axis-angle-block">
-                <label class="field">
+                <label id="twin-rotation-angle-field" class="field">
                   <span data-i18n="twin.rotationAngle">回転角 (deg)</span>
                   <input
                     id="twin-rotation-angle-input"
@@ -738,7 +738,7 @@
                     step="0.1"
                   />
                 </label>
-                <label class="field">
+                <label id="twin-axis-offset-field" class="field">
                   <span data-i18n="twin.axisOffset">軸方向オフセット</span>
                   <input
                     id="twin-axis-offset-input"
@@ -2333,6 +2333,9 @@
       </section>
     </div>
 
-    <script type="module" src="./src/main.ts?v=20260511-face-distance"></script>
+    <script
+      type="module"
+      src="./src/main.ts?v=20260518-contact-rotation"
+    ></script>
   </body>
 </html>

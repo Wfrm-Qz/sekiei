@@ -68,6 +68,55 @@ describe("domain/parameters/normalize", () => {
     expect(normalized.twin.crystals[0].faces[0].accentColor).toBe("#3366cc");
   });
 
+  it("接触双晶の回転角は保存値を読み、未指定なら 0 度にする", () => {
+    const contactDocument = {
+      version: 2,
+      schema: "sekiei-document",
+      crystalSystem: "cubic",
+      axes: { a: 1, b: 1, c: 1 },
+      angles: { alpha: 90, beta: 90, gamma: 90 },
+      sizeMm: 50,
+      crystals: [
+        {
+          id: "base",
+          faces: [{ id: "f1", h: 1, k: 0, l: 0, distance: 1 }],
+        },
+        {
+          id: "derived-1",
+          from: "base",
+          placement: {
+            type: "contact",
+            rule: {
+              kind: "plane",
+              plane: { h: 1, k: 1, l: 1 },
+              rotationAngleDeg: 25,
+            },
+          },
+          contact: { baseFaceRef: "f1", derivedFaceRef: "f2" },
+          faces: [{ id: "f2", h: -1, k: 0, l: 0, distance: 1 }],
+        },
+      ],
+    };
+
+    const normalized = normalizeTwinParameters(contactDocument);
+    const defaulted = normalizeTwinParameters({
+      ...contactDocument,
+      crystals: [
+        contactDocument.crystals[0],
+        {
+          ...contactDocument.crystals[1],
+          placement: {
+            type: "contact",
+            rule: { kind: "plane", plane: { h: 1, k: 1, l: 1 } },
+          },
+        },
+      ],
+    });
+
+    expect(normalized.twin.crystals[1].rotationAngleDeg).toBe(25);
+    expect(defaulted.twin.crystals[1].rotationAngleDeg).toBe(0);
+  });
+
   it("異常系として不正 mode と過剰 crystal 数を reject する", () => {
     expect(() =>
       validateTwinImportShape({

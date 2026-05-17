@@ -74,7 +74,7 @@ Sekiei では、保存・読込・preset で共通の JSON 形式を使います
 - `placement`
 - `contact`
 
-`placement` には、双晶タイプ、双晶則、追加の配置情報が入ります。貫入双晶の軸方向オフセットは `placement.offsets[]` に保存します。
+`placement` には、双晶タイプ、双晶則、追加の配置情報が入ります。貫入双晶の軸方向オフセットは `placement.offsets[]` に保存します。接触双晶の `rotationAngleDeg` は、接触面を保ったまま派生結晶を面内回転する角度です。
 
 ```json
 {
@@ -99,6 +99,27 @@ Sekiei では、保存・読込・preset で共通の JSON 形式を使います
 ```
 
 `amount` は双晶軸方向の移動量です。`1` は、双晶軸と同じ指数で距離 `1` の面がその軸と交わる位置までの軸上距離を基準にします。`0` のオフセットは保存時に省略されます。
+
+接触双晶では、`placement.rule.kind` は `plane` になります。`rotationAngleDeg` が `0` の場合は保存時に省略されます。
+
+```json
+{
+  "from": "base",
+  "placement": {
+    "type": "contact",
+    "rule": {
+      "kind": "plane",
+      "plane": { "h": 1, "k": 1, "l": 1 },
+      "rotationAngleDeg": 30
+    }
+  },
+  "contact": {
+    "baseFaceRef": "face-1",
+    "derivedFaceRef": "face-2",
+    "referenceAxisLabel": "c"
+  }
+}
+```
 
 ## Face Fields
 

@@ -395,9 +395,13 @@ export function createPageUiActions(context: PageUiActionContext) {
     const ruleType =
       activeCrystal?.ruleType ??
       twinRuleTypeForTwinType(activeCrystal?.twinType);
+    const isContactTwin = activeCrystal?.twinType === "contact";
     const showRuleInputs = !isBaseCrystal && ruleType === "axis";
-    const showContactFields =
-      !isBaseCrystal && activeCrystal?.twinType === "contact";
+    const showRotationAngleField =
+      !isBaseCrystal && (ruleType === "axis" || isContactTwin);
+    const showAxisOffsetField =
+      !isBaseCrystal && activeCrystal?.twinType === "penetration";
+    const showContactFields = !isBaseCrystal && isContactTwin;
     applySettingsPanelViewModel(
       {
         card: context.elements.twinSettingsCard as HTMLElement,
@@ -407,6 +411,9 @@ export function createPageUiActions(context: PageUiActionContext) {
         ruleFields: context.elements.twinRuleFields as HTMLElement,
         ruleIField: context.elements.twinRuleIField as HTMLElement,
         axisAngleField: context.elements.twinAxisAngleField as HTMLElement,
+        rotationAngleField: context.elements
+          .twinRotationAngleField as HTMLElement,
+        axisOffsetField: context.elements.twinAxisOffsetField as HTMLElement,
         contactFields: context.elements.twinContactFields as HTMLElement,
         baseFaceRefLabel: context.elements.baseFaceRefLabel as HTMLElement,
         derivedFaceRefLabel: context.elements
@@ -430,6 +437,8 @@ export function createPageUiActions(context: PageUiActionContext) {
         }),
         showFields: !isBaseCrystal,
         showRuleInputs,
+        showRotationAngleField,
+        showAxisOffsetField,
         showFourAxisRuleIndex: useFourAxis,
         showContactFields,
       },

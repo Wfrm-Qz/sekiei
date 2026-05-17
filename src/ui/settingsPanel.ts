@@ -12,6 +12,8 @@ export interface SettingsPanelElements {
   ruleFields: HTMLElement;
   ruleIField: HTMLElement;
   axisAngleField: HTMLElement;
+  rotationAngleField: HTMLElement;
+  axisOffsetField: HTMLElement;
   contactFields: HTMLElement;
   baseFaceRefLabel: HTMLElement;
   derivedFaceRefLabel: HTMLElement;
@@ -25,6 +27,8 @@ export interface SettingsPanelViewModel {
   derivedFaceRefLabelText: string;
   showFields: boolean;
   showRuleInputs: boolean;
+  showRotationAngleField: boolean;
+  showAxisOffsetField: boolean;
   showFourAxisRuleIndex: boolean;
   showContactFields: boolean;
 }
@@ -52,7 +56,11 @@ export function applySettingsPanelViewModel(
   elements.ruleHeading.hidden = !viewModel.showRuleInputs;
   elements.ruleFields.hidden = !viewModel.showRuleInputs;
   elements.ruleIField.hidden = !viewModel.showFourAxisRuleIndex;
-  elements.axisAngleField.hidden = !viewModel.showRuleInputs;
+  const showAxisAngleField =
+    viewModel.showRotationAngleField || viewModel.showAxisOffsetField;
+  elements.axisAngleField.hidden = !showAxisAngleField;
+  elements.rotationAngleField.hidden = !viewModel.showRotationAngleField;
+  elements.axisOffsetField.hidden = !viewModel.showAxisOffsetField;
   elements.contactFields.hidden = !viewModel.showContactFields;
 
   elements.fields.style.display = viewModel.showFields ? "" : "none";
@@ -61,7 +69,11 @@ export function applySettingsPanelViewModel(
   elements.ruleIField.style.display = viewModel.showFourAxisRuleIndex
     ? ""
     : "none";
-  elements.axisAngleField.style.display = viewModel.showRuleInputs
+  elements.axisAngleField.style.display = showAxisAngleField ? "" : "none";
+  elements.rotationAngleField.style.display = viewModel.showRotationAngleField
+    ? ""
+    : "none";
+  elements.axisOffsetField.style.display = viewModel.showAxisOffsetField
     ? ""
     : "none";
   elements.contactFields.style.display = viewModel.showContactFields

@@ -160,7 +160,7 @@ Use the preset search field near the top of the screen to choose common shapes.
 2. Press `+` in the Face List crystal tabs to add a crystal
 3. Adjust the added crystal in `Twin Parameters`
 4. Choose the `Twin Type`
-5. For a contact twin, set the twin plane and contact face references
+5. For a contact twin, set the contact face references, reference direction, and rotation angle if needed
 6. For a penetration twin, set the twin axis, rotation angle, and axis offset if needed
 7. Check the relationship in the preview
 8. Save STL / SVG / PNG / JPEG as needed
@@ -348,7 +348,9 @@ Twin Parameters controls how an added crystal is placed.
 - Contact face reference
 - Reference direction
 
-For a contact twin, the contact faces are aligned. For a penetration twin, the added crystal is rotated around the twin axis and placed over the source crystal.
+For a contact twin, the contact faces are aligned. Changing `Rotation Angle` rotates the added crystal within the contact face while keeping that face aligned.
+
+For a penetration twin, the added crystal is rotated around the twin axis and placed over the source crystal.
 
 For penetration twins, `Axis Offset` moves the added crystal along the twin axis. `0` means no axis-direction offset. Positive values move in the positive twin-axis direction, and negative values move in the opposite direction.
 
@@ -493,7 +495,7 @@ On phones, the main save and import actions are collected in the `Output` tab.
 
 - Check that another crystal has been added in the Face List
 - Check that `Source Crystal` points to the intended crystal
-- For a contact twin, check the contact face references for both the source and added crystals
+- For a contact twin, check the contact face references, reference direction, and rotation angle
 - For a penetration twin, check the twin axis, rotation angle, and axis offset
 - Turning on the `Twin Axis / Plane` guide can make the relationship easier to see
 
