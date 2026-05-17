@@ -3,7 +3,7 @@
 Sekiei のお知らせモーダルで表示する更新履歴です。  
 This file is also used as the source for the in-app announcement modal.
 
-## 2026-05-18 / v0.1.4
+## 2026-05-18 / v0.1.5
 
 ### ja
 
