@@ -10,7 +10,7 @@
     />
     <title data-i18n="app.pageTitle">Sekiei</title>
     <link rel="stylesheet" href="./styles.css?v=20260511-face-distance" />
-    <link rel="stylesheet" href="./app-ui.css?v=20260511-tightspace" />
+    <link rel="stylesheet" href="./app-ui.css?v=20260518-contact-rotation" />
   </head>
   <body class="page-root">
     <!-- キーボード利用時にプレビュー領域を飛ばして main へ入るための導線。 -->
@@ -730,14 +730,6 @@
               </div>
 
               <div id="twin-axis-angle-field" class="twin-axis-angle-block">
-                <label id="twin-rotation-angle-field" class="field">
-                  <span data-i18n="twin.rotationAngle">回転角 (deg)</span>
-                  <input
-                    id="twin-rotation-angle-input"
-                    type="number"
-                    step="0.1"
-                  />
-                </label>
                 <label id="twin-axis-offset-field" class="field">
                   <span data-i18n="twin.axisOffset">軸方向オフセット</span>
                   <input
@@ -764,6 +756,20 @@
               <label class="field">
                 <span data-i18n="twin.referenceAxis">基準方向</span>
                 <select id="twin-contact-reference-axis-select"></select>
+              </label>
+            </div>
+
+            <div
+              id="twin-rotation-angle-row"
+              class="field-grid twin-rotation-angle-row"
+            >
+              <label id="twin-rotation-angle-field" class="field">
+                <span data-i18n="twin.rotationAngle">回転角 (deg)</span>
+                <input
+                  id="twin-rotation-angle-input"
+                  type="number"
+                  step="0.1"
+                />
               </label>
             </div>
           </div>

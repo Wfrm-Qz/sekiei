@@ -250,7 +250,7 @@
 .twin-axis-angle-block {
   display: grid;
   flex: 0 0 200px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 8px;
   width: 200px;
 }
@@ -276,6 +276,16 @@
 
 .twin-contact-fields .field select {
   width: 100%;
+  min-width: 0;
+}
+
+.twin-rotation-angle-row {
+  grid-template-columns: minmax(0, 200px);
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.twin-rotation-angle-row .field {
   min-width: 0;
 }
 
@@ -1274,6 +1284,10 @@
 
   .twin-axis-angle-block {
     width: 100%;
+  }
+
+  .twin-rotation-angle-row {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 

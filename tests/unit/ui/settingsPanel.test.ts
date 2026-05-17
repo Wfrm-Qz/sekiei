@@ -14,6 +14,7 @@ describe("ui/settingsPanel", () => {
       <div id="rule-fields"></div>
       <div id="rule-i-field"></div>
       <div id="axis-angle-field"></div>
+      <div id="rotation-angle-row"></div>
       <div id="rotation-angle-field"></div>
       <div id="axis-offset-field"></div>
       <div id="contact-fields"></div>
@@ -30,6 +31,9 @@ describe("ui/settingsPanel", () => {
       ruleIField: document.querySelector("#rule-i-field") as HTMLElement,
       axisAngleField: document.querySelector(
         "#axis-angle-field",
+      ) as HTMLElement,
+      rotationAngleRow: document.querySelector(
+        "#rotation-angle-row",
       ) as HTMLElement,
       rotationAngleField: document.querySelector(
         "#rotation-angle-field",
@@ -71,7 +75,8 @@ describe("ui/settingsPanel", () => {
     expect(elements.fields.hidden).toBe(false);
     expect(elements.ruleFields.hidden).toBe(false);
     expect(elements.ruleIField.hidden).toBe(true);
-    expect(elements.axisAngleField.hidden).toBe(false);
+    expect(elements.axisAngleField.hidden).toBe(true);
+    expect(elements.rotationAngleRow.hidden).toBe(false);
     expect(elements.rotationAngleField.hidden).toBe(false);
     expect(elements.axisOffsetField.hidden).toBe(true);
     expect(elements.contactFields.hidden).toBe(false);
@@ -98,6 +103,7 @@ describe("ui/settingsPanel", () => {
     expect(elements.ruleHeading.hidden).toBe(true);
     expect(elements.ruleFields.hidden).toBe(true);
     expect(elements.axisAngleField.hidden).toBe(true);
+    expect(elements.rotationAngleRow.hidden).toBe(true);
     expect(elements.contactFields.hidden).toBe(true);
     expect(elements.fields.style.display).toBe("none");
     expect(elements.contactFields.style.display).toBe("none");
