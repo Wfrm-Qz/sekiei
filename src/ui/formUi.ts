@@ -411,7 +411,6 @@ export function createPageUiActions(context: PageUiActionContext) {
         ruleFields: context.elements.twinRuleFields as HTMLElement,
         ruleIField: context.elements.twinRuleIField as HTMLElement,
         axisAngleField: context.elements.twinAxisAngleField as HTMLElement,
-        rotationAngleRow: context.elements.twinRotationAngleRow as HTMLElement,
         rotationAngleField: context.elements
           .twinRotationAngleField as HTMLElement,
         axisOffsetField: context.elements.twinAxisOffsetField as HTMLElement,

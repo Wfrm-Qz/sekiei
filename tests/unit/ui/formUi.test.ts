@@ -44,7 +44,6 @@ describe("ui/formUi", () => {
       <div id="twin-rule-fields"></div>
       <div id="twin-rule-i-field"></div>
       <div id="twin-axis-angle-field"></div>
-      <div id="twin-rotation-angle-row"></div>
       <div id="twin-rotation-angle-field"></div>
       <div id="twin-axis-offset-field"></div>
       <div id="twin-contact-fields"></div>
@@ -123,7 +122,6 @@ describe("ui/formUi", () => {
       twinRuleFields: document.getElementById("twin-rule-fields"),
       twinRuleIField: document.getElementById("twin-rule-i-field"),
       twinAxisAngleField: document.getElementById("twin-axis-angle-field"),
-      twinRotationAngleRow: document.getElementById("twin-rotation-angle-row"),
       twinRotationAngleField: document.getElementById(
         "twin-rotation-angle-field",
       ),
@@ -286,7 +284,6 @@ describe("ui/formUi", () => {
 
     expect(context.elements.twinRuleFields.hidden).toBe(true);
     expect(context.elements.twinAxisAngleField.hidden).toBe(true);
-    expect(context.elements.twinRotationAngleRow.hidden).toBe(false);
     expect(context.elements.twinRotationAngleField.hidden).toBe(false);
     expect(context.elements.twinAxisOffsetField.hidden).toBe(true);
     expect(context.elements.twinContactFields.hidden).toBe(false);

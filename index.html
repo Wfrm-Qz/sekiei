@@ -674,7 +674,10 @@
               </p>
             </div>
             <p id="twin-settings-note" class="editor-mode-note"></p>
-            <div id="twin-settings-fields" class="field-grid twin-two-columns">
+            <div
+              id="twin-settings-fields"
+              class="field-grid three-columns twin-primary-fields"
+            >
               <label class="field">
                 <span data-i18n="twin.fromCrystal">生成元結晶</span>
                 <select id="twin-from-crystal-select"></select>
@@ -689,6 +692,14 @@
                     貫入双晶
                   </option>
                 </select>
+              </label>
+              <label id="twin-rotation-angle-field" class="field">
+                <span data-i18n="twin.rotationAngle">回転角 (deg)</span>
+                <input
+                  id="twin-rotation-angle-input"
+                  type="number"
+                  step="0.1"
+                />
               </label>
             </div>
 
@@ -756,20 +767,6 @@
               <label class="field">
                 <span data-i18n="twin.referenceAxis">基準方向</span>
                 <select id="twin-contact-reference-axis-select"></select>
-              </label>
-            </div>
-
-            <div
-              id="twin-rotation-angle-row"
-              class="field-grid twin-rotation-angle-row"
-            >
-              <label id="twin-rotation-angle-field" class="field">
-                <span data-i18n="twin.rotationAngle">回転角 (deg)</span>
-                <input
-                  id="twin-rotation-angle-input"
-                  type="number"
-                  step="0.1"
-                />
               </label>
             </div>
           </div>

@@ -120,7 +120,6 @@ export function queryAppPageElements() {
     twinRuleFields: document.querySelector("#twin-rule-fields"),
     twinRuleIField: document.querySelector("#twin-rule-i-field"),
     twinAxisAngleField: document.querySelector("#twin-axis-angle-field"),
-    twinRotationAngleRow: document.querySelector("#twin-rotation-angle-row"),
     twinRotationAngleField: document.querySelector(
       "#twin-rotation-angle-field",
     ),

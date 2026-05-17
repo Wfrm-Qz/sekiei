@@ -12,7 +12,6 @@ export interface SettingsPanelElements {
   ruleFields: HTMLElement;
   ruleIField: HTMLElement;
   axisAngleField: HTMLElement;
-  rotationAngleRow: HTMLElement;
   rotationAngleField: HTMLElement;
   axisOffsetField: HTMLElement;
   contactFields: HTMLElement;
@@ -58,7 +57,6 @@ export function applySettingsPanelViewModel(
   elements.ruleFields.hidden = !viewModel.showRuleInputs;
   elements.ruleIField.hidden = !viewModel.showFourAxisRuleIndex;
   elements.axisAngleField.hidden = !viewModel.showAxisOffsetField;
-  elements.rotationAngleRow.hidden = !viewModel.showRotationAngleField;
   elements.rotationAngleField.hidden = !viewModel.showRotationAngleField;
   elements.axisOffsetField.hidden = !viewModel.showAxisOffsetField;
   elements.contactFields.hidden = !viewModel.showContactFields;
@@ -70,9 +68,6 @@ export function applySettingsPanelViewModel(
     ? ""
     : "none";
   elements.axisAngleField.style.display = viewModel.showAxisOffsetField
-    ? ""
-    : "none";
-  elements.rotationAngleRow.style.display = viewModel.showRotationAngleField
     ? ""
     : "none";
   elements.rotationAngleField.style.display = viewModel.showRotationAngleField
