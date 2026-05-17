@@ -8,12 +8,10 @@ This file is also used as the source for the in-app announcement modal.
 ### ja
 
 - 接触双晶で、接触面を保ったまま派生結晶を面内回転できるようにしました。
-- 双晶パラメーターの回転角入力を、生成元結晶・双晶タイプと同じ段に配置しました。
 
 ### en
 
 - Added in-face rotation for contact twins so the derived crystal can be rotated while keeping the contact face aligned.
-- Placed the twin-parameter rotation angle input on the same row as the source crystal and twin type.
 
 ## 2026-05-11 / v0.1.4
 
