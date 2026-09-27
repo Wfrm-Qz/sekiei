@@ -3,6 +3,18 @@
 Sekiei のお知らせモーダルで表示する更新履歴です。  
 This file is also used as the source for the in-app announcement modal.
 
+## 2026-05-18 / v0.1.5
+
+### ja
+
+- 接触双晶で、接触面を保ったまま派生結晶を面内回転できるようにしました。
+- UIを調整しました。
+
+### en
+
+- Added in-face rotation for contact twins so the derived crystal can be rotated while keeping the contact face aligned.
+- Adjusted the UI.
+
 ## 2026-05-11 / v0.1.4
 
 ### ja

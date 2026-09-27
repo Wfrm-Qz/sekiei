@@ -1,6 +1,7 @@
 import { createFace, usesFourAxisMiller } from "../../constants.js";
 import { FACE_TEXT_DEFAULTS } from "../faces.js";
 import { serializeParameters } from "../../io/parameters.js";
+import { defaultRotationAngleDegForTwinType } from "./defaults.js";
 import { TWIN_PARAMETERS_DOCUMENT_SCHEMA } from "./schemaNames.js";
 
 /**
@@ -153,6 +154,10 @@ export function serializeTwinParameters(
             : crystal?.twinType === "contact"
               ? "contact"
               : "penetration";
+        const rotationAngleDeg = Number(
+          crystal?.rotationAngleDeg ??
+            defaultRotationAngleDegForTwinType(String(placementType)),
+        );
         const ruleKind =
           index === 0
             ? null
@@ -194,6 +199,11 @@ export function serializeTwinParameters(
                         }
                       : {
                           plane: serializeRule(crystalPlane),
+                          ...(placementType === "contact" &&
+                          Number.isFinite(rotationAngleDeg) &&
+                          Math.abs(rotationAngleDeg) > 1e-12
+                            ? { rotationAngleDeg }
+                            : {}),
                         }),
                   },
                   ...(offsets.length > 0 ? { offsets } : {}),

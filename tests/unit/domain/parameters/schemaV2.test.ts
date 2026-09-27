@@ -123,4 +123,47 @@ describe("domain/parameters/schemaV2", () => {
       rotationDeg: 0,
     });
   });
+
+  it("接触双晶の回転角は plane rule に保存し、0 度なら省略する", () => {
+    const parameters = normalizeTwinParameters({
+      crystalSystem: "cubic",
+      faces: [{ id: "f1", h: 1, k: 0, l: 0, distance: 1 }],
+      twin: {
+        enabled: true,
+        crystals: [
+          {
+            id: "base",
+            faces: [{ id: "f1", h: 1, k: 0, l: 0, distance: 1 }],
+          },
+          {
+            id: "derived-1",
+            from: 0,
+            enabled: true,
+            twinType: "contact",
+            ruleType: "plane",
+            plane: { h: 1, k: 1, l: 1 },
+            rotationAngleDeg: 30,
+            contact: {
+              baseFaceRef: "f1",
+              derivedFaceRef: "f2",
+              referenceAxisLabel: null,
+            },
+            faces: [{ id: "f2", h: -1, k: 0, l: 0, distance: 1 }],
+          },
+        ],
+      },
+    });
+
+    const serialized = serializeTwinParameters(parameters);
+    parameters.twin.crystals[1].rotationAngleDeg = 0;
+    const zeroRotationSerialized = serializeTwinParameters(parameters);
+
+    expect(serialized.crystals[1].placement.rule).toMatchObject({
+      kind: "plane",
+      rotationAngleDeg: 30,
+    });
+    expect(
+      zeroRotationSerialized.crystals[1].placement.rule,
+    ).not.toHaveProperty("rotationAngleDeg");
+  });
 });

@@ -14,6 +14,8 @@ describe("ui/settingsPanel", () => {
       <div id="rule-fields"></div>
       <div id="rule-i-field"></div>
       <div id="axis-angle-field"></div>
+      <div id="rotation-angle-field"></div>
+      <div id="axis-offset-field"></div>
       <div id="contact-fields"></div>
       <label id="base-face-ref-label"></label>
       <label id="derived-face-ref-label"></label>
@@ -28,6 +30,12 @@ describe("ui/settingsPanel", () => {
       ruleIField: document.querySelector("#rule-i-field") as HTMLElement,
       axisAngleField: document.querySelector(
         "#axis-angle-field",
+      ) as HTMLElement,
+      rotationAngleField: document.querySelector(
+        "#rotation-angle-field",
+      ) as HTMLElement,
+      axisOffsetField: document.querySelector(
+        "#axis-offset-field",
       ) as HTMLElement,
       contactFields: document.querySelector("#contact-fields") as HTMLElement,
       baseFaceRefLabel: document.querySelector(
@@ -49,6 +57,8 @@ describe("ui/settingsPanel", () => {
       derivedFaceRefLabelText: "派生面",
       showFields: true,
       showRuleInputs: true,
+      showRotationAngleField: true,
+      showAxisOffsetField: false,
       showFourAxisRuleIndex: false,
       showContactFields: true,
     });
@@ -61,6 +71,9 @@ describe("ui/settingsPanel", () => {
     expect(elements.fields.hidden).toBe(false);
     expect(elements.ruleFields.hidden).toBe(false);
     expect(elements.ruleIField.hidden).toBe(true);
+    expect(elements.axisAngleField.hidden).toBe(true);
+    expect(elements.rotationAngleField.hidden).toBe(false);
+    expect(elements.axisOffsetField.hidden).toBe(true);
     expect(elements.contactFields.hidden).toBe(false);
     expect(elements.ruleIField.style.display).toBe("none");
   });
@@ -75,6 +88,8 @@ describe("ui/settingsPanel", () => {
       derivedFaceRefLabelText: "",
       showFields: false,
       showRuleInputs: false,
+      showRotationAngleField: false,
+      showAxisOffsetField: false,
       showFourAxisRuleIndex: false,
       showContactFields: false,
     });

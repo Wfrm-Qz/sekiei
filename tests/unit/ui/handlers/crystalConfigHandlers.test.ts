@@ -207,6 +207,7 @@ describe("ui/crystalConfigHandlers", () => {
     context.elements.twinTypeSelect.dispatchEvent(new Event("change"));
     expect(context.state.parameters.twin.crystals[1].twinType).toBe("contact");
     expect(context.state.parameters.twin.crystals[1].ruleType).toBe("plane");
+    expect(context.state.parameters.twin.crystals[1].rotationAngleDeg).toBe(0);
 
     context.elements.contactReferenceAxisSelect.value = "c";
     context.elements.contactReferenceAxisSelect.dispatchEvent(

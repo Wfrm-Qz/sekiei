@@ -72,6 +72,11 @@ export function twinRuleTypeForTwinType(twinType: string) {
   return twinType === "contact" ? "plane" : "axis";
 }
 
+/** 双晶タイプごとの回転角既定値を返す。 */
+export function defaultRotationAngleDegForTwinType(twinType: string) {
+  return twinType === "contact" ? 0 : 60;
+}
+
 /** 結晶系ごとの既定双晶軸指数を返す。 */
 function getDefaultTwinAxisIndexes(systemId: string) {
   if (usesFourAxisMiller(systemId)) {

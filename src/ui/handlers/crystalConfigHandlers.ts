@@ -211,10 +211,21 @@ export function createTwinCrystalConfigHandlers(
         if (!activeCrystal || context.getActiveCrystalIndex() === 0) {
           return;
         }
-        activeCrystal.twinType = context.elements.twinTypeSelect.value;
+        const previousTwinType = activeCrystal.twinType;
+        const nextTwinType = context.elements.twinTypeSelect.value;
+        activeCrystal.twinType = nextTwinType;
         activeCrystal.ruleType = twinRuleTypeForTwinType(
           activeCrystal.twinType,
         );
+        if (previousTwinType !== nextTwinType && nextTwinType === "contact") {
+          activeCrystal.rotationAngleDeg = 0;
+        } else if (
+          previousTwinType !== nextTwinType &&
+          nextTwinType === "penetration" &&
+          Number(activeCrystal.rotationAngleDeg) === 0
+        ) {
+          activeCrystal.rotationAngleDeg = 60;
+        }
       });
     });
 

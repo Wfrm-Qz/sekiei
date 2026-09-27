@@ -19,6 +19,7 @@ import {
 } from "./compatV1.js";
 import {
   createDefaultTwinParameters,
+  defaultRotationAngleDegForTwinType,
   type TwinBlockParameters as TwinBlockShape,
   type TwinCrystalParameters as TwinCrystalShape,
   type TwinType,
@@ -214,6 +215,7 @@ function normalizeCrystalDefinition(
     rawCrystal?.twinType === "contact" || rawCrystal?.twinType === "penetration"
       ? rawCrystal.twinType
       : "penetration";
+  const rotationAngleFallback = defaultRotationAngleDegForTwinType(twinType);
   return {
     id: typeof rawCrystal?.id === "string" ? rawCrystal.id : createCrystalId(),
     accentColor: normalizeAccentColor(rawCrystal?.accentColor),
@@ -236,7 +238,10 @@ function normalizeCrystalDefinition(
         getDefaultTwinAxisIndexes(systemId),
       systemId,
     ),
-    rotationAngleDeg: toNumber(rawCrystal?.rotationAngleDeg, 60),
+    rotationAngleDeg: toNumber(
+      rawCrystal?.rotationAngleDeg,
+      rotationAngleFallback,
+    ),
     offsets: normalizeTwinOffsets(readRawTwinOffsets(rawCrystal)),
     contact: {
       baseFaceRef: normalizeFaceRef(rawContact.baseFaceRef, sourceFaces, 0),
@@ -479,7 +484,10 @@ export function normalizeTwinParameters(raw: unknown) {
         index === 0 ? "axis" : twinRuleTypeForTwinType(crystal.twinType),
       plane: normalizeRuleIndexes(crystal.plane, next.crystalSystem),
       axis: normalizeRuleIndexes(crystal.axis, next.crystalSystem),
-      rotationAngleDeg: toNumber(crystal.rotationAngleDeg, 60),
+      rotationAngleDeg: toNumber(
+        crystal.rotationAngleDeg,
+        defaultRotationAngleDegForTwinType(crystal.twinType),
+      ),
       offsets: index === 0 ? [] : normalizeTwinOffsets(crystal.offsets),
       contact: {
         baseFaceRef: normalizeFaceRef(
