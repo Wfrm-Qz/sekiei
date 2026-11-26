@@ -134,6 +134,13 @@
 - `public:check` は公開向けの禁止パス・機密らしい文字列・生成物の追跡有無を確認したうえで、lint / unit test / build を実行します。
 - `.githooks/pre-push` は `npm run public:check` を実行します。push 前に必ず効かせるため、この repo では `git config core.hooksPath .githooks` を設定して使います。
 
+## 依存の脆弱性確認
+
+- Node.js 本体、`package-lock.json` の開発依存を含むパッケージ、GitHub Actions の同梱依存は別々に確認します。repo の `npm audit` は Node.js 本体や Actions の配布済み bundle を検査しません。
+- 監査の件数は実際の応答と対象 lockfile を確認して記載します。取得失敗・未実行を検出 0 件として扱いません。パッケージ数とアドバイザリ数も区別します。
+- 自動監査と upstream の公開情報を照合し、影響バージョンと実際の利用条件を確認します。修正後にも残る upstream の問題は PR に明記します。
+- 間接依存は依存元の対応版から更新し、異なる major を一律の override で揃えません。
+
 ## ブラウザキャッシュ破棄
 
 - ブラウザが直接読む JS / CSS を変更したら、関連する `?v=` を更新します。

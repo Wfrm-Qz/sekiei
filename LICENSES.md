@@ -72,6 +72,17 @@ verification. They are not bundled as browser runtime dependencies of the app.
 - `@playwright/test`
 - `typescript`
 
+### Indirect development dependencies
+
+The development toolchain also includes the following indirect dependencies.
+These are not browser runtime dependencies of Sekiei.
+
+- `@humanfs/types`: Apache-2.0
+- `@isaacs/nonrecursive-glob-match`, `minimatch` 11.x, and `lru-cache` 11.x:
+  [Blue Oak Model License 1.0.0](https://blueoakcouncil.org/license/1.0.0)
+- Rolldown and its platform bindings: MIT
+- Lightning CSS and its platform bindings: MPL-2.0
+
 ## Bundled Fonts
 
 The following font JSON files are bundled for face text generation.

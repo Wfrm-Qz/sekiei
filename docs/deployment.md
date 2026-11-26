@@ -14,13 +14,18 @@ Production URL: https://sekiei.pages.dev/
 
 ## Node.js
 
-Cloudflare Pages の build 環境で Node.js の差異による build ぶれを避けるため、
+Cloudflare Pages と GitHub Actions の build 環境で Node.js のバージョンを揃えるため、
 repo root の `.node-version` で Node.js を固定します。
 
 現在の指定:
 
 ```text
-22.16.0
+22.23.5
 ```
 
-この値は Cloudflare Pages v3 build image の Node.js 既定値に合わせています。
+Node.js 22 系のセキュリティ修正版を指定しています。
+更新時は [Node.js のセキュリティ情報](https://nodejs.org/en/blog/vulnerability) を確認し、
+`.node-version` とこの文書を同時に更新します。
+
+Cloudflare Pages に `NODE_VERSION` を設定している場合は、この指定と一致することを確認してください。
+デプロイ時の build log でも、実際に使用された Node.js のバージョンを確認します。
